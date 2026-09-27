@@ -41,6 +41,27 @@
       "1.0.0"
     ]
   },
+  "hashes": {
+    "checksums": {
+      "1.0.0": {
+        "hashes.god": "5375a234cfb8ffee1180820f5be1f46d0df71198d9800203ceaa0eacd0a08b27",
+        "scroll.toml": "69acb0dfe7f300b37f6539f0a1d4f0bf5e6ac490f5f8ba46f866b0c2ecf69e4a"
+      }
+    },
+    "latest": "1.0.0",
+    "manifest": {
+      "author": "God Code contributors",
+      "description": "The Scroll of Hashes: fingerprints of words (SHA-256), sealed signatures (HMAC), and the veils of base64. Rites: FINGERPRINT, SIGN, VERIFY_SIGNATURE, VEIL, UNVEIL.",
+      "entry": "hashes.god",
+      "godcode": ">=2.0",
+      "name": "hashes",
+      "version": "1.0.0"
+    },
+    "name": "hashes",
+    "versions": [
+      "1.0.0"
+    ]
+  },
   "json-tools": {
     "checksums": {
       "1.0.0": {

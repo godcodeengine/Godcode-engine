@@ -4,6 +4,12 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 ## Just landed
 
+- A scrollhouse of hashes: `SHA256`, `HMAC`, `BASE64_ENCODE`, and
+  `BASE64_DECODE` as always-present builtins (pure, sandbox-safe), plus
+  the `hashes` registry scroll with the friendly rites `FINGERPRINT`,
+  `SIGN`, `VERIFY_SIGNATURE`, `VEIL`, and `UNVEIL`. Documented in
+  `docs/LANGUAGE_REFERENCE.md` §13, the language server's hover docs, the
+  VS Code extension (highlighting + two snippets), and the site learn page.
 - The linter (`godcode lint`): six gentle rules that catch unused names, undefined names, shadowing, empty blocks, unreachable code, and duplicate declarations.
 - A bigger standard library: JSON, file reading and writing, directory listing, dates and times, and fetching pages from the web.
 - The test runner (`godcode test`): write rites named `TEST_*` and the runner finds them, runs them, and reports pass or fail.
@@ -23,7 +29,7 @@ Where the language is headed, in plain words. This is a living document: it chan
 ## What is next
 
 - Performance benchmarks: reproducible numbers, published with the method, so improvements can be measured honestly.
-- More of the standard library: cryptography, concurrency, and the everyday builtins a working language needs.
+- More of the standard library: concurrency and the everyday builtins a working language needs.
 - Editor tooling polish: the VS Code extension, the language server, and the playground keeping pace with the language.
 - 1.0 readiness: the versioning promise, the compatibility policy, and the governance documents a language needs before strangers trust it with real work.
 

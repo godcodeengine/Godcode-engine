@@ -139,6 +139,17 @@ REVEAL(BLESSING("seeker"))</pre>
 REVEAL(SQRT(144))
 REVEAL(FACTORIAL(7))</pre>
     </div>
+    <h3>Seal a word with a hash</h3>
+    <div class="code-card">
+      <div class="code-head">✦ hashes.god — runs in the installed engine</div>
+      <pre class="code godcode">BEGIN CREATION
+  REVEAL(SHA256("manna"))
+  DECLARE sig AS HMAC("secret", "the covenant stands")
+  REVEAL(sig IS HMAC("secret", "the covenant stands"))
+  REVEAL(BASE64_DECODE(BASE64_ENCODE("veiled")))
+END CREATION</pre>
+    </div>
+    <p><code>SHA256(x)</code> takes a word's fingerprint: always 64 hex characters, the same word always giving the same fingerprint, and the tiniest change giving a wholly different one. <code>HMAC(key, message)</code> seals a message under a key so only a keeper of the key can verify it. <code>BASE64_ENCODE</code> and <code>BASE64_DECODE</code> veil and unveil words. These four need no import and run the same inside the sandbox, and the <code>hashes</code> scroll (<code>godcode scroll install hashes</code>) wraps them in friendly rites: <code>FINGERPRINT</code>, <code>SIGN</code>, <code>VERIFY_SIGNATURE</code>, <code>VEIL</code>, and <code>UNVEIL</code>.</p>
     <h3>Shelter a fragile work</h3>
     <div class="code-card">
       <div class="code-head">✦ shelter.god</div>

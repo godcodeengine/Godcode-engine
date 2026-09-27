@@ -51,6 +51,10 @@ godcode ledger verify     # verify the covenant chain
   `simulated`, a local genesis-anchored chain) and returns a receipt map
   `{chain, anchor_hash, height, timestamp, payload_hash}` — index it like
   `receipt["anchor_hash"]`; `TYPE(receipt)` is `"map"`.
+- `SHA256(x)` fingerprints a word, number, or truth as 64 hex characters.
+  `HMAC(key, message)` seals a message under a key (HMAC-SHA-256).
+  `BASE64_ENCODE(x)` / `BASE64_DECODE(s)` veil and unveil words. All four
+  are pure: they need no import and run unchanged under `--sandbox`.
 - `CONSULT("question")` asks the local Spirit oracle; answers in 2-3
   sentences, works in the sandbox, never fails the run.
 - `DECLARE INTENT "words..." ON rite_name` names a rite's purpose; at

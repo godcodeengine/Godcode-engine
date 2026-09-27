@@ -396,10 +396,11 @@ Always present, no import needed:
 
 ### Standard-library rites
 
-The standard library registers ten more rites at startup, in two parts:
-the vault (`godcode/stdlib_vault.py`: JSON and the filesystem) and
-time plus the web (`godcode/stdlib_times.py`). They are always present,
-no import needed.
+The standard library registers fourteen more rites at startup, in three
+parts: the vault (`godcode/stdlib_vault.py`: JSON and the filesystem),
+time plus the web (`godcode/stdlib_times.py`), and the scrollhouse of
+hashes (`godcode/stdlib_hashes.py`). They are always present, no import
+needed.
 
 | Rite | Signature | Speaks |
 |---|---|---|
@@ -413,6 +414,10 @@ no import needed.
 | `WRITE_FILE` | `WRITE_FILE(path, text)` | writes text to the file; returns the character count |
 | `FILE_EXISTS` | `FILE_EXISTS(path)` | `TRUE` when the path exists, `FALSE` otherwise |
 | `LIST_DIR` | `LIST_DIR(path)` | the directory's entry names, sorted |
+| `SHA256` | `SHA256(x)` | the SHA-256 fingerprint of a word, number, or truth, as 64 hex characters |
+| `HMAC` | `HMAC(key, message)` | the HMAC-SHA-256 seal of a message under a key, as 64 hex characters |
+| `BASE64_ENCODE` | `BASE64_ENCODE(x)` | a word veiled in base64 |
+| `BASE64_DECODE` | `BASE64_DECODE(s)` | the unveiled word behind a base64 veil (a gentle error if the veil is ill-formed) |
 
 ```godcode
 BEGIN CREATION
@@ -437,7 +442,19 @@ by either name would shadow them.
 under `godcode run --sandbox`**: the sandbox withholds network power, so
 the rite raises instead of reaching out. The file rites are likewise
 bound by the sandbox's read and write grants (see §23 and
-`docs/sandbox.md`).
+`docs/sandbox.md`). The hash rites are pure computation (they touch no
+files and no network), so they need no grant and behave the same inside
+the sandbox.
+
+```godcode
+BEGIN CREATION
+  REVEAL(SHA256("manna"))                    # a 64-character fingerprint
+  DECLARE sig AS HMAC("secret", "the covenant stands")
+  REVEAL(sig IS HMAC("secret", "the covenant stands"))   # true: the seal holds
+  REVEAL(sig IS HMAC("other", "the covenant stands"))    # false: the seal breaks
+  REVEAL(BASE64_DECODE(BASE64_ENCODE("veiled")))          # "veiled"
+END CREATION
+```
 
 ## 14. The Scrolls (Standard Library)
 

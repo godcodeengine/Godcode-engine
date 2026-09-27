@@ -1,0 +1,6 @@
+name = "hashes"
+version = "1.0.0"
+author = "God Code contributors"
+description = "The Scroll of Hashes: fingerprints of words (SHA-256), sealed signatures (HMAC), and the veils of base64. Rites: FINGERPRINT, SIGN, VERIFY_SIGNATURE, VEIL, UNVEIL."
+entry = "hashes.god"
+godcode = ">=2.0"

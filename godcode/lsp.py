@@ -391,6 +391,30 @@ LSP_DOCS: dict[str, str] = {
         "Turn it back upon itself — reverse a string or a list.\n\n"
         "```godcode\nREVEAL(REVERSE(\"stressed\"))\n```"
     ),
+    "SHA256": (
+        "**SHA256**(value)\n\n"
+        "Take a word's fingerprint — the SHA-256 digest as 64 hex "
+        "characters. The same word always gives the same fingerprint.\n\n"
+        "```godcode\nREVEAL(SHA256(\"manna\"))\n```"
+    ),
+    "HMAC": (
+        "**HMAC**(key, message)\n\n"
+        "Seal a message under a key — the HMAC-SHA-256 signature as 64 "
+        "hex characters. Only a keeper of the key can make or verify "
+        "the seal.\n\n"
+        "```godcode\nDECLARE sig AS HMAC(\"secret\", \"the covenant stands\")\n```"
+    ),
+    "BASE64_ENCODE": (
+        "**BASE64_ENCODE**(value)\n\n"
+        "Veil a word in base64 — the veiled text as a plain word.\n\n"
+        "```godcode\nREVEAL(BASE64_ENCODE(\"grace\"))\n```"
+    ),
+    "BASE64_DECODE": (
+        "**BASE64_DECODE**(text)\n\n"
+        "Lift a base64 veil — the plain word behind it. A gentle error "
+        "if the veil is ill-formed.\n\n"
+        "```godcode\nREVEAL(BASE64_DECODE(BASE64_ENCODE(\"grace\")))\n```"
+    ),
 }
 
 # Phrases matched as whole units on hover (case-insensitive).
@@ -498,7 +522,8 @@ def hover_markdown(word: str | None) -> str | None:
 _COMPLETION_KEYWORDS = sorted(LSP_DOCS)
 _BUILTINS = ("LEN", "STR", "NUM", "TYPE", "RANDOM", "RANGE", "PUSH",
              "UPPER", "LOWER", "SPLIT", "JOIN", "ASK", "BEHOLD", "REVERSE",
-             "ANCHOR", "CONSULT")
+             "ANCHOR", "CONSULT", "SHA256", "HMAC", "BASE64_ENCODE",
+             "BASE64_DECODE")
 
 
 def completion_items() -> list[dict]:
