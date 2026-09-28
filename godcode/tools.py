@@ -117,8 +117,7 @@ _TOOLS_BY_NAME = {t["name"]: t for t in TOOL_SCHEMAS}
 def tool_check(arguments: dict) -> dict:
     from godcode import agentics
     from godcode.errors import GodCodeError
-    from godcode.lexer import Lexer
-    from godcode.parser import Parser
+    from godcode.tongues import parse_source
 
     file = arguments.get("file")
     if not isinstance(file, str):
@@ -128,7 +127,7 @@ def tool_check(arguments: dict) -> dict:
     except OSError as exc:
         return {"ok": False, "error": f"cannot read '{file}': {exc.strerror or exc}"}
     try:
-        Parser(Lexer(source).lex()).parse()
+        parse_source(source)
     except GodCodeError as err:
         return {"ok": False, "diagnostics": [agentics.diagnostic(err)]}
     return {"ok": True, "diagnostics": []}

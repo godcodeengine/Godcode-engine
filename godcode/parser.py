@@ -49,11 +49,14 @@ _RETURN_TERMINATORS = {
 
 
 class Parser:
-    def __init__(self, tokens: list[Token]):
+    def __init__(self, tokens: list[Token], tongue: str | None = None):
         if not tokens:
             raise ParseError("The scroll is empty; there is nothing to reveal")
         self.tokens = tokens
         self.pos = 0
+        # The tongue the source was lexed in ("en" when none); carried into
+        # interpolated {expressions} so their keywords speak it too.
+        self._tongue = tongue or "en"
         # Tracks lexically enclosing FOR/WHILE loops so BREAK and CONTINUE
         # can be rejected at parse time when no loop holds them. A rite
         # body resets this to 0: loop signals never cross a rite boundary.
@@ -673,7 +676,7 @@ class Parser:
 
     def _parse_braced_expr(self, inner: str, tok, offset: int):
         """Parse the text between one pair of braces as a single expression."""
-        tokens = [t for t in Lexer(inner).lex()
+        tokens = [t for t in Lexer(inner, tongue=self._tongue).lex()
                   if t.type not in (TT.NEWLINE, TT.EOF)]
         tokens.append(Token(TT.EOF, "", tok.line, tok.col + offset))
         sub = Parser(tokens)

@@ -28,6 +28,20 @@ Statements live one per line (the inline `IF` form is the one exception. See §7
 
 To begin a whole project at once, run `godcode new my-scroll`: it raises a directory holding a starter scroll (`main.god`), a test scroll (`test_main.god`), a registry-ready `scroll.toml`, and a README. See the "Your first creation" lesson on the site learn page.
 
+### Tongues: the grammar in other languages
+
+A scroll may speak another tongue. Put a pragma comment in the file, e.g. `# tongue: tn` for Setswana, and the keywords cross over while everything else stays the same:
+
+```godcode
+# tongue: tn
+QALA TLHOLEGO
+BOLELA leina JAKA "Lefatshe"
+SENOLA("Dumela, {leina}.")
+FEDISA TLHOLEGO
+```
+
+English keywords keep working beside tongue words, `godcode fmt` renders the canonical English, and every tool (`run`, `check`, `lint`, `test`, the debugger, the bridge, the playground) honours the pragma. See `docs/TONGUES.md` for the full word table and the honest first-edition notes.
+
 ## 2. Words of the Language
 
 - **Keywords are case-insensitive.** `begin creation`, `Begin Creation`, and `BEGIN CREATION` are all holy. Canonical style is UPPER.

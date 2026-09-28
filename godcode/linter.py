@@ -39,8 +39,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import ast as A
-from .lexer import Lexer
-from .parser import Parser
+from .tongues import parse_source
 
 
 # ---------------------------------------------------------------------------
@@ -490,7 +489,7 @@ class _Linter:
         self._import_seen.add(key)
         try:
             source = path.read_text(encoding="utf-8")
-            program = Parser(Lexer(source).lex()).parse()
+            program = parse_source(source)
         except Exception:
             self.imports_unknown = True
             return
@@ -569,7 +568,7 @@ def lint_source(source: str, source_name: str = "<scroll>") -> list[Finding]:
     Raises the usual lexer/parser errors on bad source, so callers can
     report them the way ``godcode check`` does.
     """
-    program = Parser(Lexer(source).lex()).parse()
+    program = parse_source(source)
     return _Linter(source_name).lint(program)
 
 

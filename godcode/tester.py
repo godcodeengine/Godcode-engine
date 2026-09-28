@@ -23,8 +23,7 @@ from pathlib import Path
 from godcode.ast import CreationBlock, DefineRite
 from godcode.errors import GodCodeError
 from godcode.interpreter import Interpreter
-from godcode.lexer import Lexer
-from godcode.parser import Parser
+from godcode.tongues import parse_source
 from godcode.values import RiteFunction
 
 #: Rite label used when the failure belongs to the scroll itself (it could
@@ -143,7 +142,7 @@ def collect_test_rites(program) -> list[DefineRite]:
 # ---------------------------------------------------------------------------
 def _parse_scroll(path: Path):
     source = path.read_text(encoding="utf-8")
-    return Parser(Lexer(source).lex()).parse()
+    return parse_source(source)
 
 
 def _run_rite(program, rite_node: DefineRite, file_label: str) -> TestResult:

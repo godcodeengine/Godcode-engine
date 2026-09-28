@@ -5,12 +5,18 @@
 break, and a final EOF token. ``#`` starts a comment to end of line.
 Keywords are matched case-insensitively (canonical value = UPPER);
 identifiers preserve their casing.
+
+A scroll may choose another tongue with a pragma comment, e.g.
+``# tongue: tn`` for Setswana (see ``godcode.tongues``). Tongue words map
+onto the same keyword tokens, so the parser never changes; ``Lexer.tongue``
+reports the resolved tongue code (``"en"`` when none was chosen).
 """
 
 from __future__ import annotations
 
 from .errors import LexerError
 from .tokens import Token, TokenType
+from .tongues import detect_tongue, resolve as resolve_tongue
 
 # Every alphabetic TokenType name that is not a literal/structural/operator
 # token is a keyword. New keyword TokenTypes are picked up automatically.
@@ -51,8 +57,18 @@ _MULTI_CHAR_TOKENS = {
 
 
 class Lexer:
-    def __init__(self, source: str):
+    def __init__(self, source: str, tongue: str | None = None):
         self.source = source
+        # An explicit tongue wins; otherwise the source's own pragma speaks.
+        code = tongue if tongue is not None else detect_tongue(source)
+        table = resolve_tongue(code)
+        self.tongue: str = "en" if code is None else code
+        self._aliases: dict[str, TokenType] = {
+            word: KEYWORDS[canon] for word, canon in table["aliases"].items()
+        }
+        self._compounds: dict[tuple[str, str], TokenType] = {
+            pair: KEYWORDS[canon] for pair, canon in table["compounds"].items()
+        }
 
     def lex(self) -> list[Token]:
         src = self.source
@@ -61,6 +77,10 @@ class Lexer:
         i = 0
         line = 1
         col = 1
+        # The previous word token, for two-word closers (FEDISA FA -> ENDIF).
+        prev_word = ""
+        prev_line = 0
+        prev_col = 0
 
         def here() -> tuple[int, int]:
             return line, col
@@ -104,7 +124,7 @@ class Lexer:
                 tokens.append(tok)
                 continue
 
-            # words: keywords (case-insensitive) or identifiers
+            # words: keywords (case-insensitive), tongue words, or identifiers
             if c.isalpha() or c == "_":
                 start = i
                 ln, cl = here()
@@ -115,8 +135,18 @@ class Lexer:
                 upper = word.upper()
                 if upper in KEYWORDS:
                     tokens.append(Token(KEYWORDS[upper], upper, ln, cl))
+                elif upper in self._aliases:
+                    tt = self._aliases[upper]
+                    closer = self._compounds.get((prev_word, upper))
+                    if closer is not None and prev_line == ln:
+                        # A two-word closer on one line: FEDISA FA -> ENDIF.
+                        tokens.pop()
+                        tokens.append(Token(closer, closer.name, prev_line, prev_col))
+                    else:
+                        tokens.append(Token(tt, tt.name, ln, cl))
                 else:
                     tokens.append(Token(TokenType.IDENT, word, ln, cl))
+                prev_word, prev_line, prev_col = upper, ln, cl
                 continue
 
             # operators: multi-char first, then single-char

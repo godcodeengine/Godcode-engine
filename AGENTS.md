@@ -67,6 +67,10 @@ godcode ledger verify     # verify the covenant chain
   bless target, or map key). The human CLI (`run`, `run --sandbox`, `check`,
   `fmt`) prints the offending source line beneath the message, with a caret at
   the column when known.
+- Tongues: a scroll with `# tongue: tn` writes keywords in Setswana
+  (`QALA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF`...; see `docs/TONGUES.md`).
+  English keywords still work in the same file. `fmt` renders canonical
+  English; the named tools (`SHA256`, `UPPER`, ...) never translate.
 - Division by zero is rejected: "division by nothing is not permitted".
 
 ## Error codes (`--json`)

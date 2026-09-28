@@ -146,8 +146,23 @@ const KEYWORDS = new Set((
   "TRY CATCH ENDTRY BREAK CONTINUE " +
   "IS NOT AND OR REFLECT BLESS ANOINT SEAL TESTIFY TRUE FALSE").split(" "));
 
+// Tongues: keyword aliases -> canonical types, plus two-word closers
+// ("FEDISA FA" -> ENDIF). Chosen per scroll by a `# tongue: tn` pragma.
+const TONGUES={
+  tn:{name:"Setswana",
+      aliases:{QALA:"BEGIN",TLHOLEGO:"CREATION",FEDISA:"END",BOLELA:"DECLARE",JAKA:"AS",HEMA:"BREATHE",BOTSHELO:"LIFE",TENG:"INTO",SENOLA:"REVEAL",POROFETA:"PROPHESY",TLHATLOGA:"ASCEND",FA:"IF",GONE:"THEN",LEKA:"TRY",TSHWARA:"CATCH",TLHALOSA:"DEFINE",TIRO:"RITE",BITSA:"INVOKE",BUSETSA:"RETURN",TSENYA:"IMPORT",KE:"IS",LE:"AND",KGOTSA:"OR",MO:"IN",DIRA:"DO",AKANYA:"REFLECT",SEGOFATSA:"BLESS",TLOTSA:"ANOINT",TSWALA:"SEAL",PAKA:"TESTIFY",NNETE:"TRUE",MAAKA:"FALSE",SEPE:"VOID",KGAOLA:"BREAK",TSWELELA:"CONTINUE"},
+      compounds:{"FEDISA FA":"ENDIF","FEDISA LEKA":"ENDTRY"}}
+};
+function detectTongue(source){
+  const m=source.match(/^[ \t]*#[ \t]*tongue[ \t]*:[ \t]*([A-Za-z]{2,8})/im);
+  return m?m[1].toLowerCase():"en";
+}
+
 function lex(source){
   const tokens=[];
+  const tongue=TONGUES[detectTongue(source)]||null;
+  const aliases=tongue?tongue.aliases:null;
+  let prevWord="", prevLine=-1, prevCol=0;   // previous word token, for two-word closers
   const lines=source.split("\n");
   for(let ln=0; ln<lines.length; ln++){
     const line=lines[ln];
@@ -189,8 +204,20 @@ function lex(source){
         let j=col;
         while(j<line.length && /[A-Za-z0-9_]/.test(line[j])) j++;
         const word=line.slice(col,j), up=word.toUpperCase();
-        if(KEYWORDS.has(up)) tokens.push({type:up, value:up, line:ln+1, col:sc});
-        else tokens.push({type:"IDENT", value:word, line:ln+1, col:sc});
+        const type=KEYWORDS.has(up)?up:(aliases&&aliases[up]);
+        if(type){
+          // Two-word closers on one line: FEDISA FA -> ENDIF.
+          const closer=(aliases&&prevLine===ln+1)?tongue.compounds[prevWord+" "+up]:null;
+          if(closer){
+            tokens.pop();   // the FEDISA that opened it
+            tokens.push({type:closer, value:closer, line:prevLine, col:prevCol});
+            prevWord=""; prevLine=-1;
+          }else{
+            tokens.push({type:type, value:type, line:ln+1, col:sc});
+            prevWord=up; prevLine=ln+1; prevCol=sc;
+          }
+        }
+        else{ tokens.push({type:"IDENT", value:word, line:ln+1, col:sc}); prevWord=""; prevLine=-1; }
         col=j; continue;
       }
       const two=line.slice(col,col+2);                       // multi-char operators first
@@ -1214,6 +1241,24 @@ FOR n IN [1, 2, 3, 4, 5]
     REVEAL("counted {n}")
 ENDFOR
 END CREATION`},
+{id:"dumela",label:"Dumela (Setswana)",code:
+`# tongue: tn
+# Dumela — God Code speaks Setswana. English keywords still work beside
+# the Setswana ones; FEDISA FA closes the IF, FEDISA LEKA closes the TRY.
+QALA TLHOLEGO
+BOLELA leina JAKA "tsala ya me"
+SENOLA("Dumela, {leina}.")
+FA LEN(leina) KE 0 GONE
+    SENOLA("Ga go na leina")
+ELSE
+    SENOLA("Leina le teng")
+FEDISA FA
+LEKA
+    BOLELA karolo JAKA 10 / 0
+TSHWARA
+    SENOLA("Go tshwerwe phoso, mme tiro e tswelela")
+FEDISA LEKA
+FEDISA TLHOLEGO`},
 ];
 
 /* ---------------- 8. UI (browser only) ---------------- */
@@ -1225,16 +1270,23 @@ if(typeof document!=="undefined"){
   const out=document.getElementById("out");
   const samplesSel=document.getElementById("samples");
 
-  // Regex tokenizer for the overlay highlighter (same keyword set as the lexer).
-  const TOK_RE=new RegExp(
-    "(#[^\\n]*)"+                       // comment
-    '|("(?:[^"\\\\\\n]|\\\\.)*\"?)'+    // string (tolerates unterminated while typing)
-    "|(\\b\\d+(?:\\.\\d+)?\\b)"+        // number
-    "|(\\b(?:"+[...KEYWORDS].join("|")+")\\b)",  // keyword
-    "gi");
+  // Regex tokenizer for the overlay highlighter (same keyword set as the
+  // lexer, plus the active tongue's words).
+  function tokReFor(src){
+    let kws=[...KEYWORDS];
+    const t=TONGUES[detectTongue(src)];
+    if(t) kws=kws.concat(Object.keys(t.aliases));
+    return new RegExp(
+      "(#[^\\n]*)"+                       // comment
+      '|("(?:[^"\\\\\\n]|\\\\.)*\\"?")'+    // string (tolerates unterminated while typing)
+      "|(\\b\\d+(?:\\.\\d+)?\\b)"+        // number
+      "|(\\b(?:"+kws.join("|")+")\\b)",  // keyword
+      "gi");
+  }
   function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
   function highlight(src){
     let res="", last=0, m;
+    const TOK_RE=tokReFor(src);
     TOK_RE.lastIndex=0;
     while((m=TOK_RE.exec(src))){
       res+=esc(src.slice(last,m.index));

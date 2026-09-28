@@ -136,14 +136,13 @@ class DebugSession:
         Returns the interpreter. Runtime errors propagate to the caller;
         ``self.error`` records them and ``self.finished`` is set either way.
         """
-        from godcode.lexer import Lexer
-        from godcode.parser import Parser
+        from godcode.tongues import parse_source
 
         if self.interpreter is None:
             raise RuntimeError("DebugSession has no interpreter — call attach() first.")
         resolved = str(Path(path).resolve())
         source = Path(path).read_text(encoding="utf-8")
-        program = Parser(Lexer(source).lex()).parse()
+        program = parse_source(source)
         if self.stop_on_entry:
             self._pause_once = True
         self.push_source(resolved)

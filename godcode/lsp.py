@@ -456,11 +456,10 @@ _WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 def check_source(text: str) -> list[dict]:
     """Parse *text* and return LSP diagnostics (empty when pure)."""
     from godcode.errors import GodCodeError
-    from godcode.lexer import Lexer
-    from godcode.parser import Parser
+    from godcode.tongues import parse_source
 
     try:
-        Parser(Lexer(text).lex()).parse()
+        parse_source(text)
     except GodCodeError as err:
         line = max((err.line or 1) - 1, 0)  # LSP lines are 0-based
         lines = text.splitlines()

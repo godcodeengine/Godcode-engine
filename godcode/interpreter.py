@@ -57,8 +57,7 @@ from godcode.errors import (
     ReturnSignal,
     with_suggestion,
 )
-from godcode.lexer import Lexer
-from godcode.parser import Parser
+from godcode.tongues import parse_source
 from godcode import plugins
 from godcode import chain as chain_module
 from godcode.values import Contract, RiteFunction, Symbol
@@ -204,8 +203,7 @@ class Interpreter:
     def run_source(self, source: str, source_name: str = "<creation>") -> None:
         """Lex, parse, and run God Code source text."""
         self._last_source = source
-        tokens = Lexer(source).lex()
-        program = Parser(tokens).parse()
+        program = parse_source(source)
         self.run(program, source_name=source_name)
 
     @staticmethod
@@ -527,7 +525,7 @@ class Interpreter:
         try:
             source = path.read_text(encoding="utf-8")
             self._last_source = source
-            program = Parser(Lexer(source).lex()).parse()
+            program = parse_source(source)
             self._log(f"IMPORT :: {path}")
             self._exec_block(self._statements_of(program), env)
         finally:

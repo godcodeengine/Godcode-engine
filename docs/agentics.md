@@ -109,6 +109,16 @@ generate → check --json → fix from diagnostics → run --sandbox --json
 5. **Inspect** `output`, `error`, `seals`, and `intents`; iterate until `ok`
    is true and every intent is aligned.
 
+## Tongues: keywords in other languages
+
+A scroll may open with `# tongue: tn` and write keywords in Setswana
+(`QALA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF` ...). The pragma is honoured
+by every command, including `--json` ones; English keywords still work in
+the same file; `fmt` renders canonical English; the named tools
+(`SHA256`, `UPPER`, ...) never translate. When generating for a tongue,
+keep the pragma as the first line and consult `docs/TONGUES.md` for the
+word table. Never invent tongue words: use only the documented table.
+
 ## Intent & Chain: the language agents speak (shipped)
 
 Mini-Pillar 5 made God Code legible to agents; declared intent makes agents legible

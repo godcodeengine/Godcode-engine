@@ -173,8 +173,7 @@ def emit(payload: dict) -> None:
 def cmd_check_json(args) -> int:
     """`godcode check --json FILE`. Exit 0 if pure, 1 if diagnostics."""
     from godcode.errors import GodCodeError
-    from godcode.lexer import Lexer
-    from godcode.parser import Parser
+    from godcode.tongues import parse_source
 
     try:
         source = Path(args.file).read_text(encoding="utf-8")
@@ -182,7 +181,7 @@ def cmd_check_json(args) -> int:
         emit(check_payload(args.file, False, [_file_error_diagnostic(args.file, exc)]))
         return 1
     try:
-        Parser(Lexer(source).lex()).parse()
+        parse_source(source)
     except GodCodeError as err:
         emit(check_payload(args.file, False, [diagnostic(err)]))
         return 1

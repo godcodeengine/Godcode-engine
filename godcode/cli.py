@@ -155,8 +155,7 @@ def _cmd_run_sandboxed(args: argparse.Namespace) -> int:
 # ---------------------------------------------------------------------------
 def cmd_check(args: argparse.Namespace) -> int:
     from godcode.errors import GodCodeError, format_error
-    from godcode.lexer import Lexer
-    from godcode.parser import Parser
+    from godcode.tongues import parse_source
 
     # --- v3: agentics --json ---
     if getattr(args, "json", False):
@@ -171,7 +170,7 @@ def cmd_check(args: argparse.Namespace) -> int:
               file=sys.stderr)
         return 1
     try:
-        Parser(Lexer(source).lex()).parse()
+        parse_source(source)
     except GodCodeError as err:
         print(format_error(source, err), file=sys.stderr)
         return 1
@@ -511,8 +510,7 @@ class CanonicalFormatter:
 
 def cmd_fmt(args: argparse.Namespace) -> int:
     from godcode.errors import GodCodeError, format_error
-    from godcode.lexer import Lexer
-    from godcode.parser import Parser
+    from godcode.tongues import parse_source
 
     src_path = Path(args.file)
     try:
@@ -522,7 +520,7 @@ def cmd_fmt(args: argparse.Namespace) -> int:
               file=sys.stderr)
         return 1
     try:
-        program = Parser(Lexer(source).lex()).parse()
+        program = parse_source(source)
     except GodCodeError as err:
         print(format_error(source, err), file=sys.stderr)
         return 1
