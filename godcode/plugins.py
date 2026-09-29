@@ -145,7 +145,7 @@ def discover_plugins(dirs: list[Path] | None = None) -> dict[str, Any]:
         try:
             discovered[stem] = _import_from_path(stem, path)
         except Exception as exc:
-            _warn(f"plugin {path} failed to import ({exc}) — skipped")
+            _warn(f"plugin {path} failed to import ({exc}). Skipped")
     for name, module in _entry_point_plugins().items():
         discovered[name] = module
     return discovered
@@ -165,17 +165,17 @@ def load_plugins(interpreter, dirs: list[Path] | None = None) -> list[str]:
         if api != PLUGIN_API_VERSION:
             _warn(
                 f"plugin {name!r} speaks API version {api}, "
-                f"this engine speaks {PLUGIN_API_VERSION} — skipped"
+                f"this engine speaks {PLUGIN_API_VERSION}. Skipped"
             )
             continue
         register = getattr(module, "register", None)
         if not callable(register):
-            _warn(f"plugin {name!r} exposes no register(interpreter) — skipped")
+            _warn(f"plugin {name!r} exposes no register(interpreter). Skipped")
             continue
         try:
             register(interpreter)
         except Exception as exc:
-            _warn(f"plugin {name!r} register() failed ({exc}) — skipped")
+            _warn(f"plugin {name!r} register() failed ({exc}). Skipped")
             continue
         loaded.append(name)
     return loaded

@@ -7,7 +7,10 @@ Where the language is headed, in plain words. This is a living document: it chan
 - Global editions begin: God Code speaks Setswana. A scroll with the
   `# tongue: tn` pragma writes keywords in Setswana (the full table is in
   `docs/TONGUES.md`); every tool honours it, the playground speaks it,
-  and more tongues arrive by community proposal.
+  and more tongues arrive by community proposal. The editors keep pace:
+  the language server offers Setswana completions and hover docs when it
+  sees the pragma, and the VS Code extension paints Setswana keywords and
+  ships Setswana starter snippets.
 - A scrollhouse of hashes: `SHA256`, `HMAC`, `BASE64_ENCODE`, and
   `BASE64_DECODE` as always-present builtins (pure, sandbox-safe), plus
   the `hashes` registry scroll with the friendly rites `FINGERPRINT`,
@@ -32,9 +35,7 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 ## What is next
 
-- More tongues: community-proposed editions beyond Setswana, plus
-  tongue-aware completions in the language server and the VS Code
-  extension.
+- More tongues: community-proposed editions beyond Setswana.
 - Performance benchmarks: reproducible numbers, published with the method, so improvements can be measured honestly.
 - More of the standard library: concurrency and the everyday builtins a working language needs.
 - Editor tooling polish: the VS Code extension, the language server, and the playground keeping pace with the language.

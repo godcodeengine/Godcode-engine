@@ -119,7 +119,7 @@ if not result.ok:
 
 bad = run_source('REVEAL(1 / 0)')
 print(bad.ok, bad.error)
-# False  Division by nothing is not permitted — even the heavens cannot split the void. (line 1)
+# False  Division by nothing is not permitted. Even the heavens cannot split the void. (line 1)
 ```
 
 `RunResult` fields:

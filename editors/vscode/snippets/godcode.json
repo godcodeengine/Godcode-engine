@@ -118,5 +118,26 @@
   "body": "DECLARE ${1:sig} AS HMAC(\"${2:secret}\", \"${3:message}\")$0",
   "description": "Seal a message under a key (HMAC-SHA-256)",
   "prefix": "hmac"
+ },
+ "Setswana creation block": {
+  "body": [
+   "# tongue: tn",
+   "QALA TLHOLEGO",
+   "\t${1:# Dumela}",
+   "\t$0",
+   "\tTLHATLOGA",
+   "FEDISA TLHOLEGO"
+  ],
+  "description": "A God Code creation block in Setswana",
+  "prefix": "qala"
+ },
+ "Setswana if": {
+  "body": [
+   "FA ${1:seeker} KE ${2:worthy} GONE",
+   "\t${3:SENOLA(\"heaven\")}",
+   "FEDISA FA$0"
+  ],
+  "description": "Divine conditional in Setswana",
+  "prefix": "fa"
  }
 }

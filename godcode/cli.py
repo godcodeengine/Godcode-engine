@@ -870,7 +870,7 @@ def cmd_debug(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="godcode",
-        description="God Code — the language of divine computation 🕊")
+        description="God Code. The language of divine computation 🕊")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_run = sub.add_parser("run", help="Execute a God Code scroll")

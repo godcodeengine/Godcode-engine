@@ -139,7 +139,7 @@ class DebugSession:
         from godcode.tongues import parse_source
 
         if self.interpreter is None:
-            raise RuntimeError("DebugSession has no interpreter — call attach() first.")
+            raise RuntimeError("DebugSession has no interpreter. Call attach() first.")
         resolved = str(Path(path).resolve())
         source = Path(path).read_text(encoding="utf-8")
         program = parse_source(source)

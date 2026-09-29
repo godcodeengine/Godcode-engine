@@ -230,8 +230,8 @@ class Sandbox:
         if self.steps > self.policy.max_steps:
             raise SandboxViolation(
                 "The sandbox withholds this power: the creation has taken "
-                f"more than {self.policy.max_steps:,} steps — "
-                "the step budget is spent, and the cycle is released.",
+                f"more than {self.policy.max_steps:,} steps. "
+                "The step budget is spent, and the cycle is released.",
                 self.current_line,
             )
         if self.started_at is not None and self.policy.timeout_seconds:
@@ -239,8 +239,8 @@ class Sandbox:
             if elapsed > self.policy.timeout_seconds:
                 raise SandboxViolation(
                     "The sandbox withholds this power: the appointed time "
-                    f"({self.policy.timeout_seconds:g}s) is spent — "
-                    "the creation is released in peace.",
+                    f"({self.policy.timeout_seconds:g}s) is spent. "
+                    "The creation is released in peace.",
                     self.current_line,
                 )
 
@@ -257,8 +257,8 @@ class Sandbox:
                 "HTTP_GET": "the rite HTTP_GET would reach out to the web",
             }.get(str(name).upper(), f"the rite {name}")
             raise SandboxViolation(
-                f"The sandbox withholds this power: {divine} — "
-                "it is not granted.",
+                f"The sandbox withholds this power: {divine}. "
+                "It is not granted.",
                 line,
             )
 
@@ -272,8 +272,8 @@ class Sandbox:
                 return
         raise SandboxViolation(
             "The sandbox withholds this power: the scroll "
-            f"'{requested}' lies outside the consecrated paths — "
-            "it may not be breathed in.",
+            f"'{requested}' lies outside the consecrated paths. "
+            "It may not be breathed in.",
             line,
         )
 
@@ -304,7 +304,7 @@ def _time_limit(seconds: float | None, guard: Sandbox):
     def _handler(signum, frame):  # noqa: ARG001
         raise SandboxViolation(
             "The sandbox withholds this power: the appointed time "
-            f"({seconds:g}s) is spent — the creation is released in peace.",
+            f"({seconds:g}s) is spent. The creation is released in peace.",
             guard.current_line,
         )
 
@@ -374,7 +374,7 @@ def run_sandboxed_with_interpreter(
     except RecursionError:
         raise SandboxViolation(
             "The sandbox withholds this power: the rites called upon "
-            "themselves past the deep places — the recursion budget is "
+            "themselves past the deep places. The recursion budget is "
             "spent, and the cycle is released.",
             guard.current_line,
         ) from None

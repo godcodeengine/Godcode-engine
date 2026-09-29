@@ -65,6 +65,20 @@ If you speak Setswana and a word here rings wrong, say so: open an issue
 on the repo. This table is a first edition, and native speakers are its
 rightful editors.
 
+## The editors speak Setswana
+
+The language server reads the pragma in the open scroll. When it sees
+`# tongue: tn`, completions offer the tongue's keywords beside the
+English ones (`SENOLA (REVEAL)`, `FEDISA FA (ENDIF)`), plus block
+snippets that unfold in Setswana. Hovering a tongue word shows the
+English keyword's own documentation, so `SENOLA` explains itself as
+`REVEAL`, and `QALA TLHOLEGO` opens the `BEGIN CREATION` notes. The
+VS Code extension paints Setswana keywords in their colors too (always
+on, so mixed scrolls glow in both tongues), and ships two starter
+snippets: type `qala` for a Setswana creation block, `fa` for a
+Setswana conditional. The named tools stay English everywhere, and
+`godcode fmt` still renders the canonical English tongue.
+
 ## For tongue builders
 
 A tongue is one table in `godcode/tongues.py`: word-to-keyword aliases
@@ -73,6 +87,5 @@ with the language name, its code, and a word table like the one above;
 keep builtins untranslated and leave any word you are unsure of in
 English. The playground, the docs, and the tests cross over with it.
 
-Roadmap: more tongues by community proposal, tongue-aware completions in
-the language server and the VS Code extension, and spoken-word audio for
+Roadmap: more tongues by community proposal, and spoken-word audio for
 the learn page.

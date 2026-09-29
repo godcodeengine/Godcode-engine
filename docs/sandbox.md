@@ -23,7 +23,7 @@ godcode run --sandbox examples/sandbox_safe.god
 A violation fails the run (exit 1) and names the line:
 
 ```
-The sandbox withholds this power: the rite ASK would speak with the outer world — it is not granted. (line 3)
+The sandbox withholds this power: the rite ASK would speak with the outer world. It is not granted. (line 3)
 ```
 
 ## Policy reference (`godcode.sandbox.SandboxPolicy`)

@@ -37,8 +37,8 @@ notifications, and the `shutdown` / `exit` lifecycle.
 | `textDocument/didOpen` | notification | ✅ Stores the document, re-parses, publishes diagnostics |
 | `textDocument/didChange` | notification | ✅ Full-document sync; re-parses, publishes diagnostics |
 | `textDocument/publishDiagnostics` | → notification | ✅ `[{range, severity: 1, message}]`; empty list when the scroll is pure |
-| `textDocument/hover` | request | ✅ Markdown doc for the word (or multi-word phrase) under the cursor; `null` when unknown |
-| `textDocument/completion` | request | ✅ Keywords + built-ins (kind 14) and snippet items (kind 15, `insertTextFormat: 2`) |
+| `textDocument/hover` | request | ✅ Markdown doc for the word (or multi-word phrase) under the cursor; `null` when unknown. Reads the scroll's `# tongue:` pragma: a tongue word hovers its English keyword's docs |
+| `textDocument/completion` | request | ✅ Keywords + built-ins (kind 14) and snippet items (kind 15, `insertTextFormat: 2`). Reads the scroll's `# tongue:` pragma: tongue keywords (`SENOLA (REVEAL)`) and tongue block snippets join the English ones |
 | `$/cancelRequest`, `workspace/*`, other methods | — | ❌ Not implemented; unknown requests answer JSON-RPC `-32601` (Method not found) |
 
 ### Diagnostics

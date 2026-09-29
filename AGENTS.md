@@ -61,7 +61,7 @@ godcode ledger verify     # verify the covenant chain
   invocation the Spirit checks alignment and counsels gently on drift.
   Drift can never fail a run.
 - `ASCEND` ends the run peacefully (not an error).
-- An unbound name evaluates to a Symbol, it does not raise — `BREATHE LIFE INTO`
+- An unbound name evaluates to a Symbol. It does not raise. `BREATHE LIFE INTO`
   an undeclared name *does* raise at runtime.
 - Error messages may end with `Did you mean 'X'?` (misspelled rite, variable,
   bless target, or map key). The human CLI (`run`, `run --sandbox`, `check`,
@@ -70,7 +70,10 @@ godcode ledger verify     # verify the covenant chain
 - Tongues: a scroll with `# tongue: tn` writes keywords in Setswana
   (`QALA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF`...; see `docs/TONGUES.md`).
   English keywords still work in the same file. `fmt` renders canonical
-  English; the named tools (`SHA256`, `UPPER`, ...) never translate.
+  English; the named tools (`SHA256`, `UPPER`, ...) never translate. The
+  language server reads the pragma: completions offer `SENOLA (REVEAL)` and
+  Setswana block snippets, and hover shows the English keyword's docs for a
+  tongue word. The VS Code grammar highlights Setswana keywords too.
 - Division by zero is rejected: "division by nothing is not permitted".
 
 ## Error codes (`--json`)
@@ -87,8 +90,8 @@ godcode ledger verify     # verify the covenant chain
 generate → `check --json` → fix from diagnostics → `run --sandbox --json`
 → inspect `output`/`error`/`intents` → iterate. Never run untrusted scrolls without
 `--sandbox`. Keep the human's production checklist (provider contracts,
-real credentials, Bank of Botswana sandbox submission) out of the way —
-demo in sandbox mode.
+real credentials, Bank of Botswana sandbox submission) out of the way.
+Demo in sandbox mode.
 
 ## Agent tool bridge
 

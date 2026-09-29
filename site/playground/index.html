@@ -228,7 +228,7 @@ function lex(source){
       const ops={"=":"EQ","<":"LT",">":"GT","+":"PLUS","-":"MINUS","*":"STAR","/":"SLASH",
                  "%":"PERCENT","(":"LPAREN",")":"RPAREN","[":"LBRACKET","]":"RBRACKET",",":"COMMA"};
       if(ops[ch]){ tokens.push({type:ops[ch], value:ch, line:ln+1, col:sc}); col++; continue; }
-      throw new GodError("Illegal character '"+ch+"' — the heavens do not recognize this mark.", ln+1, sc);
+      throw new GodError("Illegal character '"+ch+"'. The heavens do not recognize this mark.", ln+1, sc);
     }
     tokens.push({type:"NEWLINE", value:"\\n", line:ln+1, col:line.length+1});
   }
@@ -266,7 +266,7 @@ class Parser{
       const n=this.peek();
       if(n.type==="NEWLINE") this.next();
       else if(n.type==="EOF"||end.has(n.type)){/* terminator belongs to an outer block */}
-      else throw new GodError("Unexpected '"+n.value+"' — each statement must rest on its own line.", n.line, n.col);
+      else throw new GodError("Unexpected '"+n.value+"'. Each statement must rest on its own line.", n.line, n.col);
     }
     return out;
   }
@@ -532,7 +532,7 @@ class Parser{
         return {kind:"List", items, line:t.line};
       }
       default:
-        throw new GodError("Unexpected '"+t.value+"' — a value was expected here (a number, \"word\", name, or list).", t.line, t.col);
+        throw new GodError("Unexpected '"+t.value+"'. A value was expected here (a number, \"word\", name, or list).", t.line, t.col);
     }
   }
   // "grace upon {name}": {expr} breathes a value into the words; {{ and }} write a plain brace.
@@ -645,14 +645,14 @@ function addVals(a,b,line){
   if(typeof sa==="string" && typeof sb==="string") return sa+sb;
   if(Array.isArray(a) && Array.isArray(b)) return a.concat(b);
   throw new GodError("cannot join "+typeName(a)+" and "+typeName(b)+
-    " with '+' — join numbers with numbers, words with words, lists with lists.", line);
+    " with '+'. Join numbers with numbers, words with words, lists with lists.", line);
 }
 function cmpVals(op,a,b,line){
   const ta=txt(a), tb=txt(b);
   const num = typeof a==="number" && typeof b==="number";
   const str = typeof ta==="string" && typeof tb==="string";
   if(!num && !str)
-    throw new GodError("cannot weigh "+typeName(a)+" against "+typeName(b)+" — only numbers or words may be compared.", line);
+    throw new GodError("cannot weigh "+typeName(a)+" against "+typeName(b)+". Only numbers or words may be compared.", line);
   const x=num?a:ta, y=num?b:tb;
   switch(op){
     case "<":  return x<y;
@@ -667,7 +667,7 @@ const BUILTINS={
   LEN:{min:1,max:1,fn(a,line){const x=a[0];
     if(typeof x==="string"||x instanceof Sym) return txt(x).length;
     if(Array.isArray(x)) return x.length;
-    throw new GodError("LEN cannot measure a "+typeName(x)+" — only words and lists have length.",line);}},
+    throw new GodError("LEN cannot measure a "+typeName(x)+". Only words and lists have length.",line);}},
   STR:{min:1,max:1,fn(a){return stringify(a[0]);}},
   NUM:{min:1,max:1,fn(a,line){const x=a[0];
     if(typeof x==="number") return x;
@@ -719,12 +719,12 @@ function prophesy(text){
   if(has("harvest","wheat","field","rain","crop","seed"))   omens.push("the fields shall yield in abundance");
   if(has("future","tomorrow","ahead","destiny","fate"))     omens.push("the days ahead are numbered, and they are known");
   if(has("code","creation","build","program","creator"))    omens.push("your creation shall compile in the heavens");
-  if(has("war","battle","enemy","fight"))                  omens.push("the battle belongs to the Lord — stand still and see");
+  if(has("war","battle","enemy","fight"))                  omens.push("the battle belongs to the Lord. Stand still and see");
   if(has("journey","path","road","way","walk"))             omens.push("your path is made straight before you");
   if(has("love","heart","beloved"))                        omens.push("love shall find you in due season");
   if(has("bless","favor","grace"))                         omens.push("blessings shall overflow like the rivers of Eden");
   if(has("money","wealth","gold","rich","prosper"))        omens.push("prosperity comes to the diligent hand");
-  if(omens.length===0) omens.push("the Spirit is quiet on this matter — BREATHE, and try again");
+  if(omens.length===0) omens.push("the Spirit is quiet on this matter. BREATHE, and try again");
   return "🔮 Thus saith the interpreter: "+omens.join("; ")+". Amen.";
 }
 
@@ -745,7 +745,7 @@ class Interpreter{
   execBlock(stmts,env){ for(const s of stmts) this.exec(s,env); }
 
   mustBeBound(env,name,verb,line){
-    if(!env.has(name)) throw new GodError("there is no "+name+" to "+verb+" — declare it first.",line);
+    if(!env.has(name)) throw new GodError("there is no "+name+" to "+verb+". Declare it first.",line);
     return env.get(name);
   }
   // In-memory covenant chain (a djb2 hash stands in for sha256 here).
@@ -822,7 +822,7 @@ class Interpreter{
       case "While": {
         let guard=100000;
         while(truthy(this.eval(n.cond,env))){
-          if(guard--<=0) throw new GodError("the cycle is endless — WHILE has turned 100,000 times without rest.",n.line);
+          if(guard--<=0) throw new GodError("the cycle is endless. WHILE has turned 100,000 times without rest.",n.line);
           try{ this.execBlock(n.body,env); }
           catch(e){
             if(e instanceof ContinueSignal) continue;
@@ -914,7 +914,7 @@ class Interpreter{
         (Array.isArray(o)?"list":"word")+" holds only "+len+".",n.line);
       return Array.isArray(o)?o[i]:s[i];
     }
-    throw new GodError("cannot index into "+typeName(o)+" — only lists and words may be indexed.",n.line);
+    throw new GodError("cannot index into "+typeName(o)+". Only lists and words may be indexed.",n.line);
   }
   evalCall(n,env){
     const up=n.name.toUpperCase();

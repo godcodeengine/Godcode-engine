@@ -416,8 +416,8 @@ class ScrollRegistry:
         published = index.get(name, {}).get("versions", [])
         if version in published:
             raise ScrollError(
-                f"publish: {name} {version} is already in the registry — "
-                "bump the version to publish again"
+                f"publish: {name} {version} is already in the registry. "
+                "Bump the version to publish again"
             )
 
         dest = self.scrolls_root / name / version

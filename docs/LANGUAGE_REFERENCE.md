@@ -315,7 +315,7 @@ WHILE count > 0 DO
 ENDWHILE
 ```
 
-(Inline form: `WHILE count > 0 DO REVEAL(count)`.) A cycle that will not end is stopped after 100,000 iterations — *"the cycle is endless."*
+(Inline form: `WHILE count > 0 DO REVEAL(count)`.) A cycle that will not end is stopped after 100,000 iterations. *"The cycle is endless."*
 
 **BREAK** releases the innermost loop at once; **CONTINUE** skips to its next turn:
 
@@ -577,7 +577,7 @@ Common rejections you may meet:
 | `INVOKE MISSING()` | *There is no rite named 'MISSING' — the heavens do not know it* (plus `Did you mean …?` when a close name exists) |
 | `xs[99]` | *index out of range* |
 | `TESTIFY(0)` | *testimony failed* |
-| endless `WHILE` | *the cycle is endless* (after 100,000 turns) |
+| endless `WHILE` | *The cycle is endless* (after 100,000 turns) |
 | `1 + "a"` on wrong types | *cannot join … and …* |
 
 Parse errors name the expected versus the found, with line and column.
@@ -598,7 +598,7 @@ There is no rite named 'BLESSIN' — the heavens do not know it. Did you mean 'B
 When a runtime error escapes every `TRY` and rises through rite calls, the human CLI prints the call stack beneath the gentle error, oldest call first:
 
 ```text
-Division by nothing is not permitted — even the heavens cannot split the void. (line 3)
+Division by nothing is not permitted. Even the heavens cannot split the void. (line 3)
   3 |   DECLARE x AS 1 / 0
 Called by outer at line 11
 Called by middle at line 9
@@ -612,7 +612,7 @@ Each line names the rite and the line where it was called. An error raised at th
 "error": {
   "line": 3,
   "code": "RUNTIME_ERROR",
-  "message": "Division by nothing is not permitted — even the heavens cannot split the void.",
+  "message": "Division by nothing is not permitted. Even the heavens cannot split the void.",
   "trace": [
     {"rite": "outer", "line": 11},
     {"rite": "middle", "line": 9},
@@ -860,7 +860,7 @@ of the language, no decoration:
 
 ```text
 PASS  test_lists.god :: TEST_sum_of_tribes
-FAIL  test_lists.god :: TEST_avg_is_fair :: The testimony has failed — what was spoken does not hold true. (line 11)
+FAIL  test_lists.god :: TEST_avg_is_fair :: The testimony has failed. What was spoken does not hold true. (line 11)
 1 passed, 1 failed.
 ```
 

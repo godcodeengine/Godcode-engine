@@ -1,7 +1,7 @@
 """Language server for God Code (v3.0, Pillar 4).
 
 A minimal Language Server Protocol implementation over stdio, hand-rolled
-on top of the stdlib — no third-party dependencies. JSON-RPC 2.0 messages
+on top of the stdlib. No third-party dependencies. JSON-RPC 2.0 messages
 are framed with ``Content-Length`` headers, per the LSP base protocol.
 
 Lifecycle::
@@ -13,7 +13,7 @@ logic ``godcode check`` uses): opening or changing a ``.god`` scroll
 re-parses it and publishes the divine errors as LSP diagnostics.
 
 Protocol notes:
-  * All logging goes to stderr. stdout is the protocol channel — nothing
+  * All logging goes to stderr. stdout is the protocol channel. Nothing
     else may ever be written there.
   * Unknown methods answer with JSON-RPC error -32601 ("Method not found").
   * Malformed frames are skipped; the server keeps serving.
@@ -42,13 +42,13 @@ LSP_DOCS: dict[str, str] = {
     ),
     "END CREATION": (
         "**END CREATION**\n\n"
-        "The seal upon the scroll — it closes what `BEGIN CREATION` opened. "
+        "The seal upon the scroll. It closes what `BEGIN CREATION` opened. "
         "No works may follow it.\n\n"
         "```godcode\nEND CREATION\n```"
     ),
     "DEFINE RITE": (
         "**DEFINE RITE**\n\n"
-        "Establish a rite — a named ceremony of statements that may be "
+        "Establish a rite. A named ceremony of statements that may be "
         "invoked again and again. Closed with `END RITE`; a rite may "
         "`RETURN` a value to its caller.\n\n"
         "```godcode\nDEFINE RITE bless(name)\n"
@@ -69,12 +69,12 @@ LSP_DOCS: dict[str, str] = {
     # -- keywords --------------------------------------------------------
     "BEGIN": (
         "**BEGIN**\n\n"
-        "The opening word of creation — always paired with `CREATION`. "
+        "The opening word of creation. Always paired with `CREATION`. "
         "See `BEGIN CREATION`.\n\n```godcode\nBEGIN CREATION\n```"
     ),
     "CREATION": (
         "**CREATION**\n\n"
-        "The body of all works — paired with `BEGIN` to open a scroll and "
+        "The body of all works. Paired with `BEGIN` to open a scroll and "
         "with `END` to close it. See `BEGIN CREATION`.\n\n"
         "```godcode\nBEGIN CREATION\n  ASCEND\nEND CREATION\n```"
     ),
@@ -86,7 +86,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "AS": (
         "**AS**\n\n"
-        "The binding word — it joins a declared name to its value, as "
+        "The binding word. It joins a declared name to its value, as "
         "in `DECLARE x AS 1`.\n\n```godcode\nDECLARE x AS 1\n```"
     ),
     "IF": (
@@ -103,7 +103,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "ELSE": (
         "**ELSE**\n\n"
-        "The other path — when the `IF` condition proves false, these "
+        "The other path. When the `IF` condition proves false, these "
         "words come to pass instead.\n\n"
         "```godcode\nIF x THEN\n  REVEAL(\"yes\")\nELSE\n"
         "  REVEAL(\"no\")\nENDIF\n```"
@@ -121,7 +121,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "IN": (
         "**IN**\n\n"
-        "The walking word — `FOR name IN list` binds each member in turn.\n\n"
+        "The walking word. `FOR name IN list` binds each member in turn.\n\n"
         "```godcode\nFOR star IN heavens\n  REVEAL(star)\nENDFOR\n```"
     ),
     "ENDFOR": (
@@ -176,7 +176,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "DEFINE": (
         "**DEFINE**\n\n"
-        "The first word of a rite's establishment — always paired with "
+        "The first word of a rite's establishment. Always paired with "
         "`RITE`. See `DEFINE RITE`.\n\n```godcode\nDEFINE RITE bless()\n"
         "END RITE\n```"
     ),
@@ -204,18 +204,18 @@ LSP_DOCS: dict[str, str] = {
     ),
     "REVEAL": (
         "**REVEAL**\n\n"
-        "Speak a value aloud — the scroll's voice, printing to the world "
+        "Speak a value aloud. The scroll's voice, printing to the world "
         "beyond.\n\n```godcode\nREVEAL(\"The heavens declare\")\n```"
     ),
     "BREATHE": (
         "**BREATHE**\n\n"
-        "The first word of awakening — always `BREATHE LIFE INTO name`. "
+        "The first word of awakening. Always `BREATHE LIFE INTO name`. "
         "See `BREATHE LIFE INTO`.\n\n"
         "```godcode\nBREATHE LIFE INTO vessel\n```"
     ),
     "LIFE": (
         "**LIFE**\n\n"
-        "The middle word of `BREATHE LIFE INTO` — the breath itself.\n\n"
+        "The middle word of `BREATHE LIFE INTO`. The breath itself.\n\n"
         "```godcode\nBREATHE LIFE INTO vessel\n```"
     ),
     "INTO": (
@@ -225,7 +225,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "PROPHESY": (
         "**PROPHESY**\n\n"
-        "Utter a fixed word into the scroll — a literal prophecy of text.\n\n"
+        "Utter a fixed word into the scroll. A literal prophecy of text.\n\n"
         "```godcode\nPROPHESY \"and it was good\"\n```"
     ),
     "ASCEND": (
@@ -235,7 +235,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "SEAL": (
         "**SEAL**\n\n"
-        "Set a value under seal — it is recorded in the covenant ledger "
+        "Set a value under seal. It is recorded in the covenant ledger "
         "and may not be altered thereafter.\n\n```godcode\nSEAL covenant\n```"
     ),
     # --- v4.0 ---
@@ -255,7 +255,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "INTENT": (
         "**INTENT**\n\n"
-        "The naming word of `DECLARE INTENT \"words...\" ON rite_name` — "
+        "The naming word of `DECLARE INTENT \"words...\" ON rite_name`. "
         "it registers a natural-language intent on a rite. When the rite "
         "is invoked, the Spirit discerns whether its words still walk in "
         "the declared intent, and counsels gently on drift.\n\n"
@@ -264,7 +264,7 @@ LSP_DOCS: dict[str, str] = {
     # --- end v4.0 ---
     "TESTIFY": (
         "**TESTIFY**\n\n"
-        "Bear witness to a value — affirm it before the heavens.\n\n"
+        "Bear witness to a value. Affirm it before the heavens.\n\n"
         "```godcode\nTESTIFY manna > 0\n```"
     ),
     "BLESS": (
@@ -279,7 +279,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "REFLECT": (
         "**REFLECT**\n\n"
-        "Pause and contemplate — a still point in the works.\n\n"
+        "Pause and contemplate. A still point in the works.\n\n"
         "```godcode\nREFLECT\n```"
     ),
     "AND": (
@@ -306,17 +306,17 @@ LSP_DOCS: dict[str, str] = {
     ),
     "VOID": (
         "**VOID**\n\n"
-        "The absence of all things — what a rite yields when it returns "
+        "The absence of all things. What a rite yields when it returns "
         "nothing.\n\n```godcode\nDECLARE emptiness AS void\n```"
     ),
     "IS": (
         "**IS**\n\n"
-        "The weighing word — reserved for divine comparisons.\n\n"
+        "The weighing word. Reserved for divine comparisons.\n\n"
         "```godcode\n# reserved\n```"
     ),
     "END": (
         "**END**\n\n"
-        "The closing word — paired with `CREATION` or `RITE` to seal a "
+        "The closing word. Paired with `CREATION` or `RITE` to seal a "
         "block.\n\n```godcode\nEND CREATION\n```"
     ),
     # -- built-ins -------------------------------------------------------
@@ -327,7 +327,7 @@ LSP_DOCS: dict[str, str] = {
     ),
     "STR": (
         "**STR**(value)\n\n"
-        "Turn anything into its spoken form — a string.\n\n"
+        "Turn anything into its spoken form. A string.\n\n"
         "```godcode\nREVEAL(STR(40) + \" days\")\n```"
     ),
     "NUM": (
@@ -337,81 +337,81 @@ LSP_DOCS: dict[str, str] = {
     ),
     "TYPE": (
         "**TYPE**(value)\n\n"
-        "Discern the kind of a thing — its type, named aloud.\n\n"
+        "Discern the kind of a thing. Its type, named aloud.\n\n"
         "```godcode\nREVEAL(TYPE(manna))\n```"
     ),
     "RANDOM": (
         "**RANDOM**(bound)\n\n"
-        "Cast lots — draw a whole number from 0 up to (but not including) "
+        "Cast lots. Draw a whole number from 0 up to (but not including) "
         "`bound`.\n\n```godcode\nDECLARE lot AS RANDOM(12)\n```"
     ),
     "RANGE": (
         "**RANGE**(stop) / **RANGE**(start, stop)\n\n"
-        "Number the days — produce the sequence of whole numbers from "
+        "Number the days. Produce the sequence of whole numbers from "
         "0 (or `start`) up to `stop`.\n\n```godcode\n"
         "FOR day IN RANGE(7)\n  REVEAL(day)\nENDFOR\n```"
     ),
     "PUSH": (
         "**PUSH**(list, value)\n\n"
-        "Add to the multitude — append `value` to the end of `list`.\n\n"
+        "Add to the multitude. Append `value` to the end of `list`.\n\n"
         "```godcode\nPUSH(tribes, \"Benjamin\")\n```"
     ),
     "UPPER": (
         "**UPPER**(text)\n\n"
-        "Lift every letter to the heavens — uppercase the string.\n\n"
+        "Lift every letter to the heavens. Uppercase the string.\n\n"
         "```godcode\nREVEAL(UPPER(\"hosanna\"))\n```"
     ),
     "LOWER": (
         "**LOWER**(text)\n\n"
-        "Humble every letter — lowercase the string.\n\n"
+        "Humble every letter. Lowercase the string.\n\n"
         "```godcode\nREVEAL(LOWER(\"HOSANNA\"))\n```"
     ),
     "SPLIT": (
         "**SPLIT**(text, separator)\n\n"
-        "Divide the word — split `text` into a list at each `separator`.\n\n"
+        "Divide the word. Split `text` into a list at each `separator`.\n\n"
         "```godcode\nDECLARE words AS SPLIT(\"loaves fishes\", \" \")\n```"
     ),
     "JOIN": (
         "**JOIN**(list, separator)\n\n"
-        "Gather the scattered — join a list of strings with `separator`.\n\n"
+        "Gather the scattered. Join a list of strings with `separator`.\n\n"
         "```godcode\nREVEAL(JOIN(words, \" \"))\n```"
     ),
     "ASK": (
         "**ASK**([prompt])\n\n"
-        "Seek counsel — read a line from the one who runs the scroll.\n\n"
+        "Seek counsel. Read a line from the one who runs the scroll.\n\n"
         "```godcode\nDECLARE name AS ASK(\"What is your name? \")\n```"
     ),
     "BEHOLD": (
         "**BEHOLD**()\n\n"
-        "Mark the present hour — the current time, in the heavens' own "
+        "Mark the present hour. The current time, in the heavens' own "
         "notation.\n\n```godcode\nREVEAL(BEHOLD())\n```"
     ),
     "REVERSE": (
         "**REVERSE**(value)\n\n"
-        "Turn it back upon itself — reverse a string or a list.\n\n"
+        "Turn it back upon itself. Reverse a string or a list.\n\n"
         "```godcode\nREVEAL(REVERSE(\"stressed\"))\n```"
     ),
     "SHA256": (
         "**SHA256**(value)\n\n"
-        "Take a word's fingerprint — the SHA-256 digest as 64 hex "
+        "Take a word's fingerprint. The SHA-256 digest as 64 hex "
         "characters. The same word always gives the same fingerprint.\n\n"
         "```godcode\nREVEAL(SHA256(\"manna\"))\n```"
     ),
     "HMAC": (
         "**HMAC**(key, message)\n\n"
-        "Seal a message under a key — the HMAC-SHA-256 signature as 64 "
+        "Seal a message under a key. The HMAC-SHA-256 signature as 64 "
         "hex characters. Only a keeper of the key can make or verify "
         "the seal.\n\n"
         "```godcode\nDECLARE sig AS HMAC(\"secret\", \"the covenant stands\")\n```"
     ),
     "BASE64_ENCODE": (
         "**BASE64_ENCODE**(value)\n\n"
-        "Veil a word in base64 — the veiled text as a plain word.\n\n"
+        "Veil a word in base64. The veiled text as a plain word.\n\n"
         "```godcode\nREVEAL(BASE64_ENCODE(\"grace\"))\n```"
     ),
     "BASE64_DECODE": (
         "**BASE64_DECODE**(text)\n\n"
-        "Lift a base64 veil — the plain word behind it. A gentle error "
+        "Lift a base64 veil. The plain word behind it. A gentle error "
         "if the veil is ill-formed.\n\n"
         "```godcode\nREVEAL(BASE64_DECODE(BASE64_ENCODE(\"grace\")))\n```"
     ),
@@ -515,6 +515,119 @@ def hover_markdown(word: str | None) -> str | None:
 
 
 # ---------------------------------------------------------------------------
+# Tongues — the editor speaks the scroll's language
+# ---------------------------------------------------------------------------
+
+def tongue_of(text: str) -> str | None:
+    """The tongue a document is written in, from its ``# tongue:`` pragma."""
+    from godcode.tongues import detect_tongue
+    return detect_tongue(text)
+
+
+def tongue_table(code: str | None) -> dict:
+    """The tongue table for *code*, or an empty table for English/unknown."""
+    if code in (None, "en"):
+        return {}
+    try:
+        from godcode.tongues import resolve
+        table = resolve(code)
+    except Exception:  # unknown tongue: English completions carry on
+        return {}
+    return table
+
+
+def tongue_keyword_items(code: str) -> list[dict]:
+    """Completion items for a tongue's keywords, e.g. ``SENOLA (REVEAL)``."""
+    table = tongue_table(code)
+    aliases = table.get("aliases", {})
+    name = table.get("name", code)
+    items = []
+    for word in sorted(aliases):
+        canonical = aliases[word]
+        items.append({
+            "label": f"{word} ({canonical})",
+            "kind": 14,  # Keyword
+            "detail": f"God Code keyword in {name}",
+            "insertText": word,
+        })
+    compounds = table.get("compounds", {})
+    for (first, second), canonical in sorted(compounds.items()):
+        items.append({
+            "label": f"{first} {second} ({canonical})",
+            "kind": 14,  # Keyword
+            "detail": f"God Code keyword in {name}",
+            "insertText": f"{first} {second}",
+        })
+    return items
+
+
+_TONGUE_SNIPPETS: tuple[tuple[str, str, str], ...] = (
+    ("QALA TLHOLEGO … FEDISA TLHOLEGO",
+     "QALA TLHOLEGO\\n\\t$0\\nFEDISA TLHOLEGO",
+     "Open a new scroll"),
+    ("FA … GONE … FEDISA FA",
+     "FA ${1:condition} GONE\\n\\t$0\\nFEDISA FA",
+     "Weigh a condition"),
+    ("LEKA … TSHWARA … FEDISA LEKA",
+     "LEKA\\n\\t${1:works}\\nTSHWARA\\n\\t${2:refuge}$0\\nFEDISA LEKA",
+     "Shelter a fragile work"),
+)
+
+
+def tongue_snippet_items(table: dict) -> list[dict]:
+    """Setswana block snippets, offered when the tongue is active."""
+    name = table.get("name", "")
+    return [{
+        "label": label,
+        "kind": 15,  # Snippet
+        "detail": f"{detail} ({name})",
+        "insertText": insert,
+        "insertTextFormat": 2,  # Snippet
+    } for label, insert, detail in _TONGUE_SNIPPETS]
+
+
+_TONGUE_PHRASES = {
+    ("BEGIN", "CREATION"): "BEGIN CREATION",
+    ("END", "CREATION"): "END CREATION",
+    ("END", "RITE"): "END RITE",
+    ("DEFINE", "RITE"): "DEFINE RITE",
+}
+
+
+def tongue_hover_key(line_text: str, char: int, code: str) -> str | None:
+    """The canonical English doc key under the cursor for a tongue word.
+
+    Two-word closers (``FEDISA FA``) map to their doc key, openers like
+    ``QALA TLHOLEGO`` map to ``BEGIN CREATION``, and single words map
+    through the tongue's alias table. Returns None when the cursor is not
+    on a tongue word.
+    """
+    table = tongue_table(code)
+    aliases = table.get("aliases", {})
+    compounds = table.get("compounds", {})
+    for match in _WORD_RE.finditer(line_text):
+        if not (match.start() <= char <= match.end()):
+            continue
+        word = match.group(0).upper()
+        if word not in aliases:
+            return None
+        canonical = aliases[word]
+        rest = line_text[match.end():].lstrip()
+        second = _WORD_RE.match(rest)
+        if second is not None:
+            upper2 = second.group(0).upper()
+            key = (word, upper2)
+            if key in compounds:
+                return compounds[key]
+            canonical2 = aliases.get(upper2)
+            phrase = _TONGUE_PHRASES.get((canonical, canonical2))
+            if phrase is not None:
+                return phrase
+        return canonical
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Completion
 # ---------------------------------------------------------------------------
 
@@ -525,7 +638,13 @@ _BUILTINS = ("LEN", "STR", "NUM", "TYPE", "RANDOM", "RANGE", "PUSH",
              "BASE64_DECODE")
 
 
-def completion_items() -> list[dict]:
+def completion_items(text: str = "") -> list[dict]:
+    """Keyword, built-in, and snippet completions.
+
+    When *text* carries a ``# tongue:`` pragma, the tongue's keywords
+    (e.g. ``SENOLA (REVEAL)``) and Setswana snippets join the English
+    ones, so a writer crossing over has both hands full.
+    """
     items: list[dict] = []
     for kw in _COMPLETION_KEYWORDS:
         items.append({
@@ -543,6 +662,11 @@ def completion_items() -> list[dict]:
             "insertText": insert,
             "insertTextFormat": 2,  # Snippet
         })
+    code = tongue_of(text)
+    table = tongue_table(code)
+    if table:
+        items.extend(tongue_keyword_items(code))
+        items.extend(tongue_snippet_items(table))
     return items
 
 
@@ -721,14 +845,24 @@ class LanguageServer:
         lines = text.splitlines()
         line_text = lines[line_no] if 0 <= line_no < len(lines) else ""
         word = hover_word(line_text, char)
-        markdown = hover_markdown(word)
-        _log(f"hover at {uri}:{line_no}:{char} -> {word!r}")
+        canonical = word
+        code = tongue_of(text)
+        if code not in (None, "en"):
+            tongue_key = tongue_hover_key(line_text, char, code)
+            if tongue_key is not None:
+                canonical = tongue_key
+        markdown = hover_markdown(canonical)
+        _log(f"hover at {uri}:{line_no}:{char} -> {word!r}"
+             + (f" (tongue {code}: {canonical!r})" if canonical != word
+                else ""))
         self._respond(msg_id, {"contents": {"kind": "markdown",
                                             "value": markdown}}
                       if markdown else None)
 
-    def _on_completion(self, msg_id, params: dict) -> None:  # noqa: ARG002
-        self._respond(msg_id, completion_items())
+    def _on_completion(self, msg_id, params: dict) -> None:
+        doc = params.get("textDocument", {})
+        uri = doc.get("uri", "")
+        self._respond(msg_id, completion_items(self.documents.get(uri, "")))
 
 
 def serve() -> int:

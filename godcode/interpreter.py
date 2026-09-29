@@ -329,7 +329,7 @@ class Interpreter:
     def _exec_prophesy(self, stmt: Prophesy) -> None:
         text = stmt.text or ""
         if self.spirit is None:
-            print(f"[PROPHESY] The Spirit is silent — no oracle is bound. ({text!r})")
+            print(f"[PROPHESY] The Spirit is silent. No oracle is bound. ({text!r})")
             return
         payload = text if text else self._last_source
         utterance = self.spirit.prophesy(payload)
@@ -380,7 +380,7 @@ class Interpreter:
                 }
             )
         if self.ledger is None:
-            print("[SEAL] ⚠ No covenant ledger is bound — the seal is spoken but not recorded.")
+            print("[SEAL] ⚠ No covenant ledger is bound. The seal is spoken but not recorded.")
             self._log("SEAL :: no ledger bound; seal spoken but not recorded")
             return
         block = self.ledger.seal(record)
@@ -393,7 +393,7 @@ class Interpreter:
             print("[TESTIFY] It is true. ✝")
         else:
             raise GodRuntimeError(
-                "The testimony has failed — what was spoken does not hold true.",
+                "The testimony has failed. What was spoken does not hold true.",
                 getattr(stmt, "line", None),
             )
 
@@ -454,7 +454,7 @@ class Interpreter:
             items = list(iterable)
         else:
             raise GodRuntimeError(
-                f"FOR cannot walk through {self.type_name(iterable)} — only lists and words.",
+                f"FOR cannot walk through {self.type_name(iterable)}. Only lists and words.",
                 line,
             )
         child = Environment(parent=env)  # one child env for the whole loop
@@ -478,7 +478,7 @@ class Interpreter:
             count += 1
             if count > _WHILE_ITERATION_CAP:
                 raise GodRuntimeError(
-                    "The cycle is endless — 100,000 turns and still no rest. "
+                    "The cycle is endless. 100,000 turns and still no rest. "
                     "The loop is released.",
                     line,
                 )
@@ -512,7 +512,7 @@ class Interpreter:
             return  # already breathed in; skip
         if key in self._import_stack:
             raise GodRuntimeError(
-                f"The scroll '{stmt.path}' calls upon itself — a circle with no end.",
+                f"The scroll '{stmt.path}' calls upon itself. A circle with no end.",
                 line,
             )
         self._imported.add(key)
@@ -566,7 +566,7 @@ class Interpreter:
             return installed
         # --- end v3: scroll registry ---
         raise GodRuntimeError(
-            f"The scroll '{import_path}' could not be found — not beside the "
+            f"The scroll '{import_path}' could not be found. Not beside the "
             "creation, not in this place, not among the scrolls.",
             line,
         )
@@ -623,7 +623,7 @@ class Interpreter:
         if isinstance(obj, dict):
             if not isinstance(index, str):
                 raise GodRuntimeError(
-                    f"Only words may point into a map — not {self.type_name(index)}.",
+                    f"Only words may point into a map. Not {self.type_name(index)}.",
                     line,
                 )
             key = str(index)
@@ -641,12 +641,12 @@ class Interpreter:
         # --- end v4.0 ---
         if not self._is_int(index):
             raise GodRuntimeError(
-                f"Only whole numbers may point into {self.type_name(obj)} — not {self.type_name(index)}.",
+                f"Only whole numbers may point into {self.type_name(obj)}. Not {self.type_name(index)}.",
                 line,
             )
         if isinstance(obj, Symbol):
             raise GodRuntimeError(
-                f"Cannot point into the bare spirit '{obj}' — bind it to a list or word first.",
+                f"Cannot point into the bare spirit '{obj}'. Bind it to a list or word first.",
                 line,
             )
         if isinstance(obj, (list, str)):
@@ -659,7 +659,7 @@ class Interpreter:
                     line,
                 ) from None
         raise GodRuntimeError(
-            f"Cannot point into {self.type_name(obj)} — only lists and words may be indexed.",
+            f"Cannot point into {self.type_name(obj)}. Only lists and words may be indexed.",
             line,
         )
 
@@ -672,7 +672,7 @@ class Interpreter:
             if self._is_number(operand):
                 return -operand
             raise GodRuntimeError(
-                f"Cannot negate {self.type_name(operand)} — only numbers know the void's mirror.",
+                f"Cannot negate {self.type_name(operand)}. Only numbers know the void's mirror.",
                 line,
             )
         raise GodRuntimeError(f"Unknown sign '{expr.op}'.", line)
@@ -732,8 +732,8 @@ class Interpreter:
                 return left <= right
             return left >= right
         raise GodRuntimeError(
-            f"Cannot weigh {self.type_name(left)} against {self.type_name(right)} — "
-            "only numbers may be measured.",
+            f"Cannot weigh {self.type_name(left)} against {self.type_name(right)}. "
+            "Only numbers may be measured.",
             line,
         )
 
@@ -745,8 +745,8 @@ class Interpreter:
         if isinstance(left, list) and isinstance(right, list):
             return left + right
         raise GodRuntimeError(
-            f"Cannot join {self.type_name(left)} and {self.type_name(right)} — "
-            "they are of different kingdoms.",
+            f"Cannot join {self.type_name(left)} and {self.type_name(right)}. "
+            "They are of different kingdoms.",
             line,
         )
 
@@ -760,13 +760,13 @@ class Interpreter:
                 )
         elif not (self._is_number(left) and self._is_number(right)):
             raise GodRuntimeError(
-                f"Cannot reckon {self.type_name(left)} and {self.type_name(right)} — "
-                "only numbers may be reckoned.",
+                f"Cannot reckon {self.type_name(left)} and {self.type_name(right)}. "
+                "Only numbers may be reckoned.",
                 line,
             )
         if op in ("/", "%") and right == 0:
             raise GodRuntimeError(
-                "Division by nothing is not permitted — even the heavens "
+                "Division by nothing is not permitted. Even the heavens "
                 "cannot split the void.",
                 line,
             )
@@ -802,7 +802,7 @@ class Interpreter:
             if len(args) == 1 and isinstance(args[0], (str, Symbol)):
                 return Contract(str(args[0]))
             raise GodRuntimeError(
-                "The contract rite needs exactly one name — a single word to seal.",
+                "The contract rite needs exactly one name. A single word to seal.",
                 line,
             )
         target = env.get(name) if env.is_bound(name) else None
@@ -817,7 +817,7 @@ class Interpreter:
             return builtin(args, line)
         if target is not None:
             raise GodRuntimeError(
-                f"'{name}' is {self.type_name(target)}, not a rite — it cannot be invoked.",
+                f"'{name}' is {self.type_name(target)}, not a rite. It cannot be invoked.",
                 line,
             )
         rite_names = [
@@ -908,7 +908,7 @@ class Interpreter:
         if isinstance(value, (str, list)):
             return len(value)
         raise GodRuntimeError(
-            f"LEN cannot measure {self.type_name(value)} — only words and lists have length.",
+            f"LEN cannot measure {self.type_name(value)}. Only words and lists have length.",
             line,
         )
 
@@ -935,7 +935,7 @@ class Interpreter:
             except ValueError:
                 pass
             raise GodRuntimeError(
-                f"NUM cannot number the word '{value}' — it holds no number.",
+                f"NUM cannot number the word '{value}'. It holds no number.",
                 line,
             )
         raise GodRuntimeError(
@@ -1001,7 +1001,7 @@ class Interpreter:
         self._arity("SPLIT", args, 2, line)
         text, sep = args
         if not isinstance(text, str) or not isinstance(sep, str):
-            raise GodRuntimeError("SPLIT needs two words — the text and the divider.", line)
+            raise GodRuntimeError("SPLIT needs two words. The text and the divider.", line)
         return text.split(str(sep))
 
     def _builtin_join(self, args, line):
@@ -1045,7 +1045,7 @@ class Interpreter:
         # ("clockwork.now") keep plugin verbs from colliding with core rites.
         if not args:
             raise GodRuntimeError(
-                'SUMMON needs a verb to call upon — SUMMON("name.verb", ...).',
+                'SUMMON needs a verb to call upon. SUMMON("name.verb", ...).',
                 line,
             )
         target = args[0]
@@ -1059,7 +1059,7 @@ class Interpreter:
         if verb is None:
             known = ", ".join(sorted(self._plugin_verbs)) or "none are present"
             raise GodRuntimeError(
-                f"SUMMON knows no verb '{target}' — the summoned are: {known}.",
+                f"SUMMON knows no verb '{target}'. The summoned are: {known}.",
                 line,
             )
         return verb(args[1:], line)
@@ -1091,8 +1091,8 @@ class Interpreter:
         if adapter is None:
             known = ", ".join(sorted(self.chain_adapters)) or "none are bound"
             raise GodRuntimeError(
-                f"The chain '{chain_name}' is unknown to the heavens — "
-                f"the known chains are: {known}.",
+                f"The chain '{chain_name}' is unknown to the heavens. "
+                f"The known chains are: {known}.",
                 line,
             )
         payload_hash = hashlib.sha256(

@@ -65,10 +65,10 @@ _HINTS = {
         "(ENDIF, ENDFOR, ENDWHILE, END RITE)."
     ),
     "RUNTIME_ERROR": (
-        "The scroll parsed but stumbled while running — DECLARE every "
+        "The scroll parsed but stumbled while running. DECLARE every "
         "name before use and re-read the reported line."
     ),
-    "FILE_ERROR": "Check the path — the scroll must exist and be readable.",
+    "FILE_ERROR": "Check the path. The scroll must exist and be readable.",
 }
 
 

@@ -126,7 +126,7 @@ FOR prophet IN prophets
 ENDFOR
 ```
 
-The expression after IN must evaluate to a list or a string. Walking a bare Symbol, a number, or anything else is a runtime error: for a number it reads "FOR cannot walk through number, only lists and words", and for a bare Symbol it names the spirit and asks for a list or a word instead. The loop variable is bound anew for each turn in the loop's child scope (see 4.4). The inline form puts the single body statement on the same line. The grammar also still accepts the legacy v1 form, where a FOR body with no ENDFOR runs to `END CREATION`, `END RITE`, or the end of the scroll; new scrolls should always close the loop with ENDFOR.
+The expression after IN must evaluate to a list or a string. Walking a bare Symbol, a number, or anything else is a runtime error: for a number it reads "FOR cannot walk through number. Only lists and words", and for a bare Symbol it names the spirit and asks for a list or a word instead. The loop variable is bound anew for each turn in the loop's child scope (see 4.4). The inline form puts the single body statement on the same line. The grammar also still accepts the legacy v1 form, where a FOR body with no ENDFOR runs to `END CREATION`, `END RITE`, or the end of the scroll; new scrolls should always close the loop with ENDFOR.
 
 ### 5.3 WHILE
 
