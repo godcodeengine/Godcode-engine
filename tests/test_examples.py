@@ -91,3 +91,14 @@ def test_daily_report(examples_tree):
     human = today.strftime("%B %d, %Y")
     assert str(today) in out or human in out
     assert "tasks done" in out.lower()
+
+
+def test_commons_demo(examples_tree):
+    proc = _run_example(examples_tree, "commons_demo")
+    assert proc.returncode == 0, proc.stderr
+    out = proc.stdout
+    assert "manna, manna, honey" in out
+    assert "bread, bread, honey" in out
+    assert "[4, 7, 7, 12, 12, 19]" in out
+    assert "[bread, honey]" in out
+    assert "{bread: 30, honey: 12, milk: 8}" in out

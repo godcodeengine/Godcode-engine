@@ -415,6 +415,142 @@ LSP_DOCS: dict[str, str] = {
         "if the veil is ill-formed.\n\n"
         "```godcode\nREVEAL(BASE64_DECODE(BASE64_ENCODE(\"grace\")))\n```"
     ),
+    "TRIM": (
+        "**TRIM**(value)\n\n"
+        "Lift away leading and trailing whitespace. The trimmed word.\n\n"
+        "```godcode\nREVEAL(TRIM(\"  grace  \"))\n```"
+    ),
+    "REPLACE": (
+        "**REPLACE**(word, old, new)\n\n"
+        "Turn every occurrence of `old` into `new`. The renewed word.\n\n"
+        "```godcode\nREVEAL(REPLACE(\"manna, manna\", \"manna\", \"bread\"))\n```"
+    ),
+    "STARTS_WITH": (
+        "**STARTS_WITH**(word, part)\n\n"
+        "Ask whether the word opens with the part. True or false.\n\n"
+        "```godcode\nREVEAL(STARTS_WITH(\"dawn\", \"da\"))\n```"
+    ),
+    "ENDS_WITH": (
+        "**ENDS_WITH**(word, part)\n\n"
+        "Ask whether the word closes with the part. True or false.\n\n"
+        "```godcode\nREVEAL(ENDS_WITH(\"dawn\", \"wn\"))\n```"
+    ),
+    "SUBSTRING": (
+        "**SUBSTRING**(word, start [, end])\n\n"
+        "Cut a slice from the word, counting from 0. Edges past the "
+        "word are gathered in.\n\n"
+        "```godcode\nREVEAL(SUBSTRING(\"blessing\", 2, 6))\n```"
+    ),
+    "CONTAINS": (
+        "**CONTAINS**(word, part) / **CONTAINS**(list, value)\n\n"
+        "Ask whether the word holds the part, or the list holds the "
+        "value. True or false.\n\n"
+        "```godcode\nREVEAL(CONTAINS(\"blessing\", \"sing\"))\n```"
+    ),
+    "COUNT": (
+        "**COUNT**(word, part)\n\n"
+        "Count how many times the part appears in the word.\n\n"
+        "```godcode\nREVEAL(COUNT(\"banana\", \"an\"))\n```"
+    ),
+    "SORT": (
+        "**SORT**(list)\n\n"
+        "Order the gathering: numbers, words, or truths, least first. "
+        "Returns a new list; the old one is untouched. Mixed kinds are "
+        "gently refused.\n\n"
+        "```godcode\nREVEAL(SORT([3, 1, 2]))\n```"
+    ),
+    "MIN_OF": (
+        "**MIN_OF**(list)\n\n"
+        "The least member of the gathering. An empty gathering is "
+        "gently refused.\n\n"
+        "```godcode\nREVEAL(MIN_OF([3, 1, 2]))\n```"
+    ),
+    "MAX_OF": (
+        "**MAX_OF**(list)\n\n"
+        "The greatest member of the gathering. An empty gathering is "
+        "gently refused.\n\n"
+        "```godcode\nREVEAL(MAX_OF([3, 1, 2]))\n```"
+    ),
+    "SUM_OF": (
+        "**SUM_OF**(list)\n\n"
+        "Add the numbers together. An empty list sums to 0.\n\n"
+        "```godcode\nREVEAL(SUM_OF([1, 2, 3]))\n```"
+    ),
+    "FIRST": (
+        "**FIRST**(list)\n\n"
+        "The member at the head of the gathering. An empty gathering "
+        "is gently refused.\n\n"
+        "```godcode\nREVEAL(FIRST([\"a\", \"b\"]))\n```"
+    ),
+    "LAST": (
+        "**LAST**(list)\n\n"
+        "The member at the end of the gathering. An empty gathering "
+        "is gently refused.\n\n"
+        "```godcode\nREVEAL(LAST([\"a\", \"b\"]))\n```"
+    ),
+    "UNIQUE": (
+        "**UNIQUE**(list)\n\n"
+        "The gathering with repeats removed, order kept.\n\n"
+        "```godcode\nREVEAL(UNIQUE([1, 2, 2, 3]))\n```"
+    ),
+    "INDEX_OF": (
+        "**INDEX_OF**(list, value)\n\n"
+        "The position of the value, counting from 0, or -1 when it is "
+        "absent.\n\n"
+        "```godcode\nREVEAL(INDEX_OF([\"a\", \"b\"], \"b\"))\n```"
+    ),
+    "KEYS": (
+        "**KEYS**(map)\n\n"
+        "The map's keys, as a list.\n\n"
+        "```godcode\nREVEAL(KEYS(JSON_PARSE(\"{{\\\"a\\\": 1}}\")))\n```"
+    ),
+    "VALUES": (
+        "**VALUES**(map)\n\n"
+        "The map's values, as a list.\n\n"
+        "```godcode\nREVEAL(VALUES(JSON_PARSE(\"{{\\\"a\\\": 1}}\")))\n```"
+    ),
+    "HAS_KEY": (
+        "**HAS_KEY**(map, key)\n\n"
+        "Ask whether the map holds the key. True or false.\n\n"
+        "```godcode\nREVEAL(HAS_KEY(m, \"tribes\"))\n```"
+    ),
+    "MERGE": (
+        "**MERGE**(map1, map2)\n\n"
+        "Weave two maps into a new one. Where both hold a key, the "
+        "second map's value wins.\n\n"
+        "```godcode\nREVEAL(MERGE(m1, m2))\n```"
+    ),
+    "ABS": (
+        "**ABS**(number)\n\n"
+        "The number's distance from zero, always positive.\n\n"
+        "```godcode\nREVEAL(ABS(-4))\n```"
+    ),
+    "ROUND": (
+        "**ROUND**(number [, places])\n\n"
+        "Round half away from zero. `ROUND(2.5)` gives 3; give places "
+        "to keep decimals.\n\n"
+        "```godcode\nREVEAL(ROUND(3.14159, 2))\n```"
+    ),
+    "FLOOR": (
+        "**FLOOR**(number)\n\n"
+        "The whole number below.\n\n"
+        "```godcode\nREVEAL(FLOOR(3.9))\n```"
+    ),
+    "CEIL": (
+        "**CEIL**(number)\n\n"
+        "The whole number above.\n\n"
+        "```godcode\nREVEAL(CEIL(3.1))\n```"
+    ),
+    "SQRT": (
+        "**SQRT**(number)\n\n"
+        "The square root. A negative number is gently refused.\n\n"
+        "```godcode\nREVEAL(SQRT(144))\n```"
+    ),
+    "POW": (
+        "**POW**(base, exponent)\n\n"
+        "Raise the base to the exponent.\n\n"
+        "```godcode\nREVEAL(POW(2, 10))\n```"
+    ),
 }
 
 # Phrases matched as whole units on hover (case-insensitive).
@@ -635,7 +771,11 @@ _COMPLETION_KEYWORDS = sorted(LSP_DOCS)
 _BUILTINS = ("LEN", "STR", "NUM", "TYPE", "RANDOM", "RANGE", "PUSH",
              "UPPER", "LOWER", "SPLIT", "JOIN", "ASK", "BEHOLD", "REVERSE",
              "ANCHOR", "CONSULT", "SHA256", "HMAC", "BASE64_ENCODE",
-             "BASE64_DECODE")
+             "BASE64_DECODE", "TRIM", "REPLACE", "STARTS_WITH", "ENDS_WITH",
+             "SUBSTRING", "CONTAINS", "COUNT", "SORT", "MIN_OF", "MAX_OF",
+             "SUM_OF", "FIRST", "LAST", "UNIQUE", "INDEX_OF", "KEYS",
+             "VALUES", "HAS_KEY", "MERGE", "ABS", "ROUND", "FLOOR", "CEIL",
+             "SQRT", "POW")
 
 
 def completion_items(text: str = "") -> list[dict]:

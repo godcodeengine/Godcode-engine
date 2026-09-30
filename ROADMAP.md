@@ -4,6 +4,16 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 ## Just landed
 
+- The commons: twenty-five everyday builtins, always present, in a fourth
+  stdlib pillar (`godcode/stdlib_commons.py`). Words (`TRIM`, `REPLACE`,
+  `STARTS_WITH`, `ENDS_WITH`, `SUBSTRING`, `CONTAINS`, `COUNT`), lists
+  (`SORT`, `MIN_OF`, `MAX_OF`, `SUM_OF`, `FIRST`, `LAST`, `UNIQUE`,
+  `INDEX_OF`), maps (`KEYS`, `VALUES`, `HAS_KEY`, `MERGE`), and numbers
+  (`ABS`, `ROUND`, `FLOOR`, `CEIL`, `SQRT`, `POW`). Pure computation, so
+  they run unchanged in the sandbox; misuse is answered with a gentle
+  error. Documented in the language reference, the learn page, the
+  language server, and the VS Code extension.
+
 - Global editions begin: God Code speaks Setswana. A scroll with the
   `# tongue: tn` pragma writes keywords in Setswana (the full table is in
   `docs/TONGUES.md`); every tool honours it, the playground speaks it,
@@ -37,7 +47,8 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 - More tongues: community-proposed editions beyond Setswana.
 - Performance benchmarks: reproducible numbers, published with the method, so improvements can be measured honestly.
-- More of the standard library: concurrency and the everyday builtins a working language needs.
+- More of the standard library: concurrency, and whatever everyday work
+  remains beyond the commons.
 - Editor tooling polish: the VS Code extension, the language server, and the playground keeping pace with the language.
 - 1.0 readiness: the versioning promise, the compatibility policy, and the governance documents a language needs before strangers trust it with real work.
 

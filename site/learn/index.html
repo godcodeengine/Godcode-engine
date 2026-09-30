@@ -150,6 +150,23 @@ REVEAL(FACTORIAL(7))</pre>
 END CREATION</pre>
     </div>
     <p><code>SHA256(x)</code> takes a word's fingerprint: always 64 hex characters, the same word always giving the same fingerprint, and the tiniest change giving a wholly different one. <code>HMAC(key, message)</code> seals a message under a key so only a keeper of the key can verify it. <code>BASE64_ENCODE</code> and <code>BASE64_DECODE</code> veil and unveil words. These four need no import and run the same inside the sandbox, and the <code>hashes</code> scroll (<code>godcode scroll install hashes</code>) wraps them in friendly rites: <code>FINGERPRINT</code>, <code>SIGN</code>, <code>VERIFY_SIGNATURE</code>, <code>VEIL</code>, and <code>UNVEIL</code>.</p>
+    <h3>Everyday tools for words, lists, maps, and numbers</h3>
+    <div class="code-card">
+      <div class="code-head">✦ commons.god — runs in the installed engine</div>
+      <pre class="code godcode">BEGIN CREATION
+  REVEAL(TRIM("  grace upon grace  "))
+  REVEAL(REPLACE("manna, manna", "manna", "bread"))
+  REVEAL(SORT([3, 1, 2]))
+  REVEAL(SUM_OF([1, 2, 3, 4]))
+  REVEAL(UNIQUE(["a", "b", "a"]))
+  DECLARE census AS JSON_PARSE("{{\"tribes\": 12}}")
+  REVEAL(HAS_KEY(census, "tribes"))
+  REVEAL(ROUND(2.5))
+  REVEAL(SQRT(144))
+  REVEAL(POW(2, 10))
+END CREATION</pre>
+    </div>
+    <p>Twenty-five small tools that turn everyday work into one line, always present with no import. <code>TRIM</code>, <code>REPLACE</code>, <code>STARTS_WITH</code>, <code>ENDS_WITH</code>, <code>SUBSTRING</code>, <code>CONTAINS</code>, and <code>COUNT</code> shape words. <code>SORT</code>, <code>MIN_OF</code>, <code>MAX_OF</code>, <code>SUM_OF</code>, <code>FIRST</code>, <code>LAST</code>, <code>UNIQUE</code>, and <code>INDEX_OF</code> gather lists (<code>SORT</code> and <code>MERGE</code> always return new values; the old ones are untouched). <code>KEYS</code>, <code>VALUES</code>, <code>HAS_KEY</code>, and <code>MERGE</code> read maps. <code>ABS</code>, <code>ROUND</code>, <code>FLOOR</code>, <code>CEIL</code>, <code>SQRT</code>, and <code>POW</code> weigh numbers. They are pure computation, so they run the same inside the sandbox, and every one answers a misuse with a gentle error instead of a crash.</p>
     <h3>Shelter a fragile work</h3>
     <div class="code-card">
       <div class="code-head">✦ shelter.god</div>

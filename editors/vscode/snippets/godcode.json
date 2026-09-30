@@ -119,6 +119,26 @@
   "description": "Seal a message under a key (HMAC-SHA-256)",
   "prefix": "hmac"
  },
+ "Trim a word": {
+  "body": "REVEAL(TRIM(\"${1:  grace  }\"))$0",
+  "description": "Lift leading and trailing whitespace from a word",
+  "prefix": "trim"
+ },
+ "Sort a gathering": {
+  "body": "REVEAL(SORT(${1:[3, 1, 2]}))$0",
+  "description": "Order a list, least first, into a new list",
+  "prefix": "sort"
+ },
+ "Merge two maps": {
+  "body": "REVEAL(MERGE(${1:m1}, ${2:m2}))$0",
+  "description": "Weave two maps into a new one (second wins)",
+  "prefix": "merge"
+ },
+ "Round a number": {
+  "body": "REVEAL(ROUND(${1:2.5}))$0",
+  "description": "Round half away from zero",
+  "prefix": "round"
+ },
  "Setswana creation block": {
   "body": [
    "# tongue: tn",

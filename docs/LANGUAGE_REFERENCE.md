@@ -410,11 +410,12 @@ Always present, no import needed:
 
 ### Standard-library rites
 
-The standard library registers fourteen more rites at startup, in three
+The standard library registers thirty-eight more rites at startup, in four
 parts: the vault (`godcode/stdlib_vault.py`: JSON and the filesystem),
-time plus the web (`godcode/stdlib_times.py`), and the scrollhouse of
-hashes (`godcode/stdlib_hashes.py`). They are always present, no import
-needed.
+time plus the web (`godcode/stdlib_times.py`), the scrollhouse of
+hashes (`godcode/stdlib_hashes.py`), and the commons
+(`godcode/stdlib_commons.py`: everyday tools for words, lists, maps, and
+numbers). They are always present, no import needed.
 
 | Rite | Signature | Speaks |
 |---|---|---|
@@ -432,6 +433,26 @@ needed.
 | `HMAC` | `HMAC(key, message)` | the HMAC-SHA-256 seal of a message under a key, as 64 hex characters |
 | `BASE64_ENCODE` | `BASE64_ENCODE(x)` | a word veiled in base64 |
 | `BASE64_DECODE` | `BASE64_DECODE(s)` | the unveiled word behind a base64 veil (a gentle error if the veil is ill-formed) |
+| `TRIM` | `TRIM(s)` | the word with leading and trailing whitespace lifted away |
+| `REPLACE` | `REPLACE(s, old, new)` | the word with every `old` turned into `new` |
+| `STARTS_WITH` / `ENDS_WITH` | `STARTS_WITH(s, p)` | `TRUE` when the word opens (or closes) with the given part |
+| `SUBSTRING` | `SUBSTRING(s, start [, end])` | the slice from `start` (counting from 0); edges beyond the word are gathered in |
+| `CONTAINS` | `CONTAINS(s, part)` / `CONTAINS(list, x)` | `TRUE` when the word holds the part, or the list holds the value |
+| `COUNT` | `COUNT(s, part)` | how many times the part appears in the word |
+| `SORT` | `SORT(list)` | a **new** list, ordered (numbers, words, or truths; mixed kinds are refused) |
+| `MIN_OF` / `MAX_OF` | `MIN_OF(list)` | the least (or greatest) member; an empty gathering is refused |
+| `SUM_OF` | `SUM_OF(list)` | the numbers added together (`0` for an empty list) |
+| `FIRST` / `LAST` | `FIRST(list)` | the head (or tail) member; an empty gathering is refused |
+| `UNIQUE` | `UNIQUE(list)` | the list with repeats removed, order kept |
+| `INDEX_OF` | `INDEX_OF(list, x)` | the position of `x` counting from 0, or `-1` when absent |
+| `KEYS` / `VALUES` | `KEYS(map)` | the map's keys (or values), as a list |
+| `HAS_KEY` | `HAS_KEY(map, key)` | `TRUE` when the map holds the key |
+| `MERGE` | `MERGE(m1, m2)` | a **new** map holding both; the second map's keys win |
+| `ABS` | `ABS(n)` | the number's distance from zero |
+| `ROUND` | `ROUND(n [, places])` | rounded half away from zero (`ROUND(2.5)` → `3`) |
+| `FLOOR` / `CEIL` | `FLOOR(n)` | the whole number below (or above) |
+| `SQRT` | `SQRT(n)` | the square root (a gentle error for negatives) |
+| `POW` | `POW(base, exp)` | the base raised to the exponent |
 
 ```godcode
 BEGIN CREATION
@@ -456,9 +477,9 @@ by either name would shadow them.
 under `godcode run --sandbox`**: the sandbox withholds network power, so
 the rite raises instead of reaching out. The file rites are likewise
 bound by the sandbox's read and write grants (see §23 and
-`docs/sandbox.md`). The hash rites are pure computation (they touch no
-files and no network), so they need no grant and behave the same inside
-the sandbox.
+`docs/sandbox.md`). The hash rites and the commons rites are pure
+computation (they touch no files and no network), so they need no grant
+and behave the same inside the sandbox.
 
 ```godcode
 BEGIN CREATION
@@ -467,6 +488,25 @@ BEGIN CREATION
   REVEAL(sig IS HMAC("secret", "the covenant stands"))   # true: the seal holds
   REVEAL(sig IS HMAC("other", "the covenant stands"))    # false: the seal breaks
   REVEAL(BASE64_DECODE(BASE64_ENCODE("veiled")))          # "veiled"
+END CREATION
+```
+
+The commons rites turn everyday work into one line:
+
+```godcode
+BEGIN CREATION
+  REVEAL(TRIM("  grace upon grace  "))          # "grace upon grace"
+  REVEAL(REPLACE("manna, manna", "manna", "bread"))
+  REVEAL(SORT([3, 1, 2]))                       # [1, 2, 3]
+  REVEAL(SUM_OF([1, 2, 3, 4]))                   # 10
+  REVEAL(UNIQUE(["a", "b", "a"]))               # ["a", "b"]
+  REVEAL(INDEX_OF(["a", "b", "c"], "c"))        # 2
+  DECLARE census AS JSON_PARSE("{{\"tribes\": 12}}")
+  REVEAL(HAS_KEY(census, "tribes"))             # true
+  REVEAL(MERGE(census, JSON_PARSE("{{\"judges\": 3}}")))
+  REVEAL(ROUND(2.5))                            # 3
+  REVEAL(SQRT(144))                             # 12
+  REVEAL(POW(2, 10))                            # 1024
 END CREATION
 ```
 

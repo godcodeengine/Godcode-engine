@@ -352,7 +352,7 @@ def test_vscode_snippets_setswana_starters_run() -> None:
     from godcode.interpreter import Interpreter
     snippets = json.loads(
         (REPO / "editors/vscode/snippets/godcode.json").read_text())
-    assert len(snippets) == 21
+    assert len(snippets) == 25
     assert "Setswana creation block" in snippets
     assert "Setswana if" in snippets
     creation = snippets["Setswana creation block"]

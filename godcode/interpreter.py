@@ -139,11 +139,12 @@ class Interpreter:
             self.loaded_plugins = plugins.load_plugins(self)
         # v5.1: the stdlib pillars register their own builtins here so the
         # interpreter core stays small. Each module's register() is idempotent.
-        from godcode import stdlib_times, stdlib_vault, stdlib_hashes
+        from godcode import stdlib_commons, stdlib_times, stdlib_vault, stdlib_hashes
 
         stdlib_vault.register(self)
         stdlib_times.register(self)
         stdlib_hashes.register(self)
+        stdlib_commons.register(self)
 
     # ------------------------------------------------- plugin verb registry
 

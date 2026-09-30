@@ -55,6 +55,14 @@ godcode ledger verify     # verify the covenant chain
   `HMAC(key, message)` seals a message under a key (HMAC-SHA-256).
   `BASE64_ENCODE(x)` / `BASE64_DECODE(s)` veil and unveil words. All four
   are pure: they need no import and run unchanged under `--sandbox`.
+- The commons: everyday tools, always present, pure and sandbox-safe.
+  Words: `TRIM`, `REPLACE`, `STARTS_WITH`, `ENDS_WITH`, `SUBSTRING`,
+  `CONTAINS`, `COUNT`. Lists: `SORT` (returns a new list), `MIN_OF`,
+  `MAX_OF`, `SUM_OF`, `FIRST`, `LAST`, `UNIQUE`, `INDEX_OF` (-1 when
+  absent). Maps: `KEYS`, `VALUES`, `HAS_KEY`, `MERGE` (returns a new
+  map). Numbers: `ABS`, `ROUND` (half away from zero), `FLOOR`, `CEIL`,
+  `SQRT`, `POW`. To write a literal `{` inside a string, double it:
+  `"{{"` (a lone `{` opens interpolation).
 - `CONSULT("question")` asks the local Spirit oracle; answers in 2-3
   sentences, works in the sandbox, never fails the run.
 - `DECLARE INTENT "words..." ON rite_name` names a rite's purpose; at
