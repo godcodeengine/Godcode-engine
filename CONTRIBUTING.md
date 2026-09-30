@@ -6,6 +6,17 @@ We believe that software creation can be sacred, purposeful, and world-changing.
 
 ---
 
+## 🎃 Hacktoberfest
+
+October is Hacktoberfest, and God Code is taking part. Builders around the world spend this month making their first open source contributions, and our door is open.
+
+- Look for issues labelled `hacktoberfest` and `good first issue`.
+- Comment on an issue to claim it, so two builders do not start the same work.
+- Open your pull request any time in October. Every pull request gets a kind, prompt review, and merged work carries the `hacktoberfest-accepted` label.
+- New to all of this? The Discord is the warmest place to ask questions: https://discord.gg/894FEJhWfZ
+
+---
+
 ## 🏅 Contributor Recognition
 
 Every contributor to God Code receives:
