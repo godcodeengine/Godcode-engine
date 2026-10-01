@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0b">
+<title>Today's Scripture in God Code · GodCode</title>
+<meta name="description" content="A fresh scripture every day, written in God Code. Scan, read, and build. Faith plus code equals a greater you.">
+<style>
+  :root { --gold:#f2b21b; --gold-soft:#ffcf4d; --ink:#f5f1e6; --dim:#a49f92; --card:#121214; --line:#26262b; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0b; color:var(--ink); font-family:-apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:28px 16px 40px; }
+  .mark { display:flex; align-items:center; gap:10px; }
+  .mark .word { font-size:26px; font-weight:800; letter-spacing:.2px; }
+  .mark .word b { color:var(--gold); font-weight:800; }
+  .eyebrow { margin-top:26px; color:var(--gold); font-size:12px; font-weight:700; letter-spacing:3.5px; }
+  h1 { margin-top:8px; font-size:27px; line-height:1.2; text-align:center; font-weight:800; }
+  .sub { margin-top:10px; color:var(--dim); font-size:15px; line-height:1.5; text-align:center; max-width:420px; }
+  .card { margin-top:24px; width:100%; max-width:460px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px 18px 22px; box-shadow:0 18px 50px rgba(0,0,0,.5); }
+  .card-head { display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:12px; }
+  .card-head .mini { display:flex; align-items:center; gap:8px; font-weight:800; font-size:16px; }
+  .card-head .mini b { color:var(--gold); }
+  .date { color:var(--dim); font-size:13px; }
+  .codebox { margin-top:16px; background:#0a0a0b; border:1px solid var(--line); border-radius:12px; padding:14px 14px; overflow-x:auto; }
+  pre { font-family:ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size:13.5px; line-height:1.65; white-space:pre; }
+  .kw { color:var(--gold-soft); font-weight:700; }
+  .str { color:#a8d8a8; }
+  .verse { margin-top:18px; font-size:17.5px; line-height:1.55; }
+  .ref { margin-top:8px; color:var(--gold); font-weight:700; font-size:15px; letter-spacing:.4px; }
+  .note { margin-top:14px; color:var(--dim); font-size:13px; line-height:1.5; }
+  .cta { margin-top:22px; display:flex; flex-direction:column; gap:10px; width:100%; max-width:460px; }
+  .btn { display:block; text-align:center; text-decoration:none; border-radius:12px; padding:13px 16px; font-weight:700; font-size:15.5px; }
+  .btn-gold { background:var(--gold); color:#141414; }
+  .btn-ghost { border:1px solid var(--line); color:var(--ink); background:var(--card); }
+  footer { margin-top:30px; color:var(--dim); font-size:12.5px; letter-spacing:2.2px; text-align:center; line-height:2; }
+  footer b { color:var(--gold); }
+</style>
+</head>
+<body>
+  <div class="mark">
+    <svg width="34" height="34" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 9 L5 24 L15 39" fill="none" stroke="#f2b21b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 9 L43 24 L33 39" fill="none" stroke="#f2b21b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 7 L24 41" stroke="#f5f1e6" stroke-width="5" stroke-linecap="round"/><path d="M16.5 19 L31.5 19" stroke="#f5f1e6" stroke-width="5" stroke-linecap="round"/></svg>
+    <div class="word">God<b>Code</b></div>
+  </div>
+
+  <div class="eyebrow">THE DAILY VERSE</div>
+  <h1>Today's Scripture,<br>written in God Code</h1>
+  <p class="sub">You scanned the shirt, and the shirt kept its promise. A fresh scripture every day, written as a real God Code scroll. Every one of them runs.</p>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="mini">
+        <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path d="M15 9 L5 24 L15 39" fill="none" stroke="#f2b21b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 9 L43 24 L33 39" fill="none" stroke="#f2b21b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 7 L24 41" stroke="#f5f1e6" stroke-width="5" stroke-linecap="round"/><path d="M16.5 19 L31.5 19" stroke="#f5f1e6" stroke-width="5" stroke-linecap="round"/></svg>
+        God<b>Code</b>
+      </div>
+      <div class="date" id="date"></div>
+    </div>
+    <div class="codebox"><pre id="code"></pre></div>
+    <p class="verse" id="verse"></p>
+    <div class="ref" id="ref"></div>
+    <p class="note">This is real God Code, the programming language born in Botswana. Paste it into the playground and press run. It will speak the verse back to you.</p>
+  </div>
+
+  <div class="cta">
+    <a class="btn btn-gold" href="https://www.getgodcode.com/playground">Run this verse in the playground</a>
+    <a class="btn btn-ghost" href="https://www.getgodcode.com/learn">Learn God Code, free</a>
+    <a class="btn btn-ghost" href="https://discord.gg/894FEJhWfZ">Build with us on Discord</a>
+  </div>
+
+  <footer>FAITH + CODE = <b>A GREATER YOU</b><br>getgodcode.com</footer>
+
+<script>
+  var VERSES = [{"ref":"Luke 1:37","text":"For with God nothing shall be impossible.","code":"BEGIN CREATION\n  DECLARE faith AS TRUE\n  IF faith IS TRUE THEN\n    REVEAL(\"For with God nothing shall be impossible.\")\n  ENDIF\nEND CREATION"},{"ref":"Genesis 1:1","text":"In the beginning God created the heaven and the earth.","code":"BEGIN CREATION\n  DECLARE beginning AS \"In the beginning\"\n  DECLARE maker AS \"God created the heaven and the earth\"\n  REVEAL(\"{beginning}, {maker}.\")\nEND CREATION"},{"ref":"John 1:1","text":"In the beginning was the Word, and the Word was with God, and the Word was God.","code":"BEGIN CREATION\n  DECLARE word AS \"the Word\"\n  REVEAL(\"In the beginning was {word},\")\n  REVEAL(\"and {word} was with God,\")\n  REVEAL(\"and {word} was God.\")\nEND CREATION"},{"ref":"Psalm 23:1","text":"The LORD is my shepherd; I shall not want.","code":"BEGIN CREATION\n  DECLARE shepherd AS \"The LORD is my shepherd\"\n  DECLARE promise AS \"I shall not want\"\n  REVEAL(\"{shepherd}; {promise}.\")\nEND CREATION"},{"ref":"Proverbs 3:5","text":"Trust in the LORD with all thine heart; and lean not unto thine own understanding.","code":"BEGIN CREATION\n  DECLARE heart AS whole\n  IF heart IS whole THEN\n    REVEAL(\"Trust in the LORD with all thine heart;\")\n    REVEAL(\"and lean not unto thine own understanding.\")\n  ENDIF\nEND CREATION"},{"ref":"Isaiah 40:31","text":"But they that wait upon the LORD shall renew their strength; they shall mount up with wings as eagles; they shall run, and not be weary; and they shall walk, and not faint.","code":"BEGIN CREATION\n  DECLARE promises AS [\"renew their strength\", \"mount up with wings as eagles\", \"run, and not be weary\", \"walk, and not faint\"]\n  REVEAL(\"They that wait upon the LORD shall:\")\n  FOR promise IN promises\n    REVEAL(\"  {promise}\")\n  ENDFOR\nEND CREATION"},{"ref":"Philippians 4:13","text":"I can do all things through Christ which strengtheneth me.","code":"BEGIN CREATION\n  DECLARE strength AS \"Christ\"\n  DECLARE all_things AS TRUE\n  IF all_things IS TRUE THEN\n    REVEAL(\"I can do all things through {strength},\")\n    REVEAL(\"which strengtheneth me.\")\n  ENDIF\nEND CREATION"},{"ref":"Joshua 1:9","text":"Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.","code":"BEGIN CREATION\n  DECLARE courage AS strong\n  IF courage IS strong THEN\n    REVEAL(\"Be strong and of a good courage;\")\n    REVEAL(\"for the LORD thy God is with thee\")\n    REVEAL(\"whithersoever thou goest.\")\n  ENDIF\nEND CREATION"},{"ref":"Psalm 46:10","text":"Be still, and know that I am God.","code":"BEGIN CREATION\n  DECLARE stillness AS \"Be still\"\n  DECLARE knowing AS \"know that I am God\"\n  REVEAL(\"{stillness}, and {knowing}.\")\nEND CREATION"},{"ref":"Jeremiah 29:11","text":"For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.","code":"BEGIN CREATION\n  DECLARE thoughts AS [\"peace\", \"not evil\", \"an expected end\"]\n  REVEAL(\"I know the thoughts that I think toward you:\")\n  FOR thought IN thoughts\n    REVEAL(\"  thoughts of {thought}\")\n  ENDFOR\nEND CREATION"},{"ref":"Romans 8:28","text":"And we know that all things work together for good to them that love God, to them who are the called according to his purpose.","code":"BEGIN CREATION\n  DECLARE all_things AS working\n  DECLARE together AS TRUE\n  IF together IS TRUE THEN\n    REVEAL(\"All things work together for good\")\n    REVEAL(\"to them that love God.\")\n  ENDIF\nEND CREATION"},{"ref":"Psalm 118:24","text":"This is the day which the LORD hath made; we will rejoice and be glad in it.","code":"BEGIN CREATION\n  DECLARE day AS \"This is the day which the LORD hath made\"\n  REVEAL(day)\n  REVEAL(\"We will rejoice and be glad in it.\")\nEND CREATION"},{"ref":"Matthew 11:28","text":"Come unto me, all ye that labour and are heavy laden, and I will give you rest.","code":"BEGIN CREATION\n  DECLARE invitation AS \"Come unto me\"\n  DECLARE rest AS \"I will give you rest\"\n  REVEAL(\"{invitation}, all ye that labour\")\n  REVEAL(\"and are heavy laden, and {rest}.\")\nEND CREATION"},{"ref":"Psalm 121:1-2","text":"I will lift up mine eyes unto the hills, from whence cometh my help. My help cometh from the LORD, which made heaven and earth.","code":"BEGIN CREATION\n  DECLARE eyes AS \"unto the hills\"\n  DECLARE help AS \"from the LORD\"\n  REVEAL(\"I will lift up mine eyes {eyes}.\")\n  REVEAL(\"My help cometh {help},\")\n  REVEAL(\"which made heaven and earth.\")\nEND CREATION"},{"ref":"Isaiah 41:10","text":"Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee.","code":"BEGIN CREATION\n  DECLARE fear AS none\n  IF fear IS none THEN\n    REVEAL(\"Fear thou not; for I am with thee.\")\n    REVEAL(\"I will strengthen thee; yea, I will help thee.\")\n  ENDIF\nEND CREATION"},{"ref":"John 3:16","text":"For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.","code":"BEGIN CREATION\n  DECLARE love AS \"God so loved the world\"\n  DECLARE gift AS \"he gave his only begotten Son\"\n  REVEAL(\"For {love}, that {gift},\")\n  REVEAL(\"that whosoever believeth in him\")\n  REVEAL(\"should not perish, but have everlasting life.\")\nEND CREATION"},{"ref":"Psalm 150:6","text":"Let every thing that hath breath praise the LORD. Praise ye the LORD.","code":"BEGIN CREATION\n  DECLARE breathers AS [\"the heavens\", \"the earth\", \"every living thing\"]\n  FOR breather IN breathers\n    REVEAL(\"Let {breather} praise the LORD.\")\n  ENDFOR\n  REVEAL(\"Praise ye the LORD.\")\nEND CREATION"},{"ref":"Micah 6:8","text":"He hath shewed thee, O man, what is good; and what doth the LORD require of thee, but to do justly, and to love mercy, and to walk humbly with thy God?","code":"BEGIN CREATION\n  DECLARE required AS [\"to do justly\", \"to love mercy\", \"to walk humbly with thy God\"]\n  REVEAL(\"What doth the LORD require of thee?\")\n  FOR duty IN required\n    REVEAL(\"  {duty}\")\n  ENDFOR\nEND CREATION"},{"ref":"Lamentations 3:22-23","text":"It is of the LORD's mercies that we are not consumed, because his compassions fail not. They are new every morning: great is thy faithfulness.","code":"BEGIN CREATION\n  DECLARE morning AS new\n  IF morning IS new THEN\n    REVEAL(\"His compassions fail not.\")\n    REVEAL(\"They are new every morning:\")\n    REVEAL(\"great is thy faithfulness.\")\n  ENDIF\nEND CREATION"},{"ref":"Psalm 19:14","text":"Let the words of my mouth, and the meditation of my heart, be acceptable in thy sight, O LORD, my strength, and my redeemer.","code":"BEGIN CREATION\n  DECLARE words AS \"the words of my mouth\"\n  DECLARE meditation AS \"the meditation of my heart\"\n  REVEAL(\"Let {words}, and {meditation},\")\n  REVEAL(\"be acceptable in thy sight, O LORD,\")\n  REVEAL(\"my strength, and my redeemer.\")\nEND CREATION"},{"ref":"2 Timothy 1:7","text":"For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.","code":"BEGIN CREATION\n  DECLARE given AS [\"power\", \"love\", \"a sound mind\"]\n  REVEAL(\"God hath not given us the spirit of fear,\")\n  REVEAL(\"but of:\")\n  FOR gift IN given\n    REVEAL(\"  {gift}\")\n  ENDFOR\nEND CREATION"},{"ref":"Galatians 5:22-23","text":"But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, meekness, temperance.","code":"BEGIN CREATION\n  DECLARE fruit AS [\"love\", \"joy\", \"peace\", \"longsuffering\", \"gentleness\", \"goodness\", \"faith\", \"meekness\", \"temperance\"]\n  REVEAL(\"The fruit of the Spirit is:\")\n  FOR f IN fruit\n    REVEAL(\"  {f}\")\n  ENDFOR\nEND CREATION"},{"ref":"Hebrews 11:1","text":"Now faith is the substance of things hoped for, the evidence of things not seen.","code":"BEGIN CREATION\n  DECLARE faith AS substance\n  IF faith IS substance THEN\n    REVEAL(\"Faith is the substance of things hoped for,\")\n    REVEAL(\"the evidence of things not seen.\")\n  ENDIF\nEND CREATION"},{"ref":"Matthew 5:16","text":"Let your light so shine before men, that they may see your good works, and glorify your Father which is in heaven.","code":"BEGIN CREATION\n  DECLARE light AS shining\n  IF light IS shining THEN\n    REVEAL(\"Let your light so shine before men,\")\n    REVEAL(\"that they may see your good works,\")\n    REVEAL(\"and glorify your Father in heaven.\")\n  ENDIF\nEND CREATION"},{"ref":"Ecclesiastes 3:11","text":"He hath made every thing beautiful in his time.","code":"BEGIN CREATION\n  DECLARE season AS \"his time\"\n  DECLARE work AS \"every thing beautiful\"\n  REVEAL(\"He hath made {work} in {season}.\")\nEND CREATION"},{"ref":"Nehemiah 8:10","text":"The joy of the LORD is your strength.","code":"BEGIN CREATION\n  DECLARE joy AS \"The joy of the LORD\"\n  DECLARE strength AS \"your strength\"\n  REVEAL(\"{joy} is {strength}.\")\nEND CREATION"},{"ref":"Zephaniah 3:17","text":"The LORD thy God in the midst of thee is mighty; he will save, he will rejoice over thee with joy; he will rest in his love.","code":"BEGIN CREATION\n  DECLARE midst AS \"in the midst of thee\"\n  DECLARE mighty AS TRUE\n  IF mighty IS TRUE THEN\n    REVEAL(\"The LORD thy God {midst} is mighty;\")\n    REVEAL(\"he will save, he will rejoice over thee\")\n    REVEAL(\"with joy; he will rest in his love.\")\n  ENDIF\nEND CREATION"},{"ref":"John 8:12","text":"I am the light of the world: he that followeth me shall not walk in darkness, but shall have the light of life.","code":"BEGIN CREATION\n  DECLARE light AS \"the light of the world\"\n  REVEAL(\"I am {light}.\")\n  REVEAL(\"He that followeth me shall not walk\")\n  REVEAL(\"in darkness, but shall have the light of life.\")\nEND CREATION"},{"ref":"Psalm 34:8","text":"O taste and see that the LORD is good: blessed is the man that trusteth in him.","code":"BEGIN CREATION\n  DECLARE tasted AS TRUE\n  IF tasted IS TRUE THEN\n    REVEAL(\"O taste and see that the LORD is good:\")\n    REVEAL(\"blessed is the man that trusteth in him.\")\n  ENDIF\nEND CREATION"},{"ref":"Deuteronomy 31:8","text":"And the LORD, he it is that doth go before thee; he will be with thee, he will not fail thee, neither forsake thee: fear not, neither be dismayed.","code":"BEGIN CREATION\n  DECLARE before AS \"doth go before thee\"\n  DECLARE forsake AS never\n  IF forsake IS never THEN\n    REVEAL(\"The LORD {before};\")\n    REVEAL(\"he will be with thee, he will not fail thee.\")\n    REVEAL(\"Fear not, neither be dismayed.\")\n  ENDIF\nEND CREATION"}];
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function highlight(code) {
+    return esc(code).replace(/(&quot;[^&]*?&quot;)|("(?:[^"\\]|\\.)*")|\b(BEGIN|END|CREATION|DECLARE|AS|REVEAL|IF|IS|NOT|THEN|ELSE|ENDIF|FOR|IN|ENDFOR|WHILE|ENDWHILE|TRUE|FALSE|ASCEND|DEFINE|RITE|INVOKE|RETURN|IMPORT)\b/g,
+      function (m, q1, str, kw) {
+        if (str) return '<span class="str">' + str + '</span>';
+        if (kw) return '<span class="kw">' + kw + '</span>';
+        return m;
+      });
+  }
+  var now = new Date();
+  var start = new Date(now.getFullYear(), 0, 0);
+  var doy = Math.floor((now - start) / 86400000);
+  var idx = doy % VERSES.length;
+  var params = new URLSearchParams(location.search);
+  var dayParam = parseInt(params.get("day"), 10);
+  if (!isNaN(dayParam) && dayParam >= 1) { idx = (dayParam - 1) % VERSES.length; }
+  var v = VERSES[idx];
+  document.getElementById("date").textContent = now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  document.getElementById("code").innerHTML = highlight(v.code);
+  document.getElementById("verse").textContent = "\u201C" + v.text + "\u201D";
+  document.getElementById("ref").textContent = v.ref + " \u00B7 King James Version";
+</script>
+</body>
+</html>
