@@ -30,7 +30,7 @@ To begin a whole project at once, run `godcode new my-scroll`: it raises a direc
 
 ### Tongues: the grammar in other languages
 
-A scroll may speak another tongue. Put a pragma comment in the file, e.g. `# tongue: tn` for Setswana, and the keywords cross over while everything else stays the same:
+A scroll may speak another tongue. Put a pragma comment in the file, e.g. `# tongue: tn` for Setswana or `# tongue: zu` for isiZulu, and the keywords cross over while everything else stays the same:
 
 ```godcode
 # tongue: tn
@@ -40,7 +40,7 @@ SENOLA("Dumela, {leina}.")
 FEDISA TLHOLEGO
 ```
 
-English keywords keep working beside tongue words, `godcode fmt` renders the canonical English, and every tool (`run`, `check`, `lint`, `test`, the debugger, the bridge, the playground) honours the pragma. See `docs/TONGUES.md` for the full word table and the honest first-edition notes.
+English keywords keep working beside tongue words, `godcode fmt` renders the canonical English, and every tool (`run`, `check`, `lint`, `test`, the debugger, the bridge, the playground) honours the pragma. See `docs/TONGUES.md` for the full word tables and the honest first-edition notes.
 
 ## 2. Words of the Language
 

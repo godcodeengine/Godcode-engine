@@ -76,12 +76,15 @@ godcode ledger verify     # verify the covenant chain
   `fmt`) prints the offending source line beneath the message, with a caret at
   the column when known.
 - Tongues: a scroll with `# tongue: tn` writes keywords in Setswana
-  (`QALA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF`...; see `docs/TONGUES.md`).
+  (`QALA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF`...), and a scroll with
+  `# tongue: zu` writes them in isiZulu (`QALA`/`BEGIN`, `VEZA`/`REVEAL`,
+  `UMA`/`IF`...); see `docs/TONGUES.md` for both word tables.
   English keywords still work in the same file. `fmt` renders canonical
   English; the named tools (`SHA256`, `UPPER`, ...) never translate. The
-  language server reads the pragma: completions offer `SENOLA (REVEAL)` and
-  Setswana block snippets, and hover shows the English keyword's docs for a
-  tongue word. The VS Code grammar highlights Setswana keywords too.
+  language server reads the pragma: completions offer `SENOLA (REVEAL)`
+  for Setswana or `VEZA (REVEAL)` for isiZulu, plus block snippets in the
+  tongue, and hover shows the English keyword's docs for a tongue word.
+  The VS Code grammar highlights Setswana and isiZulu keywords too.
 - Division by zero is rejected: "division by nothing is not permitted".
 
 ## Error codes (`--json`)

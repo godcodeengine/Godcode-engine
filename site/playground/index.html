@@ -147,11 +147,15 @@ const KEYWORDS = new Set((
   "IS NOT AND OR REFLECT BLESS ANOINT SEAL TESTIFY TRUE FALSE").split(" "));
 
 // Tongues: keyword aliases -> canonical types, plus two-word closers
-// ("FEDISA FA" -> ENDIF). Chosen per scroll by a `# tongue: tn` pragma.
+// ("FEDISA FA" -> ENDIF in Setswana, "QEDA UMA" -> ENDIF in isiZulu).
+// Chosen per scroll by a `# tongue: tn` or `# tongue: zu` pragma.
 const TONGUES={
   tn:{name:"Setswana",
       aliases:{QALA:"BEGIN",TLHOLEGO:"CREATION",FEDISA:"END",BOLELA:"DECLARE",JAKA:"AS",HEMA:"BREATHE",BOTSHELO:"LIFE",TENG:"INTO",SENOLA:"REVEAL",POROFETA:"PROPHESY",TLHATLOGA:"ASCEND",FA:"IF",GONE:"THEN",LEKA:"TRY",TSHWARA:"CATCH",TLHALOSA:"DEFINE",TIRO:"RITE",BITSA:"INVOKE",BUSETSA:"RETURN",TSENYA:"IMPORT",KE:"IS",LE:"AND",KGOTSA:"OR",MO:"IN",DIRA:"DO",AKANYA:"REFLECT",SEGOFATSA:"BLESS",TLOTSA:"ANOINT",TSWALA:"SEAL",PAKA:"TESTIFY",NNETE:"TRUE",MAAKA:"FALSE",SEPE:"VOID",KGAOLA:"BREAK",TSWELELA:"CONTINUE"},
-      compounds:{"FEDISA FA":"ENDIF","FEDISA LEKA":"ENDTRY"}}
+      compounds:{"FEDISA FA":"ENDIF","FEDISA LEKA":"ENDTRY"}},
+  zu:{name:"isiZulu",
+      aliases:{QALA:"BEGIN",INDALO:"CREATION",QEDA:"END",MEMEZELA:"DECLARE",NJENGA:"AS",PHEFUMULA:"BREATHE",IMPILO:"LIFE",PHAKATHI:"INTO",VEZA:"REVEAL",PROFETA:"PROPHESY",ENYUKA:"ASCEND",UMA:"IF",KHONA:"THEN",ZAMA:"TRY",BAMBA:"CATCH",CHAZA:"DEFINE",ISIKO:"RITE",BIZA:"INVOKE",BUYISA:"RETURN",NGENISA:"IMPORT",NGU:"IS",KANYE:"AND",NOMA:"OR",KU:"IN",ENZA:"DO",ZINDLA:"REFLECT",BUSISA:"BLESS",GCOBA:"ANOINT",VALA:"SEAL",FAKAZA:"TESTIFY",IQINISO:"TRUE",AMANGA:"FALSE",LUTHO:"VOID",PHULA:"BREAK",QHUBEKA:"CONTINUE"},
+      compounds:{"QEDA UMA":"ENDIF","QEDA ZAMA":"ENDTRY"}}
 };
 function detectTongue(source){
   const m=source.match(/^[ \t]*#[ \t]*tongue[ \t]*:[ \t]*([A-Za-z]{2,8})/im);
@@ -1259,6 +1263,25 @@ TSHWARA
     SENOLA("Go tshwerwe phoso, mme tiro e tswelela")
 FEDISA LEKA
 FEDISA TLHOLEGO`},
+{id:"sawubona",label:"Sawubona (isiZulu)",code:
+`# tongue: zu
+# Sawubona. God Code speaks isiZulu, the second tongue. English keywords
+# still work beside the Zulu ones; QEDA UMA closes the IF, QEDA ZAMA
+# closes the TRY.
+QALA INDALO
+MEMEZELA igama NJENGA "mngane wami"
+VEZA("Sawubona, {igama}.")
+UMA LEN(igama) NGU 0 KHONA
+    VEZA("Alikho igama")
+ELSE
+    VEZA("Ikhona igama")
+QEDA UMA
+ZAMA
+    MEMEZELA ingxenye NJENGA 10 / 0
+BAMBA
+    VEZA("Kubanjwe iphutha, kodwa umsebenzi uyaqhubeka")
+QEDA ZAMA
+QEDA INDALO`},
 ];
 
 /* ---------------- 8. UI (browser only) ---------------- */

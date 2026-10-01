@@ -697,21 +697,12 @@ def tongue_keyword_items(code: str) -> list[dict]:
     return items
 
 
-_TONGUE_SNIPPETS: tuple[tuple[str, str, str], ...] = (
-    ("QALA TLHOLEGO … FEDISA TLHOLEGO",
-     "QALA TLHOLEGO\\n\\t$0\\nFEDISA TLHOLEGO",
-     "Open a new scroll"),
-    ("FA … GONE … FEDISA FA",
-     "FA ${1:condition} GONE\\n\\t$0\\nFEDISA FA",
-     "Weigh a condition"),
-    ("LEKA … TSHWARA … FEDISA LEKA",
-     "LEKA\\n\\t${1:works}\\nTSHWARA\\n\\t${2:refuge}$0\\nFEDISA LEKA",
-     "Shelter a fragile work"),
-)
-
-
 def tongue_snippet_items(table: dict) -> list[dict]:
-    """Setswana block snippets, offered when the tongue is active."""
+    """Block snippets in the tongue, offered when the tongue is active.
+
+    The snippet set travels with the tongue's own table in
+    ``godcode.tongues``, so a new tongue brings its snippets with it.
+    """
     name = table.get("name", "")
     return [{
         "label": label,
@@ -719,7 +710,7 @@ def tongue_snippet_items(table: dict) -> list[dict]:
         "detail": f"{detail} ({name})",
         "insertText": insert,
         "insertTextFormat": 2,  # Snippet
-    } for label, insert, detail in _TONGUE_SNIPPETS]
+    } for label, insert, detail in table.get("snippets", ())]
 
 
 _TONGUE_PHRASES = {
@@ -782,7 +773,7 @@ def completion_items(text: str = "") -> list[dict]:
     """Keyword, built-in, and snippet completions.
 
     When *text* carries a ``# tongue:`` pragma, the tongue's keywords
-    (e.g. ``SENOLA (REVEAL)``) and Setswana snippets join the English
+    (e.g. ``SENOLA (REVEAL)``) and the tongue's snippets join the English
     ones, so a writer crossing over has both hands full.
     """
     items: list[dict] = []

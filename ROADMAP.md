@@ -4,6 +4,18 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 ## Just landed
 
+- The second tongue: God Code speaks isiZulu. A scroll with the
+  `# tongue: zu` pragma writes keywords in isiZulu (`VEZA` for `REVEAL`,
+  `UMA` for `IF`, `ZAMA` for `TRY`, and the full table in
+  `docs/TONGUES.md`); two-word closers `QEDA UMA` and `QEDA ZAMA` close
+  blocks. Every tool honours it, the playground boots a "Sawubona
+  (isiZulu)" sample, the language server offers isiZulu completions,
+  hover docs, and block snippets, and the VS Code extension paints
+  isiZulu keywords and ships `sawubona` and `uma` starter snippets.
+  Editor snippets now travel with each tongue's own table, so the next
+  tongue brings its snippets with it. New example:
+  `examples/first_blessing_zu.god`.
+
 - The commons: twenty-five everyday builtins, always present, in a fourth
   stdlib pillar (`godcode/stdlib_commons.py`). Words (`TRIM`, `REPLACE`,
   `STARTS_WITH`, `ENDS_WITH`, `SUBSTRING`, `CONTAINS`, `COUNT`), lists

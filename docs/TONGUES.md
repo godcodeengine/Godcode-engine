@@ -2,7 +2,8 @@
 
 God Code began in English, but its heart was born in Botswana. A *tongue*
 lets you write the language's keywords in another language. The first
-tongue is **Setswana** (`tn`), spoken across Botswana.
+tongue is **Setswana** (`tn`), spoken across Botswana. The second tongue
+is **isiZulu** (`zu`), spoken across South Africa and beyond.
 
 ## How it works
 
@@ -49,35 +50,75 @@ words in the same file, so you can cross over one word at a time.
 Two closers are spoken as two words on one line: `FEDISA FA` closes an
 `IF` (ENDIF), and `FEDISA LEKA` closes a `TRY` (ENDTRY).
 
+## The isiZulu word table
+
+Open a scroll with `# tongue: zu` and the same grammar speaks isiZulu:
+
+```godcode
+# tongue: zu
+QALA INDALO
+MEMEZELA igama NJENGA "Umhlaba"
+VEZA("Sawubona, {igama}.")
+QEDA INDALO
+```
+
+| English | isiZulu | English | isiZulu |
+|---|---|---|---|
+| BEGIN | QALA | IF | UMA |
+| CREATION | INDALO | THEN | KHONA |
+| END | QEDA | TRY | ZAMA |
+| DECLARE | MEMEZELA | CATCH | BAMBA |
+| AS | NJENGA | DEFINE | CHAZA |
+| BREATHE | PHEFUMULA | RITE | ISIKO |
+| LIFE | IMPILO | INVOKE | BIZA |
+| INTO | PHAKATHI | RETURN | BUYISA |
+| REVEAL | VEZA | IMPORT | NGENISA |
+| PROPHESY | PROFETA | IS | NGU |
+| ASCEND | ENYUKA | AND | KANYE |
+| REFLECT | ZINDLA | OR | NOMA |
+| BLESS | BUSISA | IN | KU |
+| ANOINT | GCOBA | DO | ENZA |
+| SEAL | VALA | TRUE | IQINISO |
+| TESTIFY | FAKAZA | FALSE | AMANGA |
+| BREAK | PHULA | VOID | LUTHO |
+| CONTINUE | QHUBEKA | | |
+
+Two closers are spoken as two words on one line: `QEDA UMA` closes an
+`IF` (ENDIF), and `QEDA ZAMA` closes a `TRY` (ENDTRY). A worked example
+lives at `examples/first_blessing_zu.god`, and the playground boots a
+"Sawubona (isiZulu)" creation ready to run.
+
 ## Honest first-edition notes
 
-A few words stay English in this first edition: `ELSE`, `NOT`, `FOR`,
+A few words stay English in these first editions: `ELSE`, `NOT`, `FOR`,
 `WHILE`, `ENDFOR`, and `ENDWHILE`. They will cross over as speakers bless
 better words. The named tools (`SHA256`, `UPPER`, `RANGE`, and the rest)
 keep their names in every tongue, by design: the grammar speaks your
 language, the tools stay shared, and a scroll written in Setswana runs
-beside one written in English without translation.
+beside one written in isiZulu or English without translation.
 
 `godcode fmt` always renders the canonical English tongue. Inside
 `{...}` interpolation, the tongue's keywords work too.
 
-If you speak Setswana and a word here rings wrong, say so: open an issue
-on the repo. This table is a first edition, and native speakers are its
-rightful editors.
+If you speak Setswana or isiZulu and a word here rings wrong, say so:
+open an issue on the repo. These tables are first editions, and native
+speakers are their rightful editors.
 
-## The editors speak Setswana
+## The editors speak the tongues too
 
 The language server reads the pragma in the open scroll. When it sees
-`# tongue: tn`, completions offer the tongue's keywords beside the
-English ones (`SENOLA (REVEAL)`, `FEDISA FA (ENDIF)`), plus block
-snippets that unfold in Setswana. Hovering a tongue word shows the
+`# tongue: tn` it offers the tongue's keywords beside the English ones
+(`SENOLA (REVEAL)`, `FEDISA FA (ENDIF)`), plus block snippets that
+unfold in that tongue. `# tongue: zu` brings `VEZA (REVEAL)` and
+`QEDA UMA (ENDIF)` the same way. Hovering a tongue word shows the
 English keyword's own documentation, so `SENOLA` explains itself as
-`REVEAL`, and `QALA TLHOLEGO` opens the `BEGIN CREATION` notes. The
-VS Code extension paints Setswana keywords in their colors too (always
-on, so mixed scrolls glow in both tongues), and ships two starter
-snippets: type `qala` for a Setswana creation block, `fa` for a
-Setswana conditional. The named tools stay English everywhere, and
-`godcode fmt` still renders the canonical English tongue.
+`REVEAL`, `VEZA` explains itself as `REVEAL`, and `QALA TLHOLEGO` opens
+the `BEGIN CREATION` notes. The VS Code extension paints Setswana and
+isiZulu keywords in their colors too (always on, so mixed scrolls glow
+in every tongue), and ships starter snippets for both: type `qala` or
+`fa` for Setswana blocks, `sawubona` or `uma` for isiZulu ones. The
+named tools stay English everywhere, and `godcode fmt` still renders
+the canonical English tongue.
 
 ## For tongue builders
 

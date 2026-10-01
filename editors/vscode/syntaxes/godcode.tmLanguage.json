@@ -52,7 +52,7 @@
       "name": "comment.line.number-sign.godcode"
     },
     "constant-language": {
-      "match": "(?i)\\b(TRUE|FALSE|VOID|NNETE|MAAKA|SEPE)\\b",
+      "match": "(?i)\\b(TRUE|FALSE|VOID|NNETE|MAAKA|SEPE|IQINISO|AMANGA|LUTHO)\\b",
       "name": "constant.language.godcode"
     },
     "function-call": {
@@ -60,23 +60,23 @@
       "name": "entity.name.function.godcode"
     },
     "keyword-control": {
-      "match": "(?i)\\b(IF|THEN|ELSE|ENDIF|FOR|IN|ENDFOR|WHILE|DO|ENDWHILE|DEFINE|INVOKE|RETURN|IMPORT|TRY|CATCH|ENDTRY|BREAK|CONTINUE|FA|GONE|FEDISA\\\\s+FA|LEKA|TSHWARA|FEDISA\\\\s+LEKA|KGAOLA|TSWELELA|BITSA|BUSETSA|TSENYA|MO)\\b",
+      "match": "(?i)\\b(IF|THEN|ELSE|ENDIF|FOR|IN|ENDFOR|WHILE|DO|ENDWHILE|DEFINE|INVOKE|RETURN|IMPORT|TRY|CATCH|ENDTRY|BREAK|CONTINUE|FA|GONE|FEDISA\\\\s+FA|LEKA|TSHWARA|FEDISA\\\\s+LEKA|KGAOLA|TSWELELA|BITSA|BUSETSA|TSENYA|MO|UMA|KHONA|QEDA\\s+UMA|ZAMA|BAMBA|QEDA\\s+ZAMA|PHULA|QHUBEKA|BIZA|BUYISA|NGENISA|KU|CHAZA)\\b",
       "name": "keyword.control.godcode"
     },
     "keyword-declaration": {
-      "match": "(?i)\\b(DECLARE|AS|INTENT|ON|BOLELA|JAKA)\\b",
+      "match": "(?i)\\b(DECLARE|AS|INTENT|ON|BOLELA|JAKA|MEMEZELA|NJENGA)\\b",
       "name": "keyword.declaration.godcode"
     },
     "keyword-logic": {
-      "match": "(?i)\\b(IS\\s+NOT|IS|NOT|AND|OR|KE|LE|KGOTSA)\\b",
+      "match": "(?i)\\b(IS\\s+NOT|IS|NOT|AND|OR|KE|LE|KGOTSA|NGU|KANYE|NOMA)\\b",
       "name": "keyword.operator.logical.godcode"
     },
     "keyword-spirit": {
-      "match": "(?i)\\b(BREATHE|LIFE|INTO|REVEAL|PROPHESY|ASCEND|REFLECT|BLESS|ANOINT|SEAL|TESTIFY|HEMA|BOTSHELO|TENG|SENOLA|POROFETA|TLHATLOGA|AKANYA|SEGOFATSA|TLOTSA|TSWALA|PAKA)\\b",
+      "match": "(?i)\\b(BREATHE|LIFE|INTO|REVEAL|PROPHESY|ASCEND|REFLECT|BLESS|ANOINT|SEAL|TESTIFY|HEMA|BOTSHELO|TENG|SENOLA|POROFETA|TLHATLOGA|AKANYA|SEGOFATSA|TLOTSA|TSWALA|PAKA|PHEFUMULA|IMPILO|PHAKATHI|VEZA|PROFETA|ENYUKA|ZINDLA|BUSISA|GCOBA|VALA|FAKAZA)\\b",
       "name": "support.function.godcode"
     },
     "keyword-structure": {
-      "match": "(?i)\\b(BEGIN|END|QALA|FEDISA)\\s+(CREATION|RITE|TLHOLEGO|TIRO)\\b|(?i)\\b(CREATION|RITE|TLHOLEGO|TIRO)\\b",
+      "match": "(?i)\\b(BEGIN|END|QALA|FEDISA|QEDA)\\s+(CREATION|RITE|TLHOLEGO|TIRO|INDALO|ISIKO)\\b|(?i)\\b(CREATION|RITE|TLHOLEGO|TIRO|INDALO|ISIKO)\\b",
       "name": "storage.type.godcode"
     },
     "number": {

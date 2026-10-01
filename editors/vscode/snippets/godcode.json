@@ -159,5 +159,26 @@
   ],
   "description": "Divine conditional in Setswana",
   "prefix": "fa"
+ },
+ "Zulu creation block": {
+  "body": [
+   "# tongue: zu",
+   "QALA INDALO",
+   "\t${1:# Sawubona}",
+   "\t$0",
+   "\tENYUKA",
+   "QEDA INDALO"
+  ],
+  "description": "A God Code creation block in isiZulu",
+  "prefix": "sawubona"
+ },
+ "Zulu if": {
+  "body": [
+   "UMA ${1:isihambi} NGU ${2:ufanelekile} KHONA",
+   "\t${3:VEZA(\"izulu\")}",
+   "QEDA UMA$0"
+  ],
+  "description": "Divine conditional in isiZulu",
+  "prefix": "uma"
  }
 }

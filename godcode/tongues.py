@@ -8,9 +8,10 @@ its early lines::
 
     # tongue: tn
 
-``tn`` is Setswana, the first tongue, spoken in Botswana. Mixed scrolls are
-welcome: English keywords keep working beside tongue words in the same file,
-so a learner can cross over one word at a time.
+``tn`` is Setswana, the first tongue, spoken in Botswana. ``zu`` is
+isiZulu, the second tongue, spoken across South Africa and beyond. Mixed
+scrolls are welcome: English keywords keep working beside tongue words in
+the same file, so a learner can cross over one word at a time.
 
 Design notes, kept honest:
 
@@ -18,7 +19,7 @@ Design notes, kept honest:
   ``RANGE`` ...) keep their names in every tongue, so scrolls stay
   interoperable and the standard library is learned once.
 - ``godcode fmt`` always renders the canonical English tongue.
-- This first edition leaves a few words in English (``ELSE``, ``NOT``,
+- These first editions leave a few words in English (``ELSE``, ``NOT``,
   ``FOR``, ``WHILE``, ``ENDFOR``, ``ENDWHILE``); they are documented in
   ``docs/TONGUES.md`` and will cross over as speakers bless better words.
 """
@@ -79,11 +80,90 @@ _TN_COMPOUNDS = {
     ("FEDISA", "LEKA"): "ENDTRY",
 }
 
+# Editor block snippets for Setswana, offered by the language server when
+# a scroll speaks the tongue: (label, insert text, plain description).
+_TN_SNIPPETS = (
+    ("QALA TLHOLEGO … FEDISA TLHOLEGO",
+     "QALA TLHOLEGO\\n\\t$0\\nFEDISA TLHOLEGO",
+     "Open a new scroll"),
+    ("FA … GONE … FEDISA FA",
+     "FA ${1:condition} GONE\\n\\t$0\\nFEDISA FA",
+     "Weigh a condition"),
+    ("LEKA … TSHWARA … FEDISA LEKA",
+     "LEKA\\n\\t${1:works}\\nTSHWARA\\n\\t${2:refuge}$0\\nFEDISA LEKA",
+     "Shelter a fragile work"),
+)
+
+# isiZulu (zu) word -> canonical English keyword name.
+_ZU_ALIASES = {
+    "QALA": "BEGIN",          # begin
+    "INDALO": "CREATION",     # creation
+    "QEDA": "END",            # finish, complete
+    "MEMEZELA": "DECLARE",    # announce, proclaim
+    "NJENGA": "AS",           # as, like
+    "PHEFUMULA": "BREATHE",   # breathe
+    "IMPILO": "LIFE",         # life
+    "PHAKATHI": "INTO",       # inside, into
+    "VEZA": "REVEAL",         # show, reveal
+    "PROFETA": "PROPHESY",    # prophesy
+    "ENYUKA": "ASCEND",       # go up
+    "UMA": "IF",              # if, when
+    "KHONA": "THEN",          # then, at that point
+    "ZAMA": "TRY",            # try, attempt
+    "BAMBA": "CATCH",         # catch, hold
+    "CHAZA": "DEFINE",        # explain, define
+    "ISIKO": "RITE",          # a rite, a custom
+    "BIZA": "INVOKE",         # call
+    "BUYISA": "RETURN",       # return, give back
+    "NGENISA": "IMPORT",      # bring in
+    "NGU": "IS",              # is
+    "KANYE": "AND",           # and, together
+    "NOMA": "OR",             # or
+    "KU": "IN",               # in, at
+    "ENZA": "DO",             # do, make
+    "ZINDLA": "REFLECT",      # meditate, reflect
+    "BUSISA": "BLESS",        # bless
+    "GCOBA": "ANOINT",        # anoint with oil
+    "VALA": "SEAL",           # close (a seal closes the covenant)
+    "FAKAZA": "TESTIFY",      # testify, bear witness
+    "IQINISO": "TRUE",        # the truth
+    "AMANGA": "FALSE",        # lies
+    "LUTHO": "VOID",          # nothing
+    "PHULA": "BREAK",         # break
+    "QHUBEKA": "CONTINUE",    # continue
+}
+
+# Two-word closers, e.g. "QEDA UMA" -> ENDIF.
+_ZU_COMPOUNDS = {
+    ("QEDA", "UMA"): "ENDIF",
+    ("QEDA", "ZAMA"): "ENDTRY",
+}
+
+# Editor block snippets for isiZulu.
+_ZU_SNIPPETS = (
+    ("QALA INDALO … QEDA INDALO",
+     "QALA INDALO\\n\\t$0\\nQEDA INDALO",
+     "Open a new scroll"),
+    ("UMA … KHONA … QEDA UMA",
+     "UMA ${1:condition} KHONA\\n\\t$0\\nQEDA UMA",
+     "Weigh a condition"),
+    ("ZAMA … BAMBA … QEDA ZAMA",
+     "ZAMA\\n\\t${1:works}\\nBAMBA\\n\\t${2:refuge}$0\\nQEDA ZAMA",
+     "Shelter a fragile work"),
+)
+
 TONGUES: dict[str, dict] = {
     "tn": {
         "name": "Setswana",
         "aliases": _TN_ALIASES,
         "compounds": _TN_COMPOUNDS,
+        "snippets": _TN_SNIPPETS,
+    },
+    "zu": {
+        "name": "isiZulu",
+        "aliases": _ZU_ALIASES,
+        "compounds": _ZU_COMPOUNDS,
+        "snippets": _ZU_SNIPPETS,
     },
 }
 
