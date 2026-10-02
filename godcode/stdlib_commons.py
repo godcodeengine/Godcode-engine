@@ -209,6 +209,18 @@ def count(args, line, interp):
     return word.count(part)
 
 
+def repeat(args, line, interp):
+    interp._arity("REPEAT", args, 2, line)
+    word = _as_word(interp, "REPEAT", args[0], line)
+    times = _need_int(interp, "REPEAT", args[1], line)
+    if times < 0:
+        raise GodRuntimeError(
+            "REPEAT counts from zero upward: a negative count was offered.",
+            line,
+        )
+    return word * times
+
+
 # ------------------------------------------------------------------ lists
 
 
@@ -405,6 +417,7 @@ def register(interp) -> dict[str, Callable[..., Any]]:
         ("SUBSTRING", substring),
         ("CONTAINS", contains),
         ("COUNT", count),
+        ("REPEAT", repeat),
         ("SORT", sort_list),
         ("MIN_OF", min_of),
         ("MAX_OF", max_of),

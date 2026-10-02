@@ -452,6 +452,11 @@ LSP_DOCS: dict[str, str] = {
         "Count how many times the part appears in the word.\n\n"
         "```godcode\nREVEAL(COUNT(\"banana\", \"an\"))\n```"
     ),
+    "REPEAT": (
+        "**REPEAT**(word, times)\n\n"
+        "Sing the word `times` times over. Zero gives an empty word.\n\n"
+        "```godcode\nREVEAL(REPEAT(\"Pula! \", 3))\n```"
+    ),
     "SORT": (
         "**SORT**(list)\n\n"
         "Order the gathering: numbers, words, or truths, least first. "
@@ -763,7 +768,8 @@ _BUILTINS = ("LEN", "STR", "NUM", "TYPE", "RANDOM", "RANGE", "PUSH",
              "UPPER", "LOWER", "SPLIT", "JOIN", "ASK", "BEHOLD", "REVERSE",
              "ANCHOR", "CONSULT", "SHA256", "HMAC", "BASE64_ENCODE",
              "BASE64_DECODE", "TRIM", "REPLACE", "STARTS_WITH", "ENDS_WITH",
-             "SUBSTRING", "CONTAINS", "COUNT", "SORT", "MIN_OF", "MAX_OF",
+             "SUBSTRING", "CONTAINS", "COUNT", "REPEAT", "SORT", "MIN_OF",
+             "MAX_OF",
              "SUM_OF", "FIRST", "LAST", "UNIQUE", "INDEX_OF", "KEYS",
              "VALUES", "HAS_KEY", "MERGE", "ABS", "ROUND", "FLOOR", "CEIL",
              "SQRT", "POW")

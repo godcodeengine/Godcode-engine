@@ -57,7 +57,7 @@ godcode ledger verify     # verify the covenant chain
   are pure: they need no import and run unchanged under `--sandbox`.
 - The commons: everyday tools, always present, pure and sandbox-safe.
   Words: `TRIM`, `REPLACE`, `STARTS_WITH`, `ENDS_WITH`, `SUBSTRING`,
-  `CONTAINS`, `COUNT`. Lists: `SORT` (returns a new list), `MIN_OF`,
+  `CONTAINS`, `COUNT`, `REPEAT`. Lists: `SORT` (returns a new list), `MIN_OF`,
   `MAX_OF`, `SUM_OF`, `FIRST`, `LAST`, `UNIQUE`, `INDEX_OF` (-1 when
   absent). Maps: `KEYS`, `VALUES`, `HAS_KEY`, `MERGE` (returns a new
   map). Numbers: `ABS`, `ROUND` (half away from zero), `FLOOR`, `CEIL`,
