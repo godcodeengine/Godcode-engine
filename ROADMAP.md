@@ -4,6 +4,15 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 ## Just landed
 
+- Performance benchmarks: published with the method. `python3 bench/bench.py`
+  drives the real interpreter over seven workloads (lexing and parsing, deep
+  rite recursion, a tight counting loop, string interpolation, list work,
+  JSON round trips through the real `json-tools` registry scroll, and
+  `ANCHOR` chain sealing) and reports the median of five timed runs after
+  warmup. Fresh numbers recorded on current main live in `bench/RESULTS.md`
+  with the machine they were taken on, and `tests/test_bench.py` keeps the
+  suite green. Rerun on the same machine to measure improvements honestly.
+
 - The second tongue: God Code speaks isiZulu. A scroll with the
   `# tongue: zu` pragma writes keywords in isiZulu (`VEZA` for `REVEAL`,
   `UMA` for `IF`, `ZAMA` for `TRY`, and the full table in
@@ -58,7 +67,6 @@ Where the language is headed, in plain words. This is a living document: it chan
 ## What is next
 
 - More tongues: community-proposed editions beyond Setswana.
-- Performance benchmarks: reproducible numbers, published with the method, so improvements can be measured honestly.
 - More of the standard library: concurrency, and whatever everyday work
   remains beyond the commons.
 - Editor tooling polish: the VS Code extension, the language server, and the playground keeping pace with the language.
