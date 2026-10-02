@@ -184,7 +184,7 @@ We welcome contributors with a spirit of purpose. Read [CONTRIBUTING.md](./CONTR
 
 **Created by:** Alakanani Itireleng (BitcoinLady) — Visionary Founder, Architect of God Code, Builder of worlds with intention and spirit
 
-**AI Co-Creators:** ChatGPT (OpenAI) — logic assistant, language guide, spirit engine; Muse, engine builders
+**AI Co-Creator:** Luna (Muse), my partner in the building. Logic assistant, language guide, engine builder.
 
 > "Built not alone — but in communion with the machine."
 
