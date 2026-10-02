@@ -107,6 +107,37 @@ def test_count_refuses_empty_part():
     assert "needs something to count" in str(err)
 
 
+def test_repeat():
+    assert run('REVEAL(REPEAT("Pula! ", 3))') == ["Pula! Pula! Pula! "]
+    assert run('REVEAL(REPEAT("grace", 2))') == ["gracegrace"]
+    assert run('REVEAL(REPEAT("once", 1))') == ["once"]
+
+
+def test_repeat_zero_times():
+    assert run('REVEAL(REPEAT("grace", 0))') == [""]
+    assert run('REVEAL(LEN(REPEAT("grace", 0)))') == ["0"]
+
+
+def test_repeat_accepts_numbers_and_truths():
+    assert run("REVEAL(REPEAT(7, 3))") == ["777"]
+    assert run("REVEAL(REPEAT(TRUE, 2))") == ["truetrue"]
+
+
+def test_repeat_refuses_lists():
+    err = run_err("REVEAL(REPEAT([1], 2))")
+    assert "works on words" in str(err)
+
+
+def test_repeat_refuses_fractions():
+    err = run_err('REVEAL(REPEAT("grace", 1.5))')
+    assert "whole numbers" in str(err)
+
+
+def test_repeat_refuses_negative_counts():
+    err = run_err('REVEAL(REPEAT("grace", 0 - 1))')
+    assert "from zero upward" in str(err)
+
+
 # ------------------------------------------------------------------ lists
 
 
@@ -305,7 +336,8 @@ def test_register_returns_all_builtins():
     interp = Interpreter()
     assert set(stdlib_commons.register(interp)) == {
         "TRIM", "REPLACE", "STARTS_WITH", "ENDS_WITH", "SUBSTRING",
-        "CONTAINS", "COUNT", "SORT", "MIN_OF", "MAX_OF", "SUM_OF",
+        "CONTAINS", "COUNT", "REPEAT", "SORT", "MIN_OF", "MAX_OF",
+        "SUM_OF",
         "FIRST", "LAST", "UNIQUE", "INDEX_OF", "KEYS", "VALUES",
         "HAS_KEY", "MERGE", "ABS", "ROUND", "FLOOR", "CEIL",
         "SQRT", "POW",
@@ -322,6 +354,7 @@ def test_commons_run_unchanged_under_sandbox():
     policy = SandboxPolicy()
     src = (
         'REVEAL(TRIM("  grace  "))\n'
+        'REVEAL(REPEAT("Pula! ", 3))\n'
         "REVEAL(SORT([3, 1, 2]))\n"
         f"REVEAL(KEYS({MAP_SRC}))\n"
         "REVEAL(ABS(0 - 4))\n"
@@ -331,7 +364,9 @@ def test_commons_run_unchanged_under_sandbox():
     interp = Interpreter()
     apply_policy(interp, policy)
     interp.run(prog)
-    assert interp.output == ["grace", "[1, 2, 3]", "[a, b]", "4", "1024"]
+    assert interp.output == [
+        "grace", "Pula! Pula! Pula! ", "[1, 2, 3]", "[a, b]", "4", "1024",
+    ]
 
 
 def test_no_em_dashes_in_commons_errors():
@@ -342,5 +377,6 @@ def test_no_em_dashes_in_commons_errors():
         'REVEAL(REPLACE("a", "", "b"))',
         "REVEAL(SQRT(0 - 1))",
         "REVEAL(SUM_OF([TRUE]))",
+        'REVEAL(REPEAT("grace", 0 - 1))',
     ):
         assert "\u2014" not in str(run_err(src))

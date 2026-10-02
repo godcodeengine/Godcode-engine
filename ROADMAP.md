@@ -25,9 +25,10 @@ Where the language is headed, in plain words. This is a living document: it chan
   tongue brings its snippets with it. New example:
   `examples/first_blessing_zu.god`.
 
-- The commons: twenty-five everyday builtins, always present, in a fourth
+- The commons: twenty-six everyday builtins, always present, in a fourth
   stdlib pillar (`godcode/stdlib_commons.py`). Words (`TRIM`, `REPLACE`,
-  `STARTS_WITH`, `ENDS_WITH`, `SUBSTRING`, `CONTAINS`, `COUNT`), lists
+  `STARTS_WITH`, `ENDS_WITH`, `SUBSTRING`, `CONTAINS`, `COUNT`, `REPEAT`),
+  lists
   (`SORT`, `MIN_OF`, `MAX_OF`, `SUM_OF`, `FIRST`, `LAST`, `UNIQUE`,
   `INDEX_OF`), maps (`KEYS`, `VALUES`, `HAS_KEY`, `MERGE`), and numbers
   (`ABS`, `ROUND`, `FLOOR`, `CEIL`, `SQRT`, `POW`). Pure computation, so

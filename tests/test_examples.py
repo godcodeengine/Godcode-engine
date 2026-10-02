@@ -99,6 +99,7 @@ def test_commons_demo(examples_tree):
     out = proc.stdout
     assert "manna, manna, honey" in out
     assert "bread, bread, honey" in out
+    assert "Pula! Pula! Pula! " in out
     assert "[4, 7, 7, 12, 12, 19]" in out
     assert "[bread, honey]" in out
     assert "{bread: 30, honey: 12, milk: 8}" in out

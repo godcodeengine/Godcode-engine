@@ -1,11 +1,12 @@
 # The commons at work: everyday tools for words, lists, maps, and numbers.
-# Twenty-four small builtins, always present, no import needed.
+# Twenty-six small builtins, always present, no import needed.
 
 BEGIN CREATION
   # Words: trim the edges, renew a name, ask what it holds
   DECLARE raw AS "  manna, manna, honey  "
   REVEAL(TRIM(raw))                                   # "manna, manna, honey"
   REVEAL(REPLACE(TRIM(raw), "manna", "bread"))        # "bread, bread, honey"
+  REVEAL(REPEAT("Pula! ", 3))                         # "Pula! Pula! Pula! "
   REVEAL(STARTS_WITH("dawn breaks", "dawn"))          # true
   REVEAL(ENDS_WITH("dawn breaks", "breaks"))          # true
   REVEAL(SUBSTRING("blessing", 2, 6))                 # "essi"

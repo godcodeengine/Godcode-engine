@@ -410,7 +410,7 @@ Always present, no import needed:
 
 ### Standard-library rites
 
-The standard library registers thirty-eight more rites at startup, in four
+The standard library registers thirty-nine more rites at startup, in four
 parts: the vault (`godcode/stdlib_vault.py`: JSON and the filesystem),
 time plus the web (`godcode/stdlib_times.py`), the scrollhouse of
 hashes (`godcode/stdlib_hashes.py`), and the commons
@@ -439,6 +439,7 @@ numbers). They are always present, no import needed.
 | `SUBSTRING` | `SUBSTRING(s, start [, end])` | the slice from `start` (counting from 0); edges beyond the word are gathered in |
 | `CONTAINS` | `CONTAINS(s, part)` / `CONTAINS(list, x)` | `TRUE` when the word holds the part, or the list holds the value |
 | `COUNT` | `COUNT(s, part)` | how many times the part appears in the word |
+| `REPEAT` | `REPEAT(s, n)` | the word sung `n` times over (`REPEAT("Pula! ", 3)` → `"Pula! Pula! Pula! "`; `0` gives an empty word) |
 | `SORT` | `SORT(list)` | a **new** list, ordered (numbers, words, or truths; mixed kinds are refused) |
 | `MIN_OF` / `MAX_OF` | `MIN_OF(list)` | the least (or greatest) member; an empty gathering is refused |
 | `SUM_OF` | `SUM_OF(list)` | the numbers added together (`0` for an empty list) |
@@ -497,6 +498,7 @@ The commons rites turn everyday work into one line:
 BEGIN CREATION
   REVEAL(TRIM("  grace upon grace  "))          # "grace upon grace"
   REVEAL(REPLACE("manna, manna", "manna", "bread"))
+  REVEAL(REPEAT("Pula! ", 3))                   # "Pula! Pula! Pula! "
   REVEAL(SORT([3, 1, 2]))                       # [1, 2, 3]
   REVEAL(SUM_OF([1, 2, 3, 4]))                   # 10
   REVEAL(UNIQUE(["a", "b", "a"]))               # ["a", "b"]
