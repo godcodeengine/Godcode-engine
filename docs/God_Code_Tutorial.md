@@ -2,7 +2,7 @@
 
 > "You are not just coding. You are prophesying."
 
-Welcome to the official tutorial for **God Code**, the world's first spiritually-inspired programming language. Whether you're a prophet of code or a curious seeker, this guide will walk you from nothing to your first living creation.
+Welcome to the official tutorial for **God Code**, a programming language that reads like scripture. Whether you're a prophet of code or a curious seeker, this guide will walk you from nothing to your first living creation.
 
 For the complete grammar, see [LANGUAGE_REFERENCE.md](LANGUAGE_REFERENCE.md). For runnable programs, explore [`../examples/`](../examples/).
 

@@ -1,7 +1,7 @@
 # 🧬 God Code – One Page Summary
 
 ### 🪶 Vision
-**God Code** is the first spiritually-inspired programming language: AI logic, metaphysical syntax, and blockchain integrity fused so that users **code with soul** — *"You are not a coder. You are a creator. You do not write code. You breathe worlds into being."* (Alakanani Itireleng, BitcoinLady)
+**God Code** is a programming language that reads like scripture: AI logic, expressive syntax, and a tamper-evident ledger fused so that users **code with soul** — *"You are not a coder. You are a creator. You do not write code. You breathe worlds into being."* (Alakanani Itireleng, BitcoinLady)
 
 ---
 
