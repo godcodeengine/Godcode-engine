@@ -167,7 +167,7 @@ God Code is alive and growing. Join the movement:
 - 💬 [Join our Discord community](https://discord.gg/894FEJhWfZ) — talk with fellow creators, ask questions, share your creations
 - 📧 [hello@getgodcode.com](mailto:hello@getgodcode.com) — reach us directly by email
 - 🌐 [Visit getgodcode.com](https://getgodcode.com) — the home of God Code on the web
-- 📜 Read [CONTRIBUTING.md](./CONTRIBUTING.md) and our [Code of Conduct](./CODE_OF_CONDUCT.md) before your first contribution
+- 📜 Read [CONTRIBUTING.md](./CONTRIBUTING.md) and our [Code of Conduct](./CODE_OF_CONDUCT.md) before your first contribution. [GOVERNANCE.md](./GOVERNANCE.md) says who keeps God Code and who decides what enters it
 - 🐞 Found a problem or have an idea? [Open an issue](../../issues/new/choose) — the templates will guide you
 
 Whether you write code or not, there is a place for you here. Come build with us.

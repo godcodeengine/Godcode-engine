@@ -65,13 +65,23 @@ Where the language is headed, in plain words. This is a living document: it chan
   install. The versioning scheme, compatibility promise, and deprecation
   process are written down in `docs/VERSIONING.md`.
 
+- How God Code is kept: `GOVERNANCE.md` writes down what was settled
+  with the founder. There is no company behind the language, and none is
+  needed: it is Apache 2.0 open source, and the founder (Alakanani
+  Itireleng) is the keeper of the vision, holding the brand, the
+  direction, the home, and the money when it comes. Anyone may propose,
+  and the keeper gives the final verdict. The lines the language will
+  not cross are written down: no wallets and no real chain calls, no
+  breaking of the compatibility promise, no hype in the claims. Linked
+  from the README and CONTRIBUTING, and kept honest by
+  `tests/test_governance.py`.
+
 ## What is next
 
 - More tongues: community-proposed editions beyond Setswana.
 - More of the standard library: concurrency, and whatever everyday work
   remains beyond the commons.
 - Editor tooling polish: the VS Code extension, the language server, and the playground keeping pace with the language.
-- 1.0 readiness: the versioning promise, the compatibility policy, and the governance documents a language needs before strangers trust it with real work.
 
 ## Deliberately not planned
 

@@ -4,6 +4,8 @@ Welcome to the divine code movement. God Code is the first intentional programmi
 
 We believe that software creation can be sacred, purposeful, and world-changing. If you feel called to build, you are welcome here.
 
+Before you build, read [GOVERNANCE.md](./GOVERNANCE.md): it says who keeps God Code, who decides what enters the language, and the lines the language will not cross.
+
 ---
 
 ## 🎃 Hacktoberfest
