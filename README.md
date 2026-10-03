@@ -5,7 +5,7 @@
 
 ---
 
-God Code is a **programming language that reads like scripture** — declare your intent, run safely, and leave a verifiable record. A complete engine with a real lexer, parser, interpreter, standard library of scrolls, a tamper-evident covenant ledger, and an AI-native design. Human-readable and open to people of every belief and none.
+God Code is a **programming language that reads like scripture**. Write real software in words of faith, in your own language, and watch it run. A complete engine with a real lexer, parser, interpreter, standard library of scrolls, a tamper-evident covenant ledger, and an AI-native design. Human-readable, safe, and built for humans and AI creating together.
 
 ---
 
