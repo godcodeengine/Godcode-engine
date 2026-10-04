@@ -19,9 +19,15 @@ Design notes, kept honest:
   ``RANGE`` ...) keep their names in every tongue, so scrolls stay
   interoperable and the standard library is learned once.
 - ``godcode fmt`` always renders the canonical English tongue.
-- These first editions leave a few words in English (``ELSE``, ``NOT``,
-  ``FOR``, ``WHILE``, ``ENDFOR``, ``ENDWHILE``); they are documented in
+- These first editions leave a few words in English (``ELSE``, ``FOR``,
+  ``WHILE``, ``ENDFOR``, ``ENDWHILE``); they are documented in
   ``docs/TONGUES.md`` and will cross over as speakers bless better words.
+- The Setswana words were audited 2026-10-04 against Matumo's
+  *Setswana-English-Setswana Dictionary* (Botswana Book Centre, 1993):
+  ``JAAKA`` (like, similar to) is the true word for ``AS`` (the headword
+  ``jaka`` is a verb, "to sojourn"), and ``TLOGA`` (then, thereupon) is
+  the true word for ``THEN`` (``gone`` is not a Setswana word at all).
+  ``GA`` (not) is blessed for ``NOT``.
 """
 
 from __future__ import annotations
@@ -40,7 +46,7 @@ _TN_ALIASES = {
     "TLHOLEGO": "CREATION",  # creation
     "FEDISA": "END",        # end
     "BOLELA": "DECLARE",    # say, announce
-    "JAKA": "AS",           # as, like
+    "JAAKA": "AS",          # like, similar to (Matumo: jaaka)
     "HEMA": "BREATHE",      # breathe
     "BOTSHELO": "LIFE",     # life
     "TENG": "INTO",         # inside (MO is taken by IN)
@@ -48,7 +54,8 @@ _TN_ALIASES = {
     "POROFETA": "PROPHESY",  # prophesy
     "TLHATLOGA": "ASCEND",  # go up
     "FA": "IF",             # if
-    "GONE": "THEN",         # then
+    "TLOGA": "THEN",        # then, thereupon (Matumo: tloga, auxiliary)
+    "GA": "NOT",            # not (Matumo: ga, negative form)
     "LEKA": "TRY",          # try
     "TSHWARA": "CATCH",     # catch
     "TLHALOSA": "DEFINE",   # define, explain
@@ -117,6 +124,7 @@ _ZU_ALIASES = {
     "BUYISA": "RETURN",       # return, give back
     "NGENISA": "IMPORT",      # bring in
     "NGU": "IS",              # is
+    "HHAYI": "NOT",          # no, not (first edition; native speakers decide)
     "KANYE": "AND",           # and, together
     "NOMA": "OR",             # or
     "KU": "IN",               # in, at

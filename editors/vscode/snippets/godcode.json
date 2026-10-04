@@ -153,7 +153,7 @@
  },
  "Setswana if": {
   "body": [
-   "FA ${1:seeker} KE ${2:worthy} GONE",
+   "FA ${1:seeker} KE ${2:worthy} TLOGA",
    "\t${3:SENOLA(\"heaven\")}",
    "FEDISA FA$0"
   ],

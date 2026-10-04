@@ -140,6 +140,20 @@ QEDA INDALO
     assert run(src) == ["imvula iyana"]
 
 
+def test_zulu_hhayi_is_not():
+    src = """# tongue: zu
+QALA INDALO
+MEMEZELA imvula NJENGA IQINISO
+UMA HHAYI imvula KHONA
+    VEZA("akunamvula")
+ELSE
+    VEZA("imvula iyana")
+QEDA UMA
+QEDA INDALO
+"""
+    assert run(src) == ["imvula iyana"]
+
+
 def test_zulu_try_catch_endtry_compound_runs():
     src = """# tongue: zu
 QALA INDALO

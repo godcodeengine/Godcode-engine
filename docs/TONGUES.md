@@ -12,7 +12,7 @@ Put a pragma comment in your scroll, and the grammar crosses over:
 ```godcode
 # tongue: tn
 SIMOLOLA TLHOLEGO
-BOLELA leina JAKA "Lefatshe"
+BOLELA leina JAAKA "Lefatshe"
 SENOLA("Dumela, {leina}.")
 FEDISA TLHOLEGO
 ```
@@ -29,23 +29,23 @@ words in the same file, so you can cross over one word at a time.
 | English | Setswana | English | Setswana |
 |---|---|---|---|
 | BEGIN | SIMOLOLA | IF | FA |
-| CREATION | TLHOLEGO | THEN | GONE |
+| CREATION | TLHOLEGO | THEN | TLOGA |
 | END | FEDISA | TRY | LEKA |
 | DECLARE | BOLELA | CATCH | TSHWARA |
-| AS | JAKA | DEFINE | TLHALOSA |
+| AS | JAAKA | DEFINE | TLHALOSA |
 | BREATHE | HEMA | RITE | TIRO |
 | LIFE | BOTSHELO | INVOKE | BITSA |
 | INTO | TENG | RETURN | BUSETSA |
 | REVEAL | SENOLA | IMPORT | TSENYA |
 | PROPHESY | POROFETA | IS | KE |
-| ASCEND | TLHATLOGA | AND | LE |
-| REFLECT | AKANYA | OR | KGOTSA |
-| BLESS | SEGOFATSA | IN | MO |
-| ANOINT | TLOTSA | DO | DIRA |
-| SEAL | TSWALA | TRUE | NNETE |
-| TESTIFY | PAKA | FALSE | MAAKA |
-| BREAK | KGAOLA | VOID | SEPE |
-| CONTINUE | TSWELELA | | |
+| ASCEND | TLHATLOGA | NOT | GA |
+| REFLECT | AKANYA | AND | LE |
+| BLESS | SEGOFATSA | OR | KGOTSA |
+| ANOINT | TLOTSA | IN | MO |
+| SEAL | TSWALA | DO | DIRA |
+| TESTIFY | PAKA | TRUE | NNETE |
+| BREAK | KGAOLA | FALSE | MAAKA |
+| CONTINUE | TSWELELA | VOID | SEPE |
 
 Two closers are spoken as two words on one line: `FEDISA FA` closes an
 `IF` (ENDIF), and `FEDISA LEKA` closes a `TRY` (ENDTRY).
@@ -74,14 +74,14 @@ QEDA INDALO
 | INTO | PHAKATHI | RETURN | BUYISA |
 | REVEAL | VEZA | IMPORT | NGENISA |
 | PROPHESY | PROFETA | IS | NGU |
-| ASCEND | ENYUKA | AND | KANYE |
-| REFLECT | ZINDLA | OR | NOMA |
-| BLESS | BUSISA | IN | KU |
-| ANOINT | GCOBA | DO | ENZA |
-| SEAL | VALA | TRUE | IQINISO |
-| TESTIFY | FAKAZA | FALSE | AMANGA |
-| BREAK | PHULA | VOID | LUTHO |
-| CONTINUE | QHUBEKA | | |
+| ASCEND | ENYUKA | NOT | HHAYI |
+| REFLECT | ZINDLA | AND | KANYE |
+| BLESS | BUSISA | OR | NOMA |
+| ANOINT | GCOBA | IN | KU |
+| SEAL | VALA | DO | ENZA |
+| TESTIFY | FAKAZA | TRUE | IQINISO |
+| BREAK | PHULA | FALSE | AMANGA |
+| CONTINUE | QHUBEKA | VOID | LUTHO |
 
 Two closers are spoken as two words on one line: `QEDA UMA` closes an
 `IF` (ENDIF), and `QEDA ZAMA` closes a `TRY` (ENDTRY). A worked example
@@ -90,12 +90,21 @@ lives at `examples/first_blessing_zu.god`, and the playground boots a
 
 ## Honest first-edition notes
 
-A few words stay English in these first editions: `ELSE`, `NOT`, `FOR`,
+A few words stay English in these first editions: `ELSE`, `FOR`,
 `WHILE`, `ENDFOR`, and `ENDWHILE`. They will cross over as speakers bless
 better words. The named tools (`SHA256`, `UPPER`, `RANGE`, and the rest)
 keep their names in every tongue, by design: the grammar speaks your
 language, the tools stay shared, and a scroll written in Setswana runs
 beside one written in isiZulu or English without translation.
+
+Corrected 2026-10-04, against Matumo's *Setswana-English-Setswana
+Dictionary*: `AS` in Setswana is `JAAKA` (like, similar to). The first
+edition had written `JAKA`, which the dictionary knows only as a verb
+meaning "to sojourn". `THEN` is `TLOGA` (then, thereupon, as an
+auxiliary verb). The first edition had written `GONE`, which is not a
+Setswana word at all. And `NOT` crosses over at last as `GA`, the
+dictionary's negative form. Scrolls written with `JAKA` or `GONE`
+under `# tongue: tn` should cross over to `JAAKA` and `TLOGA`.
 
 Corrected 2026-10-04, by a native speaker's eye: `BEGIN` in Setswana is
 `SIMOLOLA` (to begin, to start). The first edition had borrowed `QALA`,

@@ -23,7 +23,7 @@ TN_DOC = (
     "# tongue: tn\n"
     "SIMOLOLA TLHOLEGO\n"
     '  SENOLA("Dumela")\n'
-    "  FA x GONE\n"
+    "  FA x TLOGA\n"
     '    SENOLA("go")\n'
     "  FEDISA FA\n"
     "FEDISA TLHOLEGO\n"
@@ -112,7 +112,7 @@ def test_completion_default_signature_unchanged() -> None:
 
 def test_hover_key_single_word() -> None:
     assert lsp.tongue_hover_key('  SENOLA("hi")', 4, "tn") == "REVEAL"
-    assert lsp.tongue_hover_key("  FA x GONE", 3, "tn") == "IF"
+    assert lsp.tongue_hover_key("  FA x TLOGA", 3, "tn") == "IF"
 
 
 def test_hover_key_two_word_closers() -> None:
@@ -316,7 +316,7 @@ def test_vscode_grammar_paints_setswana_keywords() -> None:
     assert patterns["keyword-spirit"].search("SENOLA")
     assert patterns["keyword-spirit"].search("POROFETA")
     assert patterns["keyword-control"].search("FA")
-    assert patterns["keyword-control"].search("GONE")
+    assert patterns["keyword-control"].search("TLOGA")
     assert patterns["keyword-control"].search("FEDISA FA")
     assert patterns["keyword-control"].search("FEDISA LEKA")
     assert patterns["keyword-control"].search("LEKA")
@@ -327,7 +327,7 @@ def test_vscode_grammar_paints_setswana_keywords() -> None:
     assert patterns["keyword-control"].search("BUSETSA")
     assert patterns["keyword-control"].search("TSENYA")
     assert patterns["keyword-declaration"].search("BOLELA")
-    assert patterns["keyword-declaration"].search("JAKA")
+    assert patterns["keyword-declaration"].search("JAAKA")
     assert patterns["keyword-logic"].search("KE")
     assert patterns["keyword-logic"].search("LE")
     assert patterns["keyword-logic"].search("KGOTSA")
