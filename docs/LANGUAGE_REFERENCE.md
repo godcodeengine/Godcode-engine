@@ -34,7 +34,7 @@ A scroll may speak another tongue. Put a pragma comment in the file, e.g. `# ton
 
 ```godcode
 # tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA leina JAKA "Lefatshe"
 SENOLA("Dumela, {leina}.")
 FEDISA TLHOLEGO

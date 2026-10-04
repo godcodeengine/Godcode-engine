@@ -142,14 +142,14 @@
  "Setswana creation block": {
   "body": [
    "# tongue: tn",
-   "QALA TLHOLEGO",
+   "SIMOLOLA TLHOLEGO",
    "\t${1:# Dumela}",
    "\t$0",
    "\tTLHATLOGA",
    "FEDISA TLHOLEGO"
   ],
   "description": "A God Code creation block in Setswana",
-  "prefix": "qala"
+  "prefix": "simolola"
  },
  "Setswana if": {
   "body": [

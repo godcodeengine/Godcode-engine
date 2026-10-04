@@ -36,7 +36,7 @@ _PRAGMA = re.compile(
 
 # Setswana (tn) word -> canonical English keyword name.
 _TN_ALIASES = {
-    "QALA": "BEGIN",        # begin
+    "SIMOLOLA": "BEGIN",    # begin, start
     "TLHOLEGO": "CREATION",  # creation
     "FEDISA": "END",        # end
     "BOLELA": "DECLARE",    # say, announce
@@ -83,8 +83,8 @@ _TN_COMPOUNDS = {
 # Editor block snippets for Setswana, offered by the language server when
 # a scroll speaks the tongue: (label, insert text, plain description).
 _TN_SNIPPETS = (
-    ("QALA TLHOLEGO … FEDISA TLHOLEGO",
-     "QALA TLHOLEGO\\n\\t$0\\nFEDISA TLHOLEGO",
+    ("SIMOLOLA TLHOLEGO … FEDISA TLHOLEGO",
+     "SIMOLOLA TLHOLEGO\\n\\t$0\\nFEDISA TLHOLEGO",
      "Open a new scroll"),
     ("FA … GONE … FEDISA FA",
      "FA ${1:condition} GONE\\n\\t$0\\nFEDISA FA",

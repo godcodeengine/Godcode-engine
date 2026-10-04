@@ -730,7 +730,8 @@ def tongue_hover_key(line_text: str, char: int, code: str) -> str | None:
     """The canonical English doc key under the cursor for a tongue word.
 
     Two-word closers (``FEDISA FA``) map to their doc key, openers like
-    ``QALA TLHOLEGO`` map to ``BEGIN CREATION``, and single words map
+    ``SIMOLOLA TLHOLEGO`` (Setswana) or ``QALA INDALO`` (isiZulu) map to
+    ``BEGIN CREATION``, and single words map
     through the tongue's alias table. Returns None when the cursor is not
     on a tongue word.
     """

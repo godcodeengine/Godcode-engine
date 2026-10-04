@@ -112,7 +112,7 @@ generate → check --json → fix from diagnostics → run --sandbox --json
 ## Tongues: keywords in other languages
 
 A scroll may open with `# tongue: tn` and write keywords in Setswana
-(`QALA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF` ...). The pragma is honoured
+(`SIMOLOLA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF` ...). The pragma is honoured
 by every command, including `--json` ones; English keywords still work in
 the same file; `fmt` renders canonical English; the named tools
 (`SHA256`, `UPPER`, ...) never translate. When generating for a tongue,

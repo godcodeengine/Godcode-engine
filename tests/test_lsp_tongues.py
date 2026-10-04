@@ -21,7 +21,7 @@ from godcode import lsp
 
 TN_DOC = (
     "# tongue: tn\n"
-    "QALA TLHOLEGO\n"
+    "SIMOLOLA TLHOLEGO\n"
     '  SENOLA("Dumela")\n'
     "  FA x GONE\n"
     '    SENOLA("go")\n'
@@ -69,7 +69,7 @@ def test_tongue_snippet_items_carry_setswana_name() -> None:
     assert len(items) == 3
     assert all("Setswana" in i["detail"] for i in items)
     labels = [i["label"] for i in items]
-    assert "QALA TLHOLEGO … FEDISA TLHOLEGO" in labels
+    assert "SIMOLOLA TLHOLEGO … FEDISA TLHOLEGO" in labels
 
 
 # ---------------------------------------------------------------------------
@@ -92,7 +92,7 @@ def test_completion_setswana_doc_adds_tongue_words() -> None:
     assert "FEDISA LEKA (ENDTRY)" in labels
     # English stays: mixed scrolls are welcome
     assert "REVEAL" in labels
-    assert "QALA TLHOLEGO … FEDISA TLHOLEGO" in labels
+    assert "SIMOLOLA TLHOLEGO … FEDISA TLHOLEGO" in labels
 
 
 def test_completion_unknown_tongue_falls_back_to_english() -> None:
@@ -123,7 +123,7 @@ def test_hover_key_two_word_closers() -> None:
 
 
 def test_hover_key_two_word_openers() -> None:
-    assert lsp.tongue_hover_key("QALA TLHOLEGO", 2, "tn") == "BEGIN CREATION"
+    assert lsp.tongue_hover_key("SIMOLOLA TLHOLEGO", 2, "tn") == "BEGIN CREATION"
     assert lsp.tongue_hover_key("FEDISA TLHOLEGO", 2, "tn") == "END CREATION"
     assert lsp.tongue_hover_key("TLHALOSA TIRO x", 3, "tn") == "DEFINE RITE"
 
@@ -136,7 +136,7 @@ def test_hover_key_returns_none_off_tongue_words() -> None:
 
 def test_hover_key_points_at_documented_keys() -> None:
     for line, char in [('  SENOLA("hi")', 4), ("  FEDISA FA", 4),
-                       ("QALA TLHOLEGO", 2)]:
+                       ("SIMOLOLA TLHOLEGO", 2)]:
         key = lsp.tongue_hover_key(line, char, "tn")
         assert key is not None
         assert lsp.hover_markdown(key) is not None, f"no hover doc for {key}"
@@ -331,7 +331,7 @@ def test_vscode_grammar_paints_setswana_keywords() -> None:
     assert patterns["keyword-logic"].search("KE")
     assert patterns["keyword-logic"].search("LE")
     assert patterns["keyword-logic"].search("KGOTSA")
-    assert patterns["keyword-structure"].search("QALA TLHOLEGO")
+    assert patterns["keyword-structure"].search("SIMOLOLA TLHOLEGO")
     assert patterns["keyword-structure"].search("FEDISA TLHOLEGO")
     assert patterns["keyword-structure"].search("TLHALOSA TIRO")
     assert patterns["constant-language"].search("NNETE")
@@ -356,7 +356,7 @@ def test_vscode_snippets_setswana_starters_run() -> None:
     assert "Setswana creation block" in snippets
     assert "Setswana if" in snippets
     creation = snippets["Setswana creation block"]
-    assert creation["prefix"] == "qala"
+    assert creation["prefix"] == "simolola"
     body = "\n".join(creation["body"])
     body = re.sub(r"\$\{\d+:([^}]*)\}", r"\1", body).replace("$0", "")
     tree = parse_source(body)
@@ -374,7 +374,7 @@ def test_vscode_snippets_setswana_starters_run() -> None:
     # placeholder 3 keeps its SENOLA("heaven") default
     cond_body = re.sub(r"\$\{[12]:[^}]*\}", "heaven", cond_body)
     cond_body = re.sub(r"\$\{\d+:([^}]*)\}", r"\1", cond_body).replace("$0", "")
-    wrapped = "# tongue: tn\nQALA TLHOLEGO\n" + cond_body + "\nFEDISA TLHOLEGO\n"
+    wrapped = "# tongue: tn\nSIMOLOLA TLHOLEGO\n" + cond_body + "\nFEDISA TLHOLEGO\n"
     tree = parse_source(wrapped)
     buf = io.StringIO()
     with redirect_stdout(buf):

@@ -31,6 +31,7 @@ All notable changes to the God Code engine are recorded here, that the generatio
 - **Agent gotcha** — repo `AGENTS.md` notes the interpolation rule so agents generating God Code use it correctly
 
 - New `InterpolatedString` AST node (`godcode/ast.py`); the parser builds it from any `STRING` token containing `{` or `}}` (plain strings are untouched `Literal`s); the interpreter renders each part with the same `stringify` as `REVEAL`. Note: a string that previously contained a literal `{` now needs `{{` — the pre-launch language is still young enough for this to be safe
+- **🕊️ Setswana speaks its own BEGIN.** The first tongue's word for `BEGIN` is `SIMOLOLA` (to begin, to start), corrected from `QALA`, which is isiZulu, where it rightly remains. The mapping moves in `godcode/tongues.py` (the Setswana editor snippets follow), and every surface that carried the old word crosses over with it: `docs/TONGUES.md` (with an honest dated correction note), `docs/LANGUAGE_REFERENCE.md`, `docs/agentics.md`, repo `AGENTS.md`, the site landing card, the learn page, the in-browser playground (alias map and the "Dumela (Setswana)" sample), the VS Code grammar and snippets, `examples/first_blessing_tn.god`, and the tongue test suites. Verified against Mistry's *An Introduction to Spoken Setswana* (Peace Corps), where `simolola` is "begin, start" and `qala` never appears
 
 
 

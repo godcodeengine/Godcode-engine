@@ -76,7 +76,7 @@
       "name": "support.function.godcode"
     },
     "keyword-structure": {
-      "match": "(?i)\\b(BEGIN|END|QALA|FEDISA|QEDA)\\s+(CREATION|RITE|TLHOLEGO|TIRO|INDALO|ISIKO)\\b|(?i)\\b(CREATION|RITE|TLHOLEGO|TIRO|INDALO|ISIKO)\\b",
+      "match": "(?i)\\b(BEGIN|END|QALA|SIMOLOLA|FEDISA|QEDA)\\s+(CREATION|RITE|TLHOLEGO|TIRO|INDALO|ISIKO)\\b|(?i)\\b(CREATION|RITE|TLHOLEGO|TIRO|INDALO|ISIKO)\\b",
       "name": "storage.type.godcode"
     },
     "number": {

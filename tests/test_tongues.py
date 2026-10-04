@@ -27,7 +27,7 @@ def run(src):
 
 
 TN_HELLO = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA leina JAKA "Lefatshe"
 SENOLA("Dumela, " + leina)
 FEDISA TLHOLEGO
@@ -38,10 +38,10 @@ FEDISA TLHOLEGO
 
 
 def test_detect_tongue_pragma():
-    assert detect_tongue("# tongue: tn\nQALA TLHOLEGO\n") == "tn"
+    assert detect_tongue("# tongue: tn\nSIMOLOLA TLHOLEGO\n") == "tn"
     assert detect_tongue("#tongue:TN\n") == "tn"
     assert detect_tongue("  #   Tongue  :  tn  \n") == "tn"
-    assert detect_tongue("QALA TLHOLEGO\n") is None
+    assert detect_tongue("SIMOLOLA TLHOLEGO\n") is None
 
 
 def test_known_tongues_lists_setswana():
@@ -58,11 +58,11 @@ def test_unknown_tongue_is_a_gentle_error():
 
 def test_unknown_tongue_pragma_fails_lexing():
     with pytest.raises(LexerError):
-        Lexer("# tongue: xx\nQALA TLHOLEGO\n").lex()
+        Lexer("# tongue: xx\nSIMOLOLA TLHOLEGO\n").lex()
 
 
 def test_explicit_tongue_argument_beats_pragma():
-    lx = Lexer("# tongue: tn\nQALA TLHOLEGO\n", tongue="en")
+    lx = Lexer("# tongue: tn\nSIMOLOLA TLHOLEGO\n", tongue="en")
     lx.lex()
     assert lx.tongue == "en"
 
@@ -86,14 +86,14 @@ def test_alias_words_become_canonical_tokens():
 def test_two_word_closers():
     from godcode.tokens import TokenType
 
-    src = "# tongue: tn\nQALA TLHOLEGO\nFA x GONE\nFEDISA FA\nFEDISA TLHOLEGO\n"
+    src = "# tongue: tn\nSIMOLOLA TLHOLEGO\nFA x GONE\nFEDISA FA\nFEDISA TLHOLEGO\n"
     kinds = [t.type for t in Lexer(src).lex()]
     assert TokenType.ENDIF in kinds
     assert kinds.count(TokenType.END) == 1  # only END CREATION's END
 
 
 def test_compound_closer_needs_one_line():
-    src = "# tongue: tn\nQALA TLHOLEGO\nFEDISA\nFA\nFEDISA TLHOLEGO\n"
+    src = "# tongue: tn\nSIMOLOLA TLHOLEGO\nFEDISA\nFA\nFEDISA TLHOLEGO\n"
     with pytest.raises(GodCodeError):
         parse_source(src)
 
@@ -101,7 +101,7 @@ def test_compound_closer_needs_one_line():
 def test_endtry_compound():
     from godcode.tokens import TokenType
 
-    src = "# tongue: tn\nQALA TLHOLEGO\nLEKA\nTSHWARA\nFEDISA LEKA\nFEDISA TLHOLEGO\n"
+    src = "# tongue: tn\nSIMOLOLA TLHOLEGO\nLEKA\nTSHWARA\nFEDISA LEKA\nFEDISA TLHOLEGO\n"
     kinds = [t.type for t in Lexer(src).lex()]
     assert TokenType.ENDTRY in kinds
 
@@ -109,7 +109,7 @@ def test_endtry_compound():
 def test_without_pragma_tongue_words_are_identifiers():
     from godcode.tokens import TokenType
 
-    src = "QALA TLHOLEGO\n"
+    src = "SIMOLOLA TLHOLEGO\n"
     kinds = [t.type for t in Lexer(src).lex()]
     assert TokenType.IDENT in kinds
     assert TokenType.BEGIN not in kinds
@@ -124,7 +124,7 @@ def test_setswana_hello_runs():
 
 def test_if_then_endif_compound_runs():
     src = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA pula JAKA NNETE
 FA pula GONE
     SENOLA("pula e na")
@@ -138,7 +138,7 @@ FEDISA TLHOLEGO
 
 def test_try_catch_endtry_compound_runs():
     src = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 LEKA
     BOLELA x JAKA 1 / 0
 TSHWARA phoso
@@ -151,7 +151,7 @@ FEDISA TLHOLEGO
 
 def test_breathe_life_into_and_loops():
     src = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA motse JAKA "Gaborone"
 HEMA BOTSHELO TENG motse
 BOLELA palogotlhe JAKA 0
@@ -168,7 +168,7 @@ FEDISA TLHOLEGO
 
 def test_mixed_english_and_setswana():
     src = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 DECLARE x AS 40 + 2
 SENOLA(x)
 END CREATION
@@ -178,7 +178,7 @@ END CREATION
 
 def test_interpolation_speaks_the_tongue():
     src = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA leina JAKA "tsala"
 SENOLA("Dumela {leina}: {NNETE LE NNETE}")
 FEDISA TLHOLEGO
@@ -188,7 +188,7 @@ FEDISA TLHOLEGO
 
 def test_while_and_break_stay_english_in_first_edition():
     src = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA n JAKA 0
 WHILE NNETE DO
     BOLELA n JAKA n + 1
@@ -206,7 +206,7 @@ def test_fmt_renders_canonical_english():
     from godcode.cli import CanonicalFormatter
 
     src = """# tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA x JAKA 1
 SENOLA(x)
 FEDISA TLHOLEGO
@@ -215,7 +215,7 @@ FEDISA TLHOLEGO
     out = CanonicalFormatter().format(parse_source(src))
     assert "DECLARE x AS 1" in out
     assert "REVEAL(x)" in out
-    assert "QALA" not in out and "SENOLA" not in out
+    assert "SIMOLOLA" not in out and "SENOLA" not in out
     # And the canonical rendering runs as plain English.
     assert run(out) == ["1"]
 

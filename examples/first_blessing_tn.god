@@ -1,7 +1,7 @@
 # tongue: tn
 # Dumela — the first blessing spoken in Setswana.
 # Run it: godcode run examples/first_blessing_tn.god
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA leina JAKA "tsala ya me"
 SENOLA("Dumela, {leina}.")
 

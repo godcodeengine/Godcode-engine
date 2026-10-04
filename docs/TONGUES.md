@@ -11,7 +11,7 @@ Put a pragma comment in your scroll, and the grammar crosses over:
 
 ```godcode
 # tongue: tn
-QALA TLHOLEGO
+SIMOLOLA TLHOLEGO
 BOLELA leina JAKA "Lefatshe"
 SENOLA("Dumela, {leina}.")
 FEDISA TLHOLEGO
@@ -28,7 +28,7 @@ words in the same file, so you can cross over one word at a time.
 
 | English | Setswana | English | Setswana |
 |---|---|---|---|
-| BEGIN | QALA | IF | FA |
+| BEGIN | SIMOLOLA | IF | FA |
 | CREATION | TLHOLEGO | THEN | GONE |
 | END | FEDISA | TRY | LEKA |
 | DECLARE | BOLELA | CATCH | TSHWARA |
@@ -97,6 +97,11 @@ keep their names in every tongue, by design: the grammar speaks your
 language, the tools stay shared, and a scroll written in Setswana runs
 beside one written in isiZulu or English without translation.
 
+Corrected 2026-10-04, by a native speaker's eye: `BEGIN` in Setswana is
+`SIMOLOLA` (to begin, to start). The first edition had borrowed `QALA`,
+which is isiZulu, where it rightly remains. Scrolls written with `QALA`
+under `# tongue: tn` should cross over to `SIMOLOLA`.
+
 `godcode fmt` always renders the canonical English tongue. Inside
 `{...}` interpolation, the tongue's keywords work too.
 
@@ -112,10 +117,10 @@ The language server reads the pragma in the open scroll. When it sees
 unfold in that tongue. `# tongue: zu` brings `VEZA (REVEAL)` and
 `QEDA UMA (ENDIF)` the same way. Hovering a tongue word shows the
 English keyword's own documentation, so `SENOLA` explains itself as
-`REVEAL`, `VEZA` explains itself as `REVEAL`, and `QALA TLHOLEGO` opens
+`REVEAL`, `VEZA` explains itself as `REVEAL`, and `SIMOLOLA TLHOLEGO` opens
 the `BEGIN CREATION` notes. The VS Code extension paints Setswana and
 isiZulu keywords in their colors too (always on, so mixed scrolls glow
-in every tongue), and ships starter snippets for both: type `qala` or
+in every tongue), and ships starter snippets for both: type `simolola` or
 `fa` for Setswana blocks, `sawubona` or `uma` for isiZulu ones. The
 named tools stay English everywhere, and `godcode fmt` still renders
 the canonical English tongue.

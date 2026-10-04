@@ -76,7 +76,7 @@ godcode ledger verify     # verify the covenant chain
   `fmt`) prints the offending source line beneath the message, with a caret at
   the column when known.
 - Tongues: a scroll with `# tongue: tn` writes keywords in Setswana
-  (`QALA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF`...), and a scroll with
+  (`SIMOLOLA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF`...), and a scroll with
   `# tongue: zu` writes them in isiZulu (`QALA`/`BEGIN`, `VEZA`/`REVEAL`,
   `UMA`/`IF`...); see `docs/TONGUES.md` for both word tables.
   English keywords still work in the same file. `fmt` renders canonical
