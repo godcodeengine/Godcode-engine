@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support God Code</title>
+<style>
+  :root { --gold: #F2B21B; --ink: #F5F1E6; --dim: #b9b2a0; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0a0a0b; color: var(--ink); font-family: Georgia, serif; line-height: 1.6; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 40px 22px 64px; }
+  .mark { display: block; width: 120px; margin: 0 auto 18px; }
+  h1 { text-align: center; font-size: 30px; margin: 0 0 6px; }
+  h1 .gold { color: var(--gold); }
+  .sub { text-align: center; color: var(--dim); margin-bottom: 30px; }
+  .card { background: #141416; border: 1px solid #2a2a2e; border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+  .card h2 { margin: 0 0 10px; font-size: 20px; color: var(--gold); }
+  .addr { font-family: monospace; font-size: 12.5px; word-break: break-all; background: #0a0a0b; border: 1px dashed #3a3a40; border-radius: 8px; padding: 12px; margin: 12px 0; }
+  .btn { display: inline-block; background: var(--gold); color: #111; font-weight: bold; border: none; border-radius: 8px; padding: 12px 22px; font-size: 15px; cursor: pointer; font-family: inherit; }
+  .btn:active { transform: scale(0.98); }
+  .net { display: inline-block; font-size: 12px; letter-spacing: 2px; color: var(--dim); border: 1px solid #3a3a40; border-radius: 20px; padding: 4px 12px; margin-bottom: 8px; }
+  .qr { display: block; width: 180px; height: 180px; margin: 14px auto 4px; background: #fff; border-radius: 8px; }
+  ul { padding-left: 20px; }
+  li { margin-bottom: 8px; }
+  .fine { font-size: 13px; color: var(--dim); }
+  .warn { font-size: 13px; color: #e8a33d; }
+  .home { display: block; text-align: center; margin-top: 28px; color: var(--gold); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="mark" src="/images/icon.png" alt="God Code mark">
+  <h1>Support <span class="gold">God Code</span></h1>
+  <p class="sub">Created in Botswana. Open to the world. Free forever.</p>
+
+  <div class="card">
+    <h2>Why give</h2>
+    <p>God Code is open source under the Apache 2.0 licence, free for everyone, forever. Your gift keeps the work going:</p>
+    <ul>
+      <li>Hosting for the site, the playground, and the scroll registry</li>
+      <li>Domains and the certificates that keep them safe</li>
+      <li>Bounties for outside builders who grow the language</li>
+      <li>The daily lessons and the community home on Discord</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Bitcoin</h2>
+    <span class="net">BTC &nbsp;·&nbsp; BITCOIN NETWORK</span>
+    <div class="addr" id="addr-btc">bc1q24t30lwmymtrxskgtkzvqxwddagrkyqpj70vyl</div>
+    <button class="btn" onclick="copyAddr('addr-btc', this)">Copy address</button>
+    <img class="qr" src="/images/donate-btc.png" alt="Bitcoin donation QR code">
+    <p class="warn">Send only BTC on the Bitcoin network to this address.</p>
+  </div>
+
+  <div class="card">
+    <h2>USDT on Ethereum or BNB Chain</h2>
+    <span class="net">USDT &nbsp;·&nbsp; ETHEREUM / BEP20</span>
+    <div class="addr" id="addr-usdt-eth">0x50Fa030F62881634D39869947d935f5E9e5017cB</div>
+    <button class="btn" onclick="copyAddr('addr-usdt-eth', this)">Copy address</button>
+    <img class="qr" src="/images/donate-usdt-eth.png" alt="USDT donation QR code for Ethereum and BNB Chain">
+    <p class="warn">Send only USDT on Ethereum (ERC20) or BNB Chain (BEP20) to this address.</p>
+  </div>
+
+  <div class="card">
+    <h2>USDT on Tron</h2>
+    <span class="net">USDT &nbsp;·&nbsp; TRON / TRC20</span>
+    <div class="addr" id="addr-usdt-tron">TGxcPiby7fzeeq4bQAzDdheNiPnpbfLxGF</div>
+    <button class="btn" onclick="copyAddr('addr-usdt-tron', this)">Copy address</button>
+    <img class="qr" src="/images/donate-usdt-tron.png" alt="USDT donation QR code for Tron">
+    <p class="warn">Send only USDT on the Tron network (TRC20) to this address.</p>
+  </div>
+
+  <div class="card">
+    <h2>A note on gifts</h2>
+    <p class="fine">Donations are voluntary gifts that support open source work. They are not payments for goods or services, and they do not buy influence over the language. God Code stays open to everyone. Every gift is recorded, and a public account of what donations funded is published with each season of work.</p>
+  </div>
+
+  <a class="home" href="/">← getgodcode.com</a>
+</div>
+<script>
+  function copyAddr(id, btn) {
+    navigator.clipboard.writeText(document.getElementById(id).innerText.trim()).then(function () {
+      var old = btn.innerText;
+      btn.innerText = 'Copied.';
+      setTimeout(function () { btn.innerText = old; }, 1500);
+    });
+  }
+</script>
+</body>
+</html>
