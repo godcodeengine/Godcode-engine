@@ -152,6 +152,8 @@ godcode-engine/
 
 📜 [Language Reference](docs/LANGUAGE_REFERENCE.md) — the complete specification: every statement, operator tables, the Symbol Rule, built-in catalog, scrolls, ledger, Spirit Engine, CLI, SUMMON, the scroll registry, the sandbox, the language server, declared intent, blockchain-anchored seals, the oracle, and the agent tool bridge.
 
+🏛️ [The layered specification](docs/spec/00-overview.md) — the language's promises, written as numbered rules and kept honest by tests. The lexical layer (how text becomes tokens) is written; syntax, static and dynamic meaning, the standard library, and the interfaces follow.
+
 ---
 
 ## 💻 Write God Code in VS Code

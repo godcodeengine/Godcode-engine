@@ -1,5 +1,7 @@
 # God Code Language Specification (Draft 1)
 
+> A note on where the truth lives now (2026-10-04): the specification is being rewritten as numbered, test-kept layers in `docs/spec/`. The lexical layer (everything in §2 below) is now written there as `docs/spec/lexical.md`, with 29 numbered rules backed by `tests/test_spec_lexical.py`. Where the layered spec and this document disagree, the layered spec wins, and the corresponding section below will be retired as its layer lands.
+
 This document describes the God Code language as it is implemented in the godcode-engine tree-walking interpreter. Where the older language reference and the implementation disagree, the implementation wins, and every claim below has been checked against the code or against small probe scrolls run through it. God Code is pre-1.0, so this specification will grow as the language does.
 
 ## 1. Overview and design goals
