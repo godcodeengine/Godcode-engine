@@ -9,7 +9,7 @@ The old `docs/LANGUAGE_SPEC.md` was one long document that described the languag
 ## The layers, in order
 
 1. **Lexical** (`lexical.md`): how source text becomes tokens. What counts as a word, a number, a string, a comment, a line break. Nothing about meaning yet.
-2. **Syntax** (coming): how tokens become a scroll's shape. The grammar, the closers, the one-line forms.
+2. **Syntax** (`syntax.md`): how tokens become a scroll's shape. The grammar, the closers, the one-line forms.
 3. **Static meaning** (coming): what can be known before a scroll runs. Names, scopes, the linter's counsel, check-time warnings.
 4. **Dynamic meaning** (coming): what happens when a scroll runs. Values, truth, rites, errors, the ledger.
 5. **Standard library** (coming): the built-in rites and scrolls, and what they promise.
