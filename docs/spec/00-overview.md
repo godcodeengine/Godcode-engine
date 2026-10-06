@@ -10,14 +10,14 @@ The old `docs/LANGUAGE_SPEC.md` was one long document that described the languag
 
 1. **Lexical** (`lexical.md`): how source text becomes tokens. What counts as a word, a number, a string, a comment, a line break. Nothing about meaning yet.
 2. **Syntax** (`syntax.md`): how tokens become a scroll's shape. The grammar, the closers, the one-line forms.
-3. **Static meaning** (coming): what can be known before a scroll runs. Names, scopes, the linter's counsel, check-time warnings.
+3. **Static meaning** (`static-meaning.md`): what can be known before a scroll runs. Names, scopes, the linter's counsel, check-time warnings, the Symbol Rule's classic face.
 4. **Dynamic meaning** (coming): what happens when a scroll runs. Values, truth, rites, errors, the ledger.
 5. **Standard library** (coming): the built-in rites and scrolls, and what they promise.
 6. **Interfaces** (coming): the machine faces of the language. CLI JSON shapes, exit codes, the bridge.
 
 ## How to read a rule
 
-- **LX** rules are the lexical layer. **SX**, **ST**, **DY**, **SL**, **IF** follow for the rest.
+- **LX** rules are the lexical layer. **SX** rules are the syntax layer. **ST** rules are the static meaning layer. **DY**, **SL**, **IF** follow for the remaining layers.
 - A rule states what the language guarantees. Probes in the text show it breathing.
 - Every normative rule is backed by a test in `tests/test_spec_lexical.py`, named after the rule it keeps honest. The comments in that file map each test back to its rule.
 
