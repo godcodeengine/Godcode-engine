@@ -101,6 +101,7 @@ footer b{color:#cbb98a;font-style:normal}
   <select id="samples" aria-label="Sample programs"></select>
   <button class="btn btn-run" id="runBtn">⚡ Run Creation</button>
   <button class="btn btn-clear" id="clearBtn">🧹 Clear</button>
+  <button class="btn btn-clear" id="shareBtn">🔗 Share</button>
   <span class="hint">Ctrl+Enter (⌘+Enter) runs &middot; Tab inserts two spaces</span>
 </div>
 <div class="layout">
@@ -160,6 +161,62 @@ const TONGUES={
 function detectTongue(source){
   const m=source.match(/^[ \t]*#[ \t]*tongue[ \t]*:[ \t]*([A-Za-z]{2,8})/im);
   return m?m[1].toLowerCase():"en";
+}
+
+/* ---------------- The in-browser Spirit (a faithful, simplified port) ----------------
+   The engine's SpiritEngine discerns intent by keyword overlap over its training
+   dataset: most shared keywords wins, ties go to the row whose vocabulary best
+   explains the input (highest confidence), and silence when nothing resonates.
+   The browser carries the same rows the engine actually loads, the same
+   stopwords, and the same algorithm. CONSULT has no Spirit bound in the
+   browser, so it answers with the engine's own gentle silence rather than
+   inventing counsel. Regenerate SPIRIT_ROWS from the engine's loaded dataset
+   if the training data ever changes. */
+const SPIRIT_ROWS=[
+  {intent:"Deploy smart contract",kw:["contract","deploy","deployment","manifest","redemptive","smart","symbolic","syntax"],spiritual:"Manifest a redemptive contract",suggestion:"REFLECT on contract values"},
+  {intent:"Forecast future outcome",kw:["based","delay","divine","evaluation","forecast","foresee","future","logic","mission","outcome","predictive","prophecy","success"],spiritual:"Foresee the success or delay of a divine mission",suggestion:"Log prophecy and evaluate"},
+  {intent:"Controlled data access",kw:["access","conditional","controlled","data","hidden","logic","reveal","seekers","spiritual","truth","worthiness","worthy"],spiritual:"Reveal hidden truth to worthy seekers",suggestion:"Reflect on seeker metrics"},
+  {intent:"Blessing of peace",kw:["blessing","bring","every","heart","household","invocation","peace","rest","rite","spoken","within"],spiritual:"Bring peace to the household and rest to every heart within",suggestion:"Speak the blessing each evening without ceasing"},
+  {intent:"Anchor a covenant",kw:["anchor","chain","chained","covenant","hash","remembrance","sealing","set","unbreakable","upon","witness"],spiritual:"Set the covenant in unbreakable remembrance upon the chain",suggestion:"Verify the anchor before you testify of it"},
+  {intent:"Seek counsel",kw:["ahead","answer","ask","counsel","humility","oracle","question","receive","seek","wisdom","work"],spiritual:"Ask in humility and receive wisdom for the work ahead",suggestion:"Weigh the counsel and act in peace"},
+];
+const SPIRIT_STOPWORDS=new Set(["a","above","after","again","all","an","and","any","are","as","at","be","been","before","being","below","between","both","by","can","could","did","do","does","don","down","during","each","few","for","from","further","had","has","have","he","her","here","him","his","how","i","in","into","is","it","its","just","may","me","might","more","most","must","my","no","nor","not","now","of","off","on","once","only","or","other","ought","our","out","over","own","same","shall","she","should","so","some","such","than","that","the","their","them","then","there","these","they","this","those","through","to","too","under","up","us","very","was","we","were","when","where","why","will","with","would","you","your"]);
+const SPIRIT_SILENCE={intent:"Silent contemplation",confidence:0,spiritual:"The Spirit is quiet on this matter.",suggestion:"BREATHE and try again.",keywords:[]};
+function spiritKeywords(text){
+  const words=(text||"").toLowerCase().match(/[a-z0-9]+/g)||[];
+  const out=new Set();
+  for(const w of words) if(!SPIRIT_STOPWORDS.has(w)) out.add(w);
+  return out;
+}
+function spiritClassify(text){
+  const words=spiritKeywords(text);
+  let best=null,bestOverlap=0,bestConf=0;
+  for(const row of SPIRIT_ROWS){
+    let overlap=0;
+    for(const w of words) if(row.kw.indexOf(w)>=0) overlap++;
+    if(overlap===0) continue;
+    const conf=overlap/Math.max(1,row.kw.length);
+    // Most shared keywords wins; ties go to the row whose vocabulary best
+    // explains the input, so an incidental word cannot outshout the true theme.
+    if(overlap>bestOverlap||(overlap===bestOverlap&&conf>bestConf)){
+      best=row;bestOverlap=overlap;bestConf=conf;
+    }
+  }
+  if(!best) return Object.assign({},SPIRIT_SILENCE);
+  const shared=[]; for(const w of words) if(best.kw.indexOf(w)>=0) shared.push(w);
+  shared.sort();
+  return {intent:best.intent,
+    confidence:Math.round(Math.min(1,bestOverlap/Math.max(1,best.kw.length))*10000)/10000,
+    spiritual:best.spiritual, suggestion:best.suggestion, keywords:shared};
+}
+function spiritAligned(declared,discerned){
+  // True when the declared intent shares a keyword with the discerned one.
+  // The Spirit counsels on divergence; it never condemns.
+  const dw=spiritKeywords(declared);
+  const sw=spiritKeywords(discerned.intent+" "+discerned.spiritual);
+  for(const k of discerned.keywords||[]) sw.add(String(k).toLowerCase());
+  for(const w of dw) if(sw.has(w)) return true;
+  return false;
 }
 
 function lex(source){
@@ -344,6 +401,19 @@ class Parser{
   }
   parseDeclare(){
     const t=this.expect("DECLARE");
+    // Soft keywords, as in the engine: only DECLARE followed by the word
+    // INTENT and then a quoted string takes the intent path, so
+    // `DECLARE intent AS x` keeps working as a plain declaration.
+    const nxt=this.peek();
+    if(nxt.type==="IDENT"&&nxt.value.toUpperCase()==="INTENT"&&this.peek2().type==="STRING"){
+      this.next();                                                // INTENT
+      const text=this.expect("STRING","the intent in quotes").value;
+      const onw=this.expect("IDENT","ON");
+      if(onw.value.toUpperCase()!=="ON")
+        throw new GodError('DECLARE INTENT needs ON and a rite name, as in DECLARE INTENT "bring peace" ON evening_blessing.',onw.line);
+      const rite=this.expect("IDENT","a rite name").value;
+      return {kind:"DeclareIntent", text, rite, line:t.line};
+    }
     const nm=this.expect("IDENT","a name");
     this.expect("AS","AS");
     const items=[this.parseExpr()];
@@ -428,9 +498,19 @@ class Parser{
       while(this.at("COMMA")){ this.next(); params.push(this.expect("IDENT","a parameter name").value); }
     }
     this.expect("RPAREN","')'");
+    let bs=this.i;
+    while(this.t[bs]&&this.t[bs].type==="NEWLINE") bs++;
+    const bodyStartLine=this.t[bs]?this.t[bs].line:this.peek().line;
     const body=this.parseStatements(new Set(["END","EOF"])); // works inline too: `DEFINE RITE f(x) SEAL x END RITE`
+    let bodyEndLine=bodyStartLine;
+    for(let k=this.i-1;k>=0;k--){
+      const tk=this.t[k];
+      if(tk.type!=="NEWLINE"&&tk.type!=="EOF"){ bodyEndLine=tk.line; break; }
+    }
+    // The rite's own words, for the Spirit to discern at invocation.
+    const bodyText=this.srcLines?this.srcLines.slice(bodyStartLine-1,bodyEndLine).join("\n"):"";
     this.expect("END","END RITE"); this.expect("RITE","RITE");
-    return {kind:"RiteDef", name:nm.value, params, body, line:t.line};
+    return {kind:"RiteDef", name:nm.value, params, body, bodyText, line:t.line};
   }
   parseArgs(){
     const args=[];
@@ -584,7 +664,7 @@ class Sym{ constructor(name){ this.name=name; } }
 class Contract{
   constructor(name){ this.name=name; this.alive=false; this.blessed=false; this.anointed=false; }
 }
-class Rite{ constructor(name,params,body,closure){ this.name=name; this.params=params; this.body=body; this.closure=closure; } }
+class Rite{ constructor(name,params,body,closure,bodyText){ this.name=name; this.params=params; this.body=body; this.closure=closure; this.bodyText=bodyText||""; } }
 
 class Env{
   constructor(parent){ this.parent=parent||null; this.map=new Map(); }
@@ -606,6 +686,7 @@ function typeName(v){
   if(Array.isArray(v)) return "list";
   if(v instanceof Contract) return "contract";
   if(v instanceof Rite) return "rite";
+  if(v!==null&&typeof v==="object"&&!Array.isArray(v)) return "map";
   return "unknown";
 }
 function stringify(v){
@@ -621,6 +702,7 @@ function stringify(v){
   if(v instanceof Contract) return 'contract("'+v.name+'")';
   if(Array.isArray(v)) return "["+v.map(stringify).join(", ")+"]";
   if(v instanceof Rite) return "<rite "+v.name+">";
+  if(isPlainMap(v)) return "{"+Object.keys(v).map(k=>k+": "+stringify(v[k])).join(", ")+"}";
   return String(v);
 }
 function truthy(v){
@@ -708,6 +790,12 @@ const BUILTINS={
     if(typeof a[1]!=="string"&&!(a[1] instanceof Sym)) throw new GodError("JOIN needs a word to join with.",line);
     return a[0].map(stringify).join(txt(a[1]));}},
   BEHOLD:{min:0,max:0,fn(){return new Date().toISOString();}},
+  CONSULT:{min:1,max:1,fn(a,line){const q=a[0];
+    if(typeof q!=="string"&&!(q instanceof Sym))
+      throw new GodError("CONSULT needs a question as a word, not "+typeName(q)+".",line);
+    // No Spirit is bound in the browser, so the oracle answers with the
+    // engine's own gentle silence rather than inventing counsel.
+    return "The Spirit is silent on this question. Breathe, and ask again.";}},
   REVERSE:{min:1,max:1,fn(a,line){const x=a[0];
     if(typeof x==="string") return [...x].reverse().join("");
     if(x instanceof Sym) return [...x.name].reverse().join("");
@@ -733,12 +821,45 @@ function prophesy(text){
 }
 
 /* ---------------- 5. INTERPRETER ---------------- */
+// Simple synchronous hash for the in-browser simulated chain adapter. It stands
+// in for SHA-256 the way the covenant ledger's djb2 does: same receipt shape a
+// real chain adapter would return, tamper-evident within a run.
+function simpleHash(s){
+  let h1=0xdeadbeef,h2=0x41c6ce57;
+  for(let i=0;i<s.length;i++){
+    const ch=s.charCodeAt(i);
+    h1=Math.imul(h1^ch,2654435761);
+    h2=Math.imul(h2^ch,1597334677);
+  }
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  return (h2>>>0).toString(16).padStart(8,"0")+(h1>>>0).toString(16).padStart(8,"0");
+}
+// Canonical JSON: stable key order, no whitespace (mirrors the engine's chain hashing).
+function canonical(v){
+  if(v===null||v===undefined) return "null";
+  if(Array.isArray(v)) return "["+v.map(canonical).join(",")+"]";
+  if(typeof v==="object"){
+    const keys=Object.keys(v).sort();
+    return "{"+keys.map(k=>JSON.stringify(k)+":"+canonical(v[k])).join(",")+"}";
+  }
+  return JSON.stringify(v);
+}
+function isPlainMap(v){
+  return v!==null&&typeof v==="object"&&!Array.isArray(v)&&
+    !(v instanceof Sym)&&!(v instanceof Contract)&&!(v instanceof Rite);
+}
 class Interpreter{
-  constructor(){ this.env=new Env(); this.output=[]; this.blocks=[]; this.imported=new Set(); }
+  constructor(){ this.env=new Env(); this.output=[]; this.blocks=[]; this.imported=new Set();
+    this.intents={};            // rite name -> declared intent text
+    this.anchorBlocks=[];       // the in-browser simulated anchor chain
+  }
   print(s){ this.output.push(String(s)); }
 
   run(source){
-    const prog=new Parser(lex(source)).parse();
+    const parser=new Parser(lex(source));
+    parser.srcLines=source.split("\n");      // the rite's own words, for intent discernment
+    const prog=parser.parse();
     try{ this.execBlock(prog.statements,this.env); }
     catch(e){
       if(e instanceof AscendSignal){ this.print("🕊 Creation ascended in peace."); return; }
@@ -763,11 +884,55 @@ class Interpreter{
     this.blocks.push(block);
     return block;
   }
+  // ANCHOR(expr [, chain]) — anchor a value's hash on a chain and return the
+  // receipt {chain, anchor_hash, height, timestamp, payload_hash}. The only
+  // chain bound in the browser is "simulated": an ephemeral in-memory chain
+  // that vanishes when the run ends, mirroring the engine's deny-by-default
+  // sandbox. Same receipt shape a real chain adapter would return.
+  builtinAnchor(args,line){
+    if(args.length<1||args.length>2)
+      throw new GodError("ANCHOR expects 1–2 offering(s), but received "+args.length+".",line);
+    const value=args[0];
+    let chainName="simulated";
+    if(args.length===2){
+      const nm=args[1];
+      if(typeof nm!=="string"&&!(nm instanceof Sym))
+        throw new GodError("ANCHOR needs the chain's name as a word, not "+typeName(nm)+".",line);
+      chainName=txt(nm);
+    }
+    if(chainName!=="simulated")
+      throw new GodError("The chain '"+chainName+"' is unknown to the heavens. The known chains are: simulated.",line);
+    const payloadHash=simpleHash(stringify(value));
+    const blocks=this.anchorBlocks;
+    const index=blocks.length;
+    const prev=index?blocks[index-1].hash:"GENESIS";
+    const ts=new Date().toISOString();
+    const record={payload_hash:payloadHash};
+    const hash=simpleHash(canonical({index:index,timestamp:ts,record:record,prev_hash:prev}));
+    blocks.push({index:index,timestamp:ts,record:record,prev_hash:prev,hash:hash});
+    const receipt={chain:"simulated",anchor_hash:hash,height:index,timestamp:ts,payload_hash:payloadHash};
+    this.print("[ANCHOR] Anchored on simulated · height "+index+" · "+hash.slice(0,8)+" ⚓");
+    return receipt;
+  }
+  // Discern a rite's actual intent at invocation and counsel on divergence.
+  // The run is never failed over drift: the Spirit counsels, it does not condemn.
+  discernIntent(rite,declared){
+    const discerned=spiritClassify(rite.bodyText||"");
+    if(spiritAligned(declared,discerned))
+      this.print('[INTENT] '+rite.name+' walks in its declared intent: "'+declared+'" 🕊');
+    else
+      this.print('[WARNING] '+rite.name+' drifts from its declared intent. Declared: "'+declared+
+        '". Discerned: "'+discerned.intent+'". The Spirit counsels; it does not condemn.');
+  }
 
   exec(n,env){
     switch(n.kind){
       case "Creation": this.execBlock(n.statements,env); break;
       case "Declare":  env.define(n.name,this.eval(n.value,env)); break;
+      case "DeclareIntent":
+        this.intents[n.rite]=n.text;
+        this.print('[INTENT] '+n.rite+' now carries the intent: "'+n.text+'" 🕊');
+        break;
       case "Breathe": {
         const v=this.mustBeBound(env,n.name,"breathe into",n.line);
         if(v instanceof Contract) v.alive=true;
@@ -851,7 +1016,7 @@ class Interpreter{
       }
       case "Break":    throw new BreakSignal();
       case "Continue": throw new ContinueSignal();
-      case "RiteDef": env.define(n.name,new Rite(n.name,n.params,n.body,env)); break;
+      case "RiteDef": env.define(n.name,new Rite(n.name,n.params,n.body,env,n.bodyText)); break;
       case "Return":  throw new ReturnSignal(n.expr?this.eval(n.expr,env):null);
       case "Import": {
         const key=n.path.toLowerCase().replace(/\.god$/,"");
@@ -908,6 +1073,14 @@ class Interpreter{
   }
   evalIndex(n,env){
     const o=this.eval(n.obj,env), ix=this.eval(n.index,env);
+    if(isPlainMap(o)){
+      const key=ix instanceof Sym?ix.name:ix;
+      if(typeof key!=="string")
+        throw new GodError("a map is indexed by a word, not "+stringify(ix)+".",n.line);
+      if(!Object.prototype.hasOwnProperty.call(o,key))
+        throw new GodError("The map holds no '"+key+"'. Its keys are: "+Object.keys(o).join(", ")+".",n.line);
+      return o[key];
+    }
     if(typeof ix!=="number"||!Number.isInteger(ix))
       throw new GodError("an index must be a whole number, not "+stringify(ix)+".",n.line);
     const s=o instanceof Sym?o.name:o;
@@ -929,6 +1102,7 @@ class Interpreter{
         throw new GodError("a covenant must be named with a word, not "+typeName(args[0])+".",n.line);
       return new Contract(txt(args[0]));
     }
+    if(up==="ANCHOR") return this.builtinAnchor(args,n.line);
     const b=BUILTINS[up];
     if(b){
       if(args.length<b.min||args.length>b.max){
@@ -952,6 +1126,8 @@ class Interpreter{
   callRite(rite,args,line){
     if(args.length!==rite.params.length)
       throw new GodError("rite "+rite.name+" expects "+rite.params.length+" offering(s), but received "+args.length+".",line);
+    const declared=this.intents[rite.name];
+    if(declared!==undefined) this.discernIntent(rite,declared);
     const cenv=new Env(rite.closure);
     rite.params.forEach((p,i)=>cenv.define(p,args[i]));
     try{ this.execBlock(rite.body,cenv); }
@@ -1284,6 +1460,21 @@ QEDA ZAMA
 QEDA INDALO`},
 ];
 
+/* ---------------- 7b. Share links (dependency-free, testable in Node) ---------------- */
+function b64urlEncode(s){
+  const bytes=new TextEncoder().encode(s);
+  let bin=""; for(let i=0;i<bytes.length;i++) bin+=String.fromCharCode(bytes[i]);
+  return btoa(bin).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function b64urlDecode(p){
+  let b64=String(p).replace(/-/g,"+").replace(/_/g,"/");
+  while(b64.length%4) b64+="=";
+  const bin=atob(b64);
+  const bytes=new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
 /* ---------------- 8. UI (browser only) ---------------- */
 if(typeof document!=="undefined"){
   const editor=document.getElementById("editor");
@@ -1296,7 +1487,7 @@ if(typeof document!=="undefined"){
   // Regex tokenizer for the overlay highlighter (same keyword set as the
   // lexer, plus the active tongue's words).
   function tokReFor(src){
-    let kws=[...KEYWORDS];
+    let kws=[...KEYWORDS,"CONSULT","ANCHOR","INTENT","ON"];
     const t=TONGUES[detectTongue(src)];
     if(t) kws=kws.concat(Object.keys(t.aliases));
     return new RegExp(
@@ -1373,15 +1564,43 @@ if(typeof document!=="undefined"){
   }
   samplesSel.addEventListener("change",()=>{
     const s=SAMPLES.find(x=>x.id===samplesSel.value);
-    if(s){ editor.value=s.code; render(); runCreation(); }
+    if(s){
+      editor.value=s.code; render(); runCreation();
+      // The link always reflects the editor: a sample replaces any shared link.
+      try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){}
+    }
   });
+  function shareCreation(){
+    try{
+      const url=location.href.split("#")[0]+"#c="+b64urlEncode(editor.value);
+      history.replaceState(null,"",url);
+      const done=()=>addLine("🔗 Share link copied to the clipboard.","divine");
+      const manual=()=>addLine("🔗 Your share link is in the address bar.","divine");
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(done,manual);
+      }else{
+        const ta=document.createElement("textarea");
+        ta.value=url; ta.style.position="fixed"; ta.style.opacity="0";
+        document.body.appendChild(ta); ta.select();
+        try{ document.execCommand("copy"); done(); }catch(e){ manual(); }
+        document.body.removeChild(ta);
+      }
+    }catch(e){ addLine("✝ The share link could not be sealed: "+((e&&e.message)||e),"err"); }
+  }
+  document.getElementById("shareBtn").addEventListener("click",shareCreation);
   document.getElementById("runBtn").addEventListener("click",runCreation);
   document.getElementById("clearBtn").addEventListener("click",()=>{ out.innerHTML=""; });
 
-  // Boot with the first sample, already run.
-  editor.value=SAMPLES[0].code;
-  render();
-  runCreation();
+  // Boot: a shared link wins over the first sample.
+  (function(){
+    let shared=null;
+    try{
+      if(location.hash.indexOf("#c=")===0) shared=b64urlDecode(location.hash.slice(3));
+    }catch(e){ shared=null; }
+    editor.value=(shared===null||shared===undefined)?SAMPLES[0].code:shared;
+    render();
+    runCreation();
+  })();
 }
 </script>
 </body>
