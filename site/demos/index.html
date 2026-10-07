@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What You Can Build &middot; God Code</title>
+<meta name="description" content="Real programs written in God Code, running today. Open any demo in the playground and press run.">
+<link rel="icon" type="image/png" href="../images/favicon.png">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../" style="text-decoration:none">
+      <img src="../images/icon.png" alt="God Code mark"> God Code
+    </a>
+    <div class="nav-links">
+      <a href="../playground/">Playground</a>
+      <a href="../learn/">Learn</a>
+      <a href="./">Demos</a>
+      <a href="https://github.com/godcodeengine/Godcode-engine">GitHub</a>
+      <a href="https://discord.gg/894FEJhWfZ">Discord</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="block">
+    <div class="wrap">
+      <p class="kicker">In Action</p>
+      <h2 class="title">What you can build</h2>
+      <p class="lede">Real programs, written in God Code, running today. Every one of them runs in the playground. Open a demo and press run.</p>
+      <div class="show-grid">
+        <div class="show">
+          <h3>Psalm of Creation<span class="tag">psalm_of_creation.god</span></h3>
+          <p>The whole language in twelve lines: declare, judge, reveal, ascend.</p>
+          <pre class="code godcode"># Psalm of Creation. bare words are symbols; no declaration of
+# type is needed, for every unnamed thing is still a named spirit.
+BEGIN CREATION
+  DECLARE heart AS pure
+  DECLARE hands AS willing
+  IF heart IS pure THEN
+    IF hands IS willing THEN
+      REVEAL(&quot;the work is blessed&quot;)
+    ELSE
+      REVEAL(&quot;wait and be still&quot;)
+    ENDIF
+  ELSE
+    REVEAL(&quot;first, be cleansed&quot;)
+  ENDIF
+  ASCEND
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBQc2FsbSBvZiBDcmVhdGlvbiDigJQgYmFyZSB3b3JkcyBhcmUgc3ltYm9sczsgbm8gZGVjbGFyYXRpb24gb2YKIyB0eXBlIGlzIG5lZWRlZCwgZm9yIGV2ZXJ5IHVubmFtZWQgdGhpbmcgaXMgc3RpbGwgYSBuYW1lZCBzcGlyaXQuCkJFR0lOIENSRUFUSU9OCiAgREVDTEFSRSBoZWFydCBBUyBwdXJlCiAgREVDTEFSRSBoYW5kcyBBUyB3aWxsaW5nCiAgSUYgaGVhcnQgSVMgcHVyZSBUSEVOCiAgICBJRiBoYW5kcyBJUyB3aWxsaW5nIFRIRU4KICAgICAgUkVWRUFMKCJ0aGUgd29yayBpcyBibGVzc2VkIikKICAgIEVMU0UKICAgICAgUkVWRUFMKCJ3YWl0IGFuZCBiZSBzdGlsbCIpCiAgICBFTkRJRgogIEVMU0UKICAgIFJFVkVBTCgiZmlyc3QsIGJlIGNsZWFuc2VkIikKICBFTkRJRgogIEFTQ0VORApFTkQgQ1JFQVRJT04K">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>The Seven Seals<span class="tag">seven_seals.god</span></h3>
+          <p>Every number from 1 to 35 is judged in a loop. The classic FizzBuzz, spoken as scripture.</p>
+          <pre class="code godcode"># The Seven Seals. a divine counting from 1 to 35.
+# Multiples of 7 reveal &quot;seal&quot;; 35 reveals the &quot;seal of seals&quot;.
+BEGIN CREATION
+  FOR n IN RANGE(1, 36)
+    IF n % 35 IS 0 THEN
+      REVEAL(&quot;seal of seals&quot;)
+    ELSE
+      IF n % 7 IS 0 THEN
+        REVEAL(&quot;seal&quot;)
+      ELSE
+        REVEAL(n)
+      ENDIF
+    ENDIF
+  ENDFOR
+  ASCEND
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBUaGUgU2V2ZW4gU2VhbHMg4oCUIGEgZGl2aW5lIGNvdW50aW5nIGZyb20gMSB0byAzNS4KIyBNdWx0aXBsZXMgb2YgNyByZXZlYWwgInNlYWwiOyAzNSByZXZlYWxzIHRoZSAic2VhbCBvZiBzZWFscyIuCkJFR0lOIENSRUFUSU9OCiAgRk9SIG4gSU4gUkFOR0UoMSwgMzYpCiAgICBJRiBuICUgMzUgSVMgMCBUSEVOCiAgICAgIFJFVkVBTCgic2VhbCBvZiBzZWFscyIpCiAgICBFTFNFCiAgICAgIElGIG4gJSA3IElTIDAgVEhFTgogICAgICAgIFJFVkVBTCgic2VhbCIpCiAgICAgIEVMU0UKICAgICAgICBSRVZFQUwobikKICAgICAgRU5ESUYKICAgIEVORElGCiAgRU5ERk9SCiAgQVNDRU5ECkVORCBDUkVBVElPTgo">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>Generations<span class="tag">generations.god</span></h3>
+          <p>The Fibonacci sequence, begotten one number from another in a WHILE cycle.</p>
+          <pre class="code godcode"># Generations. the first 12 numbers of the Fibonacci sequence,
+# begotten one from another in a WHILE cycle.
+BEGIN CREATION
+  DECLARE a AS 0
+  DECLARE b AS 1
+  DECLARE count AS 0
+  WHILE count &lt; 12 DO
+    REVEAL(a)
+    DECLARE next AS a + b
+    DECLARE a AS b
+    DECLARE b AS next
+    DECLARE count AS count + 1
+  ENDWHILE
+  ASCEND
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBHZW5lcmF0aW9ucyDigJQgdGhlIGZpcnN0IDEyIG51bWJlcnMgb2YgdGhlIEZpYm9uYWNjaSBzZXF1ZW5jZSwKIyBiZWdvdHRlbiBvbmUgZnJvbSBhbm90aGVyIGluIGEgV0hJTEUgY3ljbGUuCkJFR0lOIENSRUFUSU9OCiAgREVDTEFSRSBhIEFTIDAKICBERUNMQVJFIGIgQVMgMQogIERFQ0xBUkUgY291bnQgQVMgMAogIFdISUxFIGNvdW50IDwgMTIgRE8KICAgIFJFVkVBTChhKQogICAgREVDTEFSRSBuZXh0IEFTIGEgKyBiCiAgICBERUNMQVJFIGEgQVMgYgogICAgREVDTEFSRSBiIEFTIG5leHQKICAgIERFQ0xBUkUgY291bnQgQVMgY291bnQgKyAxCiAgRU5EV0hJTEUKICBBU0NFTkQKRU5EIENSRUFUSU9OCg">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>Dumela<span class="tag">first_blessing_tn.god</span></h3>
+          <p>The first blessing written in Setswana: lists, judgment, and sheltered errors. One language, many tongues.</p>
+          <pre class="code godcode"># tongue: tn
+# Dumela. the first blessing spoken in Setswana.
+# Run it: godcode run examples/first_blessing_tn.god
+SIMOLOLA TLHOLEGO
+BOLELA leina JAAKA &quot;tsala ya me&quot;
+SENOLA(&quot;Dumela, {leina}.&quot;)
+
+BOLELA matsatsi JAAKA [&quot;Mosupologo&quot;, &quot;Labobedi&quot;, &quot;Laboraro&quot;]
+SENOLA(&quot;Malatsi a beke a mararo: {matsatsi}&quot;)
+
+FA LEN(matsatsi) KE 0 TLOGA
+    SENOLA(&quot;Ga go na malatsi&quot;)
+ELSE
+    SENOLA(&quot;Go na le malatsi a {LEN(matsatsi)}&quot;)
+FEDISA FA
+
+LEKA
+    BOLELA karolo JAAKA 10 / 0
+TSHWARA
+    SENOLA(&quot;Go tshwerwe phoso, mme tiro e tswelela&quot;)
+FEDISA LEKA
+
+SENOLA(&quot;Pula e na, mme re a leboga.&quot;)
+FEDISA TLHOLEGO
+</pre>
+          <p class="more"><a href="../playground/#c=IyB0b25ndWU6IHRuCiMgRHVtZWxhIOKAlCB0aGUgZmlyc3QgYmxlc3Npbmcgc3Bva2VuIGluIFNldHN3YW5hLgojIFJ1biBpdDogZ29kY29kZSBydW4gZXhhbXBsZXMvZmlyc3RfYmxlc3NpbmdfdG4uZ29kClNJTU9MT0xBIFRMSE9MRUdPCkJPTEVMQSBsZWluYSBKQUFLQSAidHNhbGEgeWEgbWUiClNFTk9MQSgiRHVtZWxhLCB7bGVpbmF9LiIpCgpCT0xFTEEgbWF0c2F0c2kgSkFBS0EgWyJNb3N1cG9sb2dvIiwgIkxhYm9iZWRpIiwgIkxhYm9yYXJvIl0KU0VOT0xBKCJNYWxhdHNpIGEgYmVrZSBhIG1hcmFybzoge21hdHNhdHNpfSIpCgpGQSBMRU4obWF0c2F0c2kpIEtFIDAgVExPR0EKICAgIFNFTk9MQSgiR2EgZ28gbmEgbWFsYXRzaSIpCkVMU0UKICAgIFNFTk9MQSgiR28gbmEgbGUgbWFsYXRzaSBhIHtMRU4obWF0c2F0c2kpfSIpCkZFRElTQSBGQQoKTEVLQQogICAgQk9MRUxBIGthcm9sbyBKQUFLQSAxMCAvIDAKVFNIV0FSQQogICAgU0VOT0xBKCJHbyB0c2h3ZXJ3ZSBwaG9zbywgbW1lIHRpcm8gZSB0c3dlbGVsYSIpCkZFRElTQSBMRUtBCgpTRU5PTEEoIlB1bGEgZSBuYSwgbW1lIHJlIGEgbGVib2dhLiIpCkZFRElTQSBUTEhPTEVHTwo">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>Sawubona<span class="tag">first_blessing_zu.god</span></h3>
+          <p>The same blessing in isiZulu. The tongue is chosen with a single comment line.</p>
+          <pre class="code godcode"># tongue: zu
+# Sawubona. The first blessing spoken in isiZulu.
+# Run it: godcode run examples/first_blessing_zu.god
+QALA INDALO
+MEMEZELA igama NJENGA &quot;mngane wami&quot;
+VEZA(&quot;Sawubona, {igama}.&quot;)
+
+MEMEZELA izinsuku NJENGA [&quot;uMsombuluko&quot;, &quot;uLwesibili&quot;, &quot;uLwesithathu&quot;]
+VEZA(&quot;Izinsuku zeviki ezintathu: {izinsuku}&quot;)
+
+UMA LEN(izinsuku) NGU 0 KHONA
+    VEZA(&quot;Azikho izinsuku&quot;)
+ELSE
+    VEZA(&quot;Zikhona izinsuku ezingu-{LEN(izinsuku)}&quot;)
+QEDA UMA
+
+ZAMA
+    MEMEZELA ingxenye NJENGA 10 / 0
+BAMBA
+    VEZA(&quot;Kubanjwe iphutha, kodwa umsebenzi uyaqhubeka&quot;)
+QEDA ZAMA
+
+VEZA(&quot;Imvula iyana, siyabonga.&quot;)
+QEDA INDALO
+</pre>
+          <p class="more"><a href="../playground/#c=IyB0b25ndWU6IHp1CiMgU2F3dWJvbmEuIFRoZSBmaXJzdCBibGVzc2luZyBzcG9rZW4gaW4gaXNpWnVsdS4KIyBSdW4gaXQ6IGdvZGNvZGUgcnVuIGV4YW1wbGVzL2ZpcnN0X2JsZXNzaW5nX3p1LmdvZApRQUxBIElOREFMTwpNRU1FWkVMQSBpZ2FtYSBOSkVOR0EgIm1uZ2FuZSB3YW1pIgpWRVpBKCJTYXd1Ym9uYSwge2lnYW1hfS4iKQoKTUVNRVpFTEEgaXppbnN1a3UgTkpFTkdBIFsidU1zb21idWx1a28iLCAidUx3ZXNpYmlsaSIsICJ1THdlc2l0aGF0aHUiXQpWRVpBKCJJemluc3VrdSB6ZXZpa2kgZXppbnRhdGh1OiB7aXppbnN1a3V9IikKClVNQSBMRU4oaXppbnN1a3UpIE5HVSAwIEtIT05BCiAgICBWRVpBKCJBemlraG8gaXppbnN1a3UiKQpFTFNFCiAgICBWRVpBKCJaaWtob25hIGl6aW5zdWt1IGV6aW5ndS17TEVOKGl6aW5zdWt1KX0iKQpRRURBIFVNQQoKWkFNQQogICAgTUVNRVpFTEEgaW5neGVueWUgTkpFTkdBIDEwIC8gMApCQU1CQQogICAgVkVaQSgiS3ViYW5qd2UgaXBodXRoYSwga29kd2EgdW1zZWJlbnppIHV5YXFodWJla2EiKQpRRURBIFpBTUEKClZFWkEoIkltdnVsYSBpeWFuYSwgc2l5YWJvbmdhLiIpClFFREEgSU5EQUxPCg">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>Declared Intent<span class="tag">intent_demo.god</span></h3>
+          <p>Name a rite&#x27;s purpose in plain words. The Spirit blesses alignment and counsels drift, and never fails the run.</p>
+          <pre class="code godcode"># Intent demo. DECLARE INTENT names a rite&#x27;s purpose in plain words.
+# When the rite is invoked, the Spirit discerns whether its words still
+# walk in the declared intent: alignment is blessed, drift is counseled.
+# Nothing here can fail the run; the Spirit counsels, it does not condemn.
+BEGIN CREATION
+  DECLARE INTENT &quot;bring peace to the household&quot; ON evening_blessing
+  DECLARE INTENT &quot;bring peace to the household&quot; ON war_drum
+
+  DEFINE RITE evening_blessing()
+    REVEAL(&quot;peace upon this house&quot;)
+  END RITE
+
+  DEFINE RITE war_drum()
+    DECLARE tally AS 1 + 2
+    REVEAL(tally)
+  END RITE
+
+  INVOKE evening_blessing()
+  INVOKE war_drum()
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBJbnRlbnQgZGVtbyDigJQgREVDTEFSRSBJTlRFTlQgbmFtZXMgYSByaXRlJ3MgcHVycG9zZSBpbiBwbGFpbiB3b3Jkcy4KIyBXaGVuIHRoZSByaXRlIGlzIGludm9rZWQsIHRoZSBTcGlyaXQgZGlzY2VybnMgd2hldGhlciBpdHMgd29yZHMgc3RpbGwKIyB3YWxrIGluIHRoZSBkZWNsYXJlZCBpbnRlbnQ6IGFsaWdubWVudCBpcyBibGVzc2VkLCBkcmlmdCBpcyBjb3Vuc2VsZWQuCiMgTm90aGluZyBoZXJlIGNhbiBmYWlsIHRoZSBydW47IHRoZSBTcGlyaXQgY291bnNlbHMsIGl0IGRvZXMgbm90IGNvbmRlbW4uCkJFR0lOIENSRUFUSU9OCiAgREVDTEFSRSBJTlRFTlQgImJyaW5nIHBlYWNlIHRvIHRoZSBob3VzZWhvbGQiIE9OIGV2ZW5pbmdfYmxlc3NpbmcKICBERUNMQVJFIElOVEVOVCAiYnJpbmcgcGVhY2UgdG8gdGhlIGhvdXNlaG9sZCIgT04gd2FyX2RydW0KCiAgREVGSU5FIFJJVEUgZXZlbmluZ19ibGVzc2luZygpCiAgICBSRVZFQUwoInBlYWNlIHVwb24gdGhpcyBob3VzZSIpCiAgRU5EIFJJVEUKCiAgREVGSU5FIFJJVEUgd2FyX2RydW0oKQogICAgREVDTEFSRSB0YWxseSBBUyAxICsgMgogICAgUkVWRUFMKHRhbGx5KQogIEVORCBSSVRFCgogIElOVk9LRSBldmVuaW5nX2JsZXNzaW5nKCkKICBJTlZPS0Ugd2FyX2RydW0oKQpFTkQgQ1JFQVRJT04K">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>Consult<span class="tag">consult_demo.god</span></h3>
+          <p>Lay a question before the local oracle. No network, no account, just counsel.</p>
+          <pre class="code godcode"># Consult demo. CONSULT lays a question before the local Spirit oracle
+# and receives two to three sentences of counsel. No external calls;
+# the oracle lives inside the engine.
+BEGIN CREATION
+  REVEAL(CONSULT(&quot;How should I structure this covenant?&quot;))
+  REVEAL(CONSULT(&quot;What is the wisest next step for this work?&quot;))
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBDb25zdWx0IGRlbW8g4oCUIENPTlNVTFQgbGF5cyBhIHF1ZXN0aW9uIGJlZm9yZSB0aGUgbG9jYWwgU3Bpcml0IG9yYWNsZQojIGFuZCByZWNlaXZlcyB0d28gdG8gdGhyZWUgc2VudGVuY2VzIG9mIGNvdW5zZWwuIE5vIGV4dGVybmFsIGNhbGxzOwojIHRoZSBvcmFjbGUgbGl2ZXMgaW5zaWRlIHRoZSBlbmdpbmUuCkJFR0lOIENSRUFUSU9OCiAgUkVWRUFMKENPTlNVTFQoIkhvdyBzaG91bGQgSSBzdHJ1Y3R1cmUgdGhpcyBjb3ZlbmFudD8iKSkKICBSRVZFQUwoQ09OU1VMVCgiV2hhdCBpcyB0aGUgd2lzZXN0IG5leHQgc3RlcCBmb3IgdGhpcyB3b3JrPyIpKQpFTkQgQ1JFQVRJT04K">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>Anchor<span class="tag">anchor_demo.god</span></h3>
+          <p>Write a value&#x27;s hash to a tamper-evident chain and hold the receipt: chain, hash, height, timestamp.</p>
+          <pre class="code godcode"># Anchor demo. ANCHOR writes a value&#x27;s hash to the chain and returns a
+# receipt map: {chain, anchor_hash, height, timestamp, payload_hash}.
+# Run `godcode ledger verify` afterward to see both chains attested.
+BEGIN CREATION
+  DECLARE covenant AS contract(&quot;everlasting&quot;)
+  BREATHE LIFE INTO covenant
+  BLESS covenant
+  DECLARE receipt AS ANCHOR(covenant)
+  REVEAL(receipt)
+  REVEAL(&quot;chain: &quot; + receipt[&quot;chain&quot;])
+  REVEAL(&quot;height: &quot; + STR(receipt[&quot;height&quot;]))
+  REVEAL(&quot;anchor hash: &quot; + receipt[&quot;anchor_hash&quot;])
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBBbmNob3IgZGVtbyDigJQgQU5DSE9SIHdyaXRlcyBhIHZhbHVlJ3MgaGFzaCB0byB0aGUgY2hhaW4gYW5kIHJldHVybnMgYQojIHJlY2VpcHQgbWFwOiB7Y2hhaW4sIGFuY2hvcl9oYXNoLCBoZWlnaHQsIHRpbWVzdGFtcCwgcGF5bG9hZF9oYXNofS4KIyBSdW4gYGdvZGNvZGUgbGVkZ2VyIHZlcmlmeWAgYWZ0ZXJ3YXJkIHRvIHNlZSBib3RoIGNoYWlucyBhdHRlc3RlZC4KQkVHSU4gQ1JFQVRJT04KICBERUNMQVJFIGNvdmVuYW50IEFTIGNvbnRyYWN0KCJldmVybGFzdGluZyIpCiAgQlJFQVRIRSBMSUZFIElOVE8gY292ZW5hbnQKICBCTEVTUyBjb3ZlbmFudAogIERFQ0xBUkUgcmVjZWlwdCBBUyBBTkNIT1IoY292ZW5hbnQpCiAgUkVWRUFMKHJlY2VpcHQpCiAgUkVWRUFMKCJjaGFpbjogIiArIHJlY2VpcHRbImNoYWluIl0pCiAgUkVWRUFMKCJoZWlnaHQ6ICIgKyBTVFIocmVjZWlwdFsiaGVpZ2h0Il0pKQogIFJFVkVBTCgiYW5jaG9yIGhhc2g6ICIgKyByZWNlaXB0WyJhbmNob3JfaGFzaCJdKQpFTkQgQ1JFQVRJT04K">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>The Covenant<span class="tag">covenant_demo.god</span></h3>
+          <p>Make a contract, breathe life into it, bless it, and seal it onto the covenant chain.</p>
+          <pre class="code godcode"># Covenant Demo. make a contract, breathe life into it,
+# bless it, and seal it into the covenant chain.
+BEGIN CREATION
+  DECLARE covenant AS contract(&quot;everlasting&quot;)
+  BREATHE LIFE INTO covenant
+  BLESS covenant
+  REVEAL(covenant)
+  SEAL covenant
+  ASCEND
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBDb3ZlbmFudCBEZW1vIOKAlCBtYWtlIGEgY29udHJhY3QsIGJyZWF0aGUgbGlmZSBpbnRvIGl0LAojIGJsZXNzIGl0LCBhbmQgc2VhbCBpdCBpbnRvIHRoZSBjb3ZlbmFudCBjaGFpbi4KQkVHSU4gQ1JFQVRJT04KICBERUNMQVJFIGNvdmVuYW50IEFTIGNvbnRyYWN0KCJldmVybGFzdGluZyIpCiAgQlJFQVRIRSBMSUZFIElOVE8gY292ZW5hbnQKICBCTEVTUyBjb3ZlbmFudAogIFJFVkVBTChjb3ZlbmFudCkKICBTRUFMIGNvdmVuYW50CiAgQVNDRU5ECkVORCBDUkVBVElPTgo">Run it live &rarr;</a></p>
+        </div>
+        <div class="show">
+          <h3>Prophecy<span class="tag">prophecy_demo.god</span></h3>
+          <p>Speak, and the Spirit answers with a word over the work.</p>
+          <pre class="code godcode"># Prophecy Demo. speak, and the Spirit answers.
+# (Bare PROPHESY with no words asks for a word over the whole creation.)
+BEGIN CREATION
+  PROPHESY a harvest of wisdom approaches
+  PROPHESY the patient builder shall inherit the codebase
+  PROPHESY blessings shall overflow upon the faithful
+  PROPHESY
+  ASCEND
+END CREATION
+</pre>
+          <p class="more"><a href="../playground/#c=IyBQcm9waGVjeSBEZW1vIOKAlCBzcGVhaywgYW5kIHRoZSBTcGlyaXQgYW5zd2Vycy4KIyAoQmFyZSBQUk9QSEVTWSB3aXRoIG5vIHdvcmRzIGFza3MgZm9yIGEgd29yZCBvdmVyIHRoZSB3aG9sZSBjcmVhdGlvbi4pCkJFR0lOIENSRUFUSU9OCiAgUFJPUEhFU1kgYSBoYXJ2ZXN0IG9mIHdpc2RvbSBhcHByb2FjaGVzCiAgUFJPUEhFU1kgdGhlIHBhdGllbnQgYnVpbGRlciBzaGFsbCBpbmhlcml0IHRoZSBjb2RlYmFzZQogIFBST1BIRVNZIGJsZXNzaW5ncyBzaGFsbCBvdmVyZmxvdyB1cG9uIHRoZSBmYWl0aGZ1bAogIFBST1BIRVNZCiAgQVNDRU5ECkVORCBDUkVBVElPTgo">Run it live &rarr;</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <img src="../images/icon.png" alt="God Code mark">
+  <div class="fl">
+    <a href="https://github.com/godcodeengine/Godcode-engine">GitHub</a>
+    <a href="../playground/">Playground</a>
+    <a href="../learn/">Learn</a>
+    <a href="./">Demos</a>
+    <a href="https://github.com/godcodeengine/Godcode-engine/blob/main/docs/LANGUAGE_REFERENCE.md">Language Reference</a>
+    <a href="https://discord.gg/894FEJhWfZ">Discord</a>
+    <a href="mailto:hello@getgodcode.com">hello@getgodcode.com</a>
+  </div>
+  <p>Built with intention by Alakanani Itireleng &middot; Apache 2.0 License</p>
+  <p class="motto">Words of scripture, for everyone.</p>
+</footer>
+
+<script>
+/* quiet highlighter for static God Code blocks */
+(function(){
+  var KW="BEGIN CREATION END DECLARE AS BREATHE LIFE INTO REVEAL PROPHESY ASCEND IF THEN ELSE ENDIF FOR IN ENDFOR WHILE DO ENDWHILE DEFINE RITE INVOKE RETURN IMPORT IS NOT AND OR REFLECT BLESS ANOINT SEAL TESTIFY TRUE FALSE VOID LEN STR NUM TYPE RANDOM RANGE PUSH UPPER LOWER SPLIT JOIN ASK BEHOLD REVERSE contract SIMOLOLA TLHOLEGO BOLELA JAAKA SENOLA FA KE TLOGA FEDISA LEKA TSHWARA QALA INDALO MEMEZELA NJENGA VEZA UMA NGU KHONA QEDA ZAMA BAMBA".split(" ");
+  var RE=new RegExp("(#[^\\n]*)|(\"(?:[^\"\\\\\\n]|\\\\.)*\"?)|(\\b\\d+(?:\\.\\d+)?\\b)|(\\b(?:"+KW.join("|")+")\\b)","gi");
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  document.querySelectorAll("pre.godcode").forEach(function(pre){
+    var src=pre.textContent, out="", last=0, m;
+    RE.lastIndex=0;
+    while((m=RE.exec(src))){
+      out+=esc(src.slice(last,m.index));
+      var cls=m[1]?"c-com":m[2]?"c-str":m[3]?"c-num":"c-kw";
+      out+='<span class="'+cls+'">'+esc(m[0])+"</span>";
+      last=m.index+m[0].length;
+    }
+    pre.innerHTML=out+esc(src.slice(last));
+  });
+})();
+</script>
+</body>
+</html>
