@@ -3,37 +3,53 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0a0b">
+<meta name="theme-color" content="#F4F1EA">
 <title>Today's Scripture in God Code · GodCode</title>
-<meta name="description" content="A fresh scripture every day, written in God Code. Read and build. Faith plus code equals a greater you.">
+<meta name="description" content="A fresh scripture every day, written in God Code. Scan, read, and build. Faith plus code equals a greater you.">
 <style>
-  :root { --gold:#f2b21b; --gold-soft:#ffcf4d; --ink:#f5f1e6; --dim:#a49f92; --card:#121214; --line:#26262b; }
+  :root { --paper:#F4F1EA; --card:#FBFAF5; --ink:#1C1A17; --ink-soft:#4A453B; --ink-faint:#7E7666;
+          --bronze:#8A6D1F; --bronze-deep:#6E5718; --line:#DCD4BC;
+          --code-bg:#23201A; --code-ink:#EFE8D4; --code-line:#3A352A; }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:#0a0a0b; color:var(--ink); font-family:-apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:28px 16px 40px; }
+  body { background:var(--paper); color:var(--ink);
+         font-family:-apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+         min-height:100vh; display:flex; flex-direction:column; align-items:center;
+         padding:36px 16px 48px; line-height:1.65; -webkit-font-smoothing:antialiased; }
   .mark { display:flex; align-items:center; gap:10px; }
-  .mark .word { font-size:26px; font-weight:800; letter-spacing:.2px; }
-  .mark .word b { color:var(--gold); font-weight:800; }
-  .eyebrow { margin-top:26px; color:var(--gold); font-size:12px; font-weight:700; letter-spacing:3.5px; }
-  h1 { margin-top:8px; font-size:27px; line-height:1.2; text-align:center; font-weight:800; }
-  .sub { margin-top:10px; color:var(--dim); font-size:15px; line-height:1.5; text-align:center; max-width:420px; }
-  .card { margin-top:24px; width:100%; max-width:460px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px 18px 22px; box-shadow:0 18px 50px rgba(0,0,0,.5); }
-  .card-head { display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:12px; }
-  .card-head .mini { display:flex; align-items:center; gap:8px; font-weight:800; font-size:16px; }
-  .card-head .mini b { color:var(--gold); }
-  .date { color:var(--dim); font-size:13px; }
-  .codebox { margin-top:16px; background:#0a0a0b; border:1px solid var(--line); border-radius:12px; padding:14px 14px; overflow-x:auto; }
-  pre { font-family:ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size:13.5px; line-height:1.65; white-space:pre; }
-  .kw { color:var(--gold-soft); font-weight:700; }
-  .str { color:#a8d8a8; }
-  .verse { margin-top:18px; font-size:17.5px; line-height:1.55; }
-  .ref { margin-top:8px; color:var(--gold); font-weight:700; font-size:15px; letter-spacing:.4px; }
-  .note { margin-top:14px; color:var(--dim); font-size:13px; line-height:1.5; }
-  .cta { margin-top:22px; display:flex; flex-direction:column; gap:10px; width:100%; max-width:460px; }
-  .btn { display:block; text-align:center; text-decoration:none; border-radius:12px; padding:13px 16px; font-weight:700; font-size:15.5px; }
-  .btn-gold { background:var(--gold); color:#141414; }
+  .mark img { border-radius:12px; }
+  .mark .word { font-family:Georgia,'Palatino Linotype',serif; font-size:24px; letter-spacing:.02em; }
+  .mark .word b { color:var(--bronze); font-weight:500; }
+  .eyebrow { margin-top:30px; color:var(--bronze); font-size:12px; font-weight:600; letter-spacing:3.5px; }
+  h1 { margin-top:10px; font-family:Georgia,'Palatino Linotype',serif; font-weight:500;
+       font-size:30px; line-height:1.25; text-align:center; letter-spacing:.01em; }
+  .sub { margin-top:10px; color:var(--ink-soft); font-size:15.5px; line-height:1.6; text-align:center; max-width:440px; }
+  .card { margin-top:26px; width:100%; max-width:460px; background:var(--card);
+          border:1px solid var(--line); border-radius:10px; padding:22px 20px 24px; }
+  .card-head { display:flex; align-items:center; justify-content:space-between;
+               border-bottom:1px solid var(--line); padding-bottom:12px; }
+  .card-head .mini { display:flex; align-items:center; gap:8px;
+                     font-family:Georgia,serif; font-size:16px; }
+  .card-head .mini b { color:var(--bronze); font-weight:500; }
+  .date { color:var(--ink-faint); font-size:13px; }
+  .codebox { margin-top:16px; background:var(--code-bg); border:1px solid var(--code-line);
+             border-radius:8px; padding:14px; overflow-x:auto; }
+  pre { font-family:ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size:13.5px;
+        line-height:1.7; white-space:pre; color:var(--code-ink); }
+  .kw { color:#D9B25F; }
+  .str { color:#C4B78F; }
+  .verse { margin-top:18px; font-family:Georgia,serif; font-style:italic; font-size:18px; line-height:1.6; }
+  .ref { margin-top:8px; color:var(--bronze); font-weight:600; font-size:15px; letter-spacing:.4px; }
+  .note { margin-top:14px; color:var(--ink-faint); font-size:13.5px; line-height:1.6; }
+  .cta { margin-top:24px; display:flex; flex-direction:column; gap:10px; width:100%; max-width:460px; }
+  .btn { display:block; text-align:center; text-decoration:none; border-radius:6px;
+         padding:14px 16px; font-weight:600; font-size:15.5px; }
+  .btn-gold { background:var(--bronze); color:#F8F4E8; border:1px solid var(--bronze); }
+  .btn-gold:hover { background:var(--bronze-deep); border-color:var(--bronze-deep); }
   .btn-ghost { border:1px solid var(--line); color:var(--ink); background:var(--card); }
-  footer { margin-top:30px; color:var(--dim); font-size:12.5px; letter-spacing:2.2px; text-align:center; line-height:2; }
-  footer b { color:var(--gold); }
+  .btn-ghost:hover { border-color:var(--bronze); color:var(--bronze-deep); text-decoration:none; }
+  footer { margin-top:34px; color:var(--ink-faint); font-size:12.5px; letter-spacing:2.2px;
+           text-align:center; line-height:2; }
+  footer b { color:var(--bronze); }
 </style>
 </head>
 <body>
@@ -44,7 +60,7 @@
 
   <div class="eyebrow">THE DAILY VERSE</div>
   <h1>Today's Scripture,<br>written in God Code</h1>
-  <p class="sub">A fresh scripture every day, written as a real God Code scroll. Every one of them runs.</p>
+  <p class="sub">You scanned the shirt, and the shirt kept its promise. A fresh scripture every day, written as a real God Code scroll. Every one of them runs.</p>
 
   <div class="card">
     <div class="card-head">

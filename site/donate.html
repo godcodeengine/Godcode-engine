@@ -5,26 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Support God Code</title>
 <style>
-  :root { --gold: #F2B21B; --ink: #F5F1E6; --dim: #b9b2a0; }
+  :root { --paper:#F4F1EA; --card:#FBFAF5; --ink:#1C1A17; --ink-soft:#4A453B; --ink-faint:#7E7666;
+          --bronze:#8A6D1F; --bronze-deep:#6E5718; --line:#DCD4BC; }
   * { box-sizing: border-box; }
-  body { margin: 0; background: #0a0a0b; color: var(--ink); font-family: Georgia, serif; line-height: 1.6; }
-  .wrap { max-width: 640px; margin: 0 auto; padding: 40px 22px 64px; }
-  .mark { display: block; width: 120px; margin: 0 auto 18px; }
-  h1 { text-align: center; font-size: 30px; margin: 0 0 6px; }
-  h1 .gold { color: var(--gold); }
-  .sub { text-align: center; color: var(--dim); margin-bottom: 30px; }
-  .card { background: #141416; border: 1px solid #2a2a2e; border-radius: 14px; padding: 24px; margin-bottom: 20px; }
-  .card h2 { margin: 0 0 10px; font-size: 20px; color: var(--gold); }
-  .addr { font-family: monospace; font-size: 12.5px; word-break: break-all; background: #0a0a0b; border: 1px dashed #3a3a40; border-radius: 8px; padding: 12px; margin: 12px 0; }
-  .btn { display: inline-block; background: var(--gold); color: #111; font-weight: bold; border: none; border-radius: 8px; padding: 12px 22px; font-size: 15px; cursor: pointer; font-family: inherit; }
-  .btn:active { transform: scale(0.98); }
-  .net { display: inline-block; font-size: 12px; letter-spacing: 2px; color: var(--dim); border: 1px solid #3a3a40; border-radius: 20px; padding: 4px 12px; margin-bottom: 8px; }
-  .qr { display: block; width: 180px; height: 180px; margin: 14px auto 4px; background: #fff; border-radius: 8px; }
-  ul { padding-left: 20px; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         line-height: 1.65; font-size: 16px; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 56px 22px 72px; }
+  .mark { display: block; width: 84px; margin: 0 auto 22px; border-radius: 18px; }
+  h1 { text-align: center; font-family: Georgia,'Palatino Linotype',serif; font-weight: 500;
+       font-size: 34px; margin: 0 0 6px; letter-spacing: .01em; }
+  h1 .gold { color: var(--bronze); }
+  .sub { text-align: center; color: var(--ink-soft); margin: 0 0 36px; font-size: 17px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+          padding: 28px 26px; margin-bottom: 20px; }
+  .card h2 { margin: 0 0 10px; font-family: Georgia,serif; font-weight: 500; font-size: 21px; color: var(--bronze); }
+  .card p { color: var(--ink-soft); margin: 0 0 10px; }
+  .addr { font-family: ui-monospace,Menlo,Consolas,monospace; font-size: 12.5px; word-break: break-all;
+          background: var(--paper); border: 1px dashed var(--line); border-radius: 8px;
+          padding: 12px; margin: 12px 0; color: var(--ink); }
+  .btn { display: inline-block; background: var(--bronze); color: #F8F4E8; font-weight: 600;
+         border: 1px solid var(--bronze); border-radius: 6px; padding: 12px 24px;
+         font-size: 15px; cursor: pointer; font-family: inherit; }
+  .btn:hover { background: var(--bronze-deep); border-color: var(--bronze-deep); }
+  .net { display: inline-block; font-size: 12px; letter-spacing: 2px; color: var(--ink-faint);
+         border: 1px solid var(--line); border-radius: 20px; padding: 4px 12px; margin-bottom: 8px; }
+  .qr { display: block; width: 180px; height: 180px; margin: 14px auto 4px;
+        background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+  ul { padding-left: 20px; color: var(--ink-soft); }
   li { margin-bottom: 8px; }
-  .fine { font-size: 13px; color: var(--dim); }
-  .warn { font-size: 13px; color: #e8a33d; }
-  .home { display: block; text-align: center; margin-top: 28px; color: var(--gold); text-decoration: none; }
+  .fine { font-size: 13.5px; color: var(--ink-faint); }
+  .warn { font-size: 13.5px; color: #8A5A1F; }
+  .home { display: block; text-align: center; margin-top: 28px; color: var(--bronze); text-decoration: none; }
+  .home:hover { text-decoration: underline; }
 </style>
 </head>
 <body>

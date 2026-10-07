@@ -3,76 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>God Code Playground 🕊</title>
+<title>God Code Playground</title>
 <style>
+:root{
+  --paper:#F4F1EA; --card:#FBFAF5;
+  --ink:#1C1A17; --ink-soft:#4A453B; --ink-faint:#7E7666;
+  --bronze:#8A6D1F; --bronze-deep:#6E5718;
+  --line:#DCD4BC;
+  --code-bg:#23201A; --code-ink:#EFE8D4; --code-line:#3A352A;
+}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{
-  min-height:100vh;color:#f3ead3;
-  font-family:Georgia,'Palatino Linotype','Times New Roman',serif;
-  background:
-    radial-gradient(1px 1px at 12% 22%, #ffffff88 0, transparent 100%),
-    radial-gradient(1px 1px at 68% 8%, #ffffff66 0, transparent 100%),
-    radial-gradient(1.5px 1.5px at 84% 34%, #ffffff77 0, transparent 100%),
-    radial-gradient(1px 1px at 32% 66%, #ffffff55 0, transparent 100%),
-    radial-gradient(1.5px 1.5px at 55% 82%, #ffffff66 0, transparent 100%),
-    radial-gradient(1px 1px at 92% 74%, #ffffff55 0, transparent 100%),
-    radial-gradient(1100px 700px at 15% -10%, #2b2060 0%, transparent 60%),
-    radial-gradient(900px 650px at 95% 15%, #3c2063 0%, transparent 55%),
-    linear-gradient(165deg,#070b1d 0%,#141031 60%,#1c1038 100%);
-  background-attachment:fixed;
+  min-height:100vh;background:var(--paper);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased;
 }
-header{text-align:center;padding:34px 16px 10px}
-header h1{margin:0;font-size:clamp(30px,5vw,46px);letter-spacing:.06em;color:#f5d67b;
-  text-shadow:0 0 24px rgba(240,199,94,.35)}
-header .motto{margin:10px 0 0;font-style:italic;color:#cbb98a;font-size:clamp(15px,2.4vw,19px)}
-header .rule{width:180px;height:2px;margin:18px auto 0;
-  background:linear-gradient(90deg,transparent,#f0c75e,transparent)}
-.toolbar{max-width:1400px;margin:14px auto 0;padding:0 22px;display:flex;gap:10px;
+a{color:var(--bronze);text-decoration:none}
+a:hover{text-decoration:underline}
+/* nav (same as the homepage) */
+.nav{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--line)}
+.nav-inner{display:flex;align-items:center;gap:12px;padding:14px 24px;max-width:1400px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:Georgia,'Palatino Linotype',serif;
+  font-size:19px;color:var(--ink);letter-spacing:.02em}
+.brand img{width:30px;height:30px;border-radius:7px;display:block}
+.brand:hover{text-decoration:none}
+.nav-links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.nav-links a{padding:8px 12px;color:var(--ink-soft);font-size:15px;border-radius:6px}
+.nav-links a:hover{color:var(--ink);text-decoration:none;background:#ECE7D6}
+/* header */
+header{text-align:center;padding:56px 24px 8px}
+header h1{margin:0;font-family:Georgia,'Palatino Linotype','Book Antiqua',Baskerville,serif;
+  font-weight:500;font-size:clamp(32px,5vw,48px);letter-spacing:.02em;line-height:1.1}
+header .motto{margin:12px 0 0;font-family:Georgia,serif;font-style:italic;
+  color:var(--ink-soft);font-size:clamp(15px,2.4vw,19px)}
+header .rule{width:64px;height:1px;margin:24px auto 0;background:var(--bronze)}
+/* toolbar */
+.toolbar{max-width:1400px;margin:20px auto 0;padding:0 24px;display:flex;gap:10px;
   flex-wrap:wrap;align-items:center}
-#samples{flex:1;min-width:220px;background:#0d1030;color:#f3ead3;
-  border:1px solid rgba(240,199,94,.35);border-radius:10px;padding:10px 12px;font-size:15px;
-  font-family:inherit}
-.btn{cursor:pointer;border-radius:10px;padding:10px 18px;font-size:15px;letter-spacing:.03em;
-  border:1px solid rgba(240,199,94,.5);font-family:inherit;
-  transition:transform .08s ease,box-shadow .2s}
-.btn-run{background:linear-gradient(135deg,#f7d774,#d9a83c);color:#2a1c05;font-weight:bold;
-  box-shadow:0 4px 18px rgba(240,199,94,.35)}
-.btn-run:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(240,199,94,.5)}
-.btn-clear{background:transparent;color:#f0c75e}
-.btn-clear:hover{background:rgba(240,199,94,.12)}
-.hint{color:#9a90b8;font-size:13px;font-style:italic}
-.layout{max-width:1400px;margin:16px auto 0;padding:0 22px;display:grid;
-  grid-template-columns:1.12fr .88fr;gap:18px}
+#samples{flex:1;min-width:220px;background:var(--card);color:var(--ink);
+  border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:15px;font-family:inherit}
+.btn{cursor:pointer;border-radius:6px;padding:10px 20px;font-size:15px;font-weight:600;
+  font-family:inherit;letter-spacing:.01em}
+.btn-run{background:var(--bronze);color:#F8F4E8;border:1px solid var(--bronze)}
+.btn-run:hover{background:var(--bronze-deep);border-color:var(--bronze-deep)}
+.btn-clear{background:transparent;color:var(--bronze);border:1px solid var(--line)}
+.btn-clear:hover{border-color:var(--bronze)}
+.hint{color:var(--ink-faint);font-size:13px;font-style:italic}
+/* panels */
+.layout{max-width:1400px;margin:18px auto 0;padding:0 24px;display:grid;
+  grid-template-columns:1.12fr .88fr;gap:20px}
 @media(max-width:980px){.layout{grid-template-columns:1fr}}
-.panel{background:rgba(13,12,34,.82);border:1px solid rgba(240,199,94,.28);
-  border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.45)}
-.panel-head{padding:10px 16px;border-bottom:1px solid rgba(240,199,94,.18);color:#f0c75e;
-  letter-spacing:.12em;font-size:13px;text-transform:uppercase}
-.editor-wrap{display:flex;height:480px}
-.gutter{padding:14px 8px 14px 14px;text-align:right;color:#6f6790;user-select:none;
-  overflow:hidden;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  white-space:pre;border-right:1px solid rgba(240,199,94,.12);min-width:46px}
+.panel{background:var(--card);border:1px solid var(--line);
+  border-radius:10px;overflow:hidden}
+.panel-head{padding:12px 20px;border-bottom:1px solid var(--line);color:var(--ink-faint);
+  letter-spacing:.14em;font-size:12.5px;text-transform:uppercase;font-weight:600}
+/* editor */
+.editor-wrap{display:flex;height:480px;background:var(--code-bg)}
+.gutter{padding:14px 8px 14px 14px;text-align:right;color:#8D8471;user-select:none;
+  overflow:hidden;font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  white-space:pre;border-right:1px solid var(--code-line);min-width:46px}
 .code-area{position:relative;flex:1;min-width:0}
-#highlight,#editor{font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+#highlight,#editor{font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   padding:14px 16px;white-space:pre;tab-size:4;margin:0;border:0}
-#highlight{position:absolute;inset:0;overflow:hidden;pointer-events:none;color:#e9e4f5}
+#highlight{position:absolute;inset:0;overflow:hidden;pointer-events:none;color:var(--code-ink)}
 #highlight code{font:inherit}
 #editor{position:absolute;inset:0;width:100%;height:100%;background:transparent;
-  color:transparent;caret-color:#ffd977;resize:none;outline:none;overflow:auto}
-#editor::selection{background:rgba(240,199,94,.28)}
-.c-kw{color:#f0c75e;font-weight:bold}
-.c-str{color:#8fe388}
-.c-num{color:#7fd4ff}
-.c-com{color:#8a8fa3;font-style:italic}
-#out{height:480px;overflow-y:auto;background:#04060f;padding:14px 16px;
-  font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-.cline{white-space:pre-wrap;word-break:break-word;color:#dfe6ff}
-.cline.dim{color:#6f6790}
-.cline.err{color:#ff8f8f}
-.cline.divine{color:#f0c75e}
-footer{text-align:center;color:#9a90b8;font-size:13px;padding:26px 16px 34px;font-style:italic}
-footer b{color:#cbb98a;font-style:normal}
+  color:transparent;caret-color:#D9B25F;resize:none;outline:none;overflow:auto}
+#editor::selection{background:rgba(217,178,95,.28)}
+.c-kw{color:#D9B25F}
+.c-str{color:#C4B78F}
+.c-num{color:#EFE8D4}
+.c-com{color:#8D8471;font-style:italic}
+/* console */
+#out{height:480px;overflow-y:auto;background:#1C1A15;padding:14px 18px;
+  font:13px/1.7 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.cline{white-space:pre-wrap;word-break:break-word;color:#D8CFB6}
+.cline.dim{color:#8D8471}
+.cline.err{color:#E08E8E}
+.cline.divine{color:#D9B25F}
+/* footer */
+footer{text-align:center;color:var(--ink-faint);font-size:14px;padding:34px 24px 48px}
+footer b{color:var(--ink-soft);font-weight:600}
+@media(max-width:700px){
+  .editor-wrap{height:380px}
+  #out{height:300px}
+  .toolbar{padding:0 16px}
+  .layout{padding:0 16px}
+}
 </style>
 <style>
 .sitenav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;
@@ -87,26 +105,36 @@ footer b{color:#cbb98a;font-style:normal}
 </style>
 </head>
 <body>
-<nav class="sitenav">
-  <a class="brand" href="../"><img src="../images/icon.png" alt="God Code mark"> God Code</a>
-  <span class="links"><a href="../">Home</a><a href="../learn/">Learn</a><a href="https://github.com/godcodeengine/Godcode-engine">GitHub</a></span>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="../" style="text-decoration:none">
+      <img src="../images/icon.png" alt="God Code mark"> God Code
+    </a>
+    <div class="nav-links">
+      <a href="../">Home</a>
+      <a href="./">Playground</a>
+      <a href="../learn/">Learn</a>
+      <a href="https://github.com/godcodeengine/Godcode-engine">GitHub</a>
+      <a href="https://discord.gg/894FEJhWfZ">Discord</a>
+    </div>
+  </div>
 </nav>
 
 <header>
-  <h1>🕊 God Code Playground</h1>
+  <h1>God Code Playground</h1>
   <p class="motto">&ldquo;You are not a coder. You are a creator.&rdquo;</p>
   <div class="rule"></div>
 </header>
 <div class="toolbar">
   <select id="samples" aria-label="Sample programs"></select>
-  <button class="btn btn-run" id="runBtn">⚡ Run Creation</button>
-  <button class="btn btn-clear" id="clearBtn">🧹 Clear</button>
-  <button class="btn btn-clear" id="shareBtn">🔗 Share</button>
-  <span class="hint">Ctrl+Enter (⌘+Enter) runs &middot; Tab inserts two spaces</span>
+  <button class="btn btn-run" id="runBtn">Run Creation</button>
+  <button class="btn btn-clear" id="clearBtn">Clear</button>
+  <button class="btn btn-clear" id="shareBtn">Share</button>
+  <span class="hint">Ctrl+Enter (&#8984;+Enter) runs &middot; Tab inserts two spaces</span>
 </div>
 <div class="layout">
   <section class="panel">
-    <div class="panel-head">✦ Scripture Editor</div>
+    <div class="panel-head">Scripture Editor</div>
     <div class="editor-wrap">
       <div class="gutter" id="gutter">1</div>
       <div class="code-area">
@@ -117,7 +145,7 @@ footer b{color:#cbb98a;font-style:normal}
     </div>
   </section>
   <section class="panel">
-    <div class="panel-head">✦ Heavenly Console</div>
+    <div class="panel-head">Heavenly Console</div>
     <div id="out" aria-live="polite"></div>
   </section>
 </div>
