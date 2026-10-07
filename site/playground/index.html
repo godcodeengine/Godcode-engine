@@ -1597,7 +1597,16 @@ if(typeof document!=="undefined"){
     try{
       if(location.hash.indexOf("#c=")===0) shared=b64urlDecode(location.hash.slice(3));
     }catch(e){ shared=null; }
-    editor.value=(shared===null||shared===undefined)?SAMPLES[0].code:shared;
+    if(shared===null||shared===undefined){
+      editor.value=SAMPLES[0].code;
+    }else{
+      editor.value=shared;
+      // Name the shared code honestly in the samples dropdown.
+      const o=document.createElement("option");
+      o.value="__shared"; o.textContent="Shared creation";
+      samplesSel.insertBefore(o,samplesSel.firstChild);
+      samplesSel.value="__shared";
+    }
     render();
     runCreation();
   })();
