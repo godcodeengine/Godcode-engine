@@ -53,6 +53,25 @@
   footer { margin-top:34px; color:var(--ink-faint); font-size:12.5px; letter-spacing:2.2px;
            text-align:center; line-height:2; }
   footer b { color:var(--bronze); }
+  /* QR scan mode (?qr=1): minimal dark verse, no chrome */
+  body.qr { background:#0E0E10; color:#F2EEE2; }
+  body.qr .topnav, body.qr .cta, body.qr footer, body.qr .note { display:none; }
+  body.qr .mark .word { color:#F5F2E9; }
+  body.qr .mark .word b { color:#E0A93E; }
+  body.qr .eyebrow { color:#E0A93E; }
+  body.qr h1 { color:#FFFFFF; }
+  body.qr .sub { color:#A8A29A; }
+  body.qr .card { background:#151518; border-color:#2B2B31; }
+  body.qr .card-head { border-color:#2B2B31; }
+  body.qr .card-head .mini { color:#F5F2E9; }
+  body.qr .card-head .mini b { color:#E0A93E; }
+  body.qr .date { color:#8E8A80; }
+  body.qr .codebox { background:#0B0B0E; border-color:#2B2B31; }
+  body.qr pre { color:#EDE8D6; }
+  body.qr .kw { color:#E0A93E; }
+  body.qr .str { color:#D8CFAE; }
+  body.qr .verse { color:#F2EEE2; }
+  body.qr .ref { color:#E0A93E; }
 </style>
 </head>
 <body>
@@ -113,6 +132,12 @@
   var params = new URLSearchParams(location.search);
   var dayParam = parseInt(params.get("day"), 10);
   if (!isNaN(dayParam) && dayParam >= 1) { idx = (dayParam - 1) % VERSES.length; }
+  if (params.get("qr") === "1") {
+    document.body.classList.add("qr");
+    document.title = "Today's Scripture \u00B7 GodCode";
+    var tc = document.querySelector('meta[name="theme-color"]');
+    if (tc) tc.setAttribute("content", "#0E0E10");
+  }
   var v = VERSES[idx];
   document.getElementById("date").textContent = now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
   document.getElementById("code").innerHTML = highlight(v.code);
