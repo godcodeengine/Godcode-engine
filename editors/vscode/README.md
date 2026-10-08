@@ -21,18 +21,28 @@ pip install godcode-engine
 
 ## Install this extension
 
-**Option A: from source (today)**
+**Option A: from the Visual Studio Marketplace (recommended)**
+
+Install *God Code for VS Code* from the Marketplace:
+https://marketplace.visualstudio.com/items?itemName=alakanani.godcode
+
+Then install the interpreter (Python 3.10+):
+
+```bash
+pip install godcode-engine
+```
+
+**Option B: from source**
+
 1. Copy the `editors/vscode` folder to `~/.vscode/extensions/godcode`
 2. Reload VS Code. `.god` files light up immediately
 
-**Option B: package it**
+**Option C: package it**
 ```bash
 npm install -g @vscode/vsce
 cd editors/vscode && vsce package
 # then: code --install-extension <the .vsix file vsce produced>
 ```
-
-**Option C: marketplace.** Coming soon 🕊
 
 ## Try it
 
