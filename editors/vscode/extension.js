@@ -28,7 +28,7 @@ async function runGodCode(checkOnly) {
   const bin = await findGodCode();
   if (!bin) {
     vscode.window.showErrorMessage(
-      'God Code interpreter not found. Install it with: pip install godcode'
+      'God Code interpreter not found. Install it with: pip install godcode-engine'
     );
     return;
   }
@@ -55,7 +55,7 @@ function activate(context) {
         const bin = await findGodCode();
         if (!bin) {
           vscode.window.showErrorMessage(
-            'God Code interpreter not found. Install it with: pip install godcode'
+            'God Code interpreter not found. Install it with: pip install godcode-engine'
           );
           return null;
         }
