@@ -118,7 +118,7 @@
       }
     ]
   },
-  "description": "Language support for God Code \u2014 the spiritually-inspired programming language. Syntax highlighting, snippets, and one-key running of .god files.",
+  "description": "Language support for God Code. The spiritually-inspired programming language. Syntax highlighting, snippets, and one-key running of .god files.",
   "displayName": "God Code",
   "engines": {
     "vscode": "^1.80.0"
@@ -130,7 +130,7 @@
     "language",
     "god code"
   ],
-  "license": "MIT",
+  "license": "Apache-2.0",
   "main": "./extension.js",
   "name": "godcode",
   "publisher": "alakanani",

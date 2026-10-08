@@ -1,5 +1,5 @@
-// God Code VS Code extension — run and check .god files from the editor.
-// Requires the God Code interpreter: pip install -e <path-to-Godcode-engine>
+// God Code VS Code extension. Run and check .god files from the editor.
+// Requires the God Code interpreter: pip install godcode
 const vscode = require('vscode');
 const { exec } = require('child_process');
 
@@ -25,7 +25,7 @@ async function runGodCode(checkOnly) {
   const bin = await findGodCode();
   if (!bin) {
     vscode.window.showErrorMessage(
-      'God Code interpreter not found. Install it with: pip install -e <path-to-Godcode-engine>'
+      'God Code interpreter not found. Install it with: pip install godcode'
     );
     return;
   }
@@ -52,7 +52,7 @@ function activate(context) {
         const bin = await findGodCode();
         if (!bin) {
           vscode.window.showErrorMessage(
-            'God Code interpreter not found. Install it with: pip install -e <path-to-Godcode-engine>'
+            'God Code interpreter not found. Install it with: pip install godcode'
           );
           return null;
         }
