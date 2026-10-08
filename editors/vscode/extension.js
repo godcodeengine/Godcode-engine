@@ -1,5 +1,5 @@
 // God Code VS Code extension. Run and check .god files from the editor.
-// Requires the God Code interpreter: pip install godcode
+// Requires the God Code interpreter: pip install godcode-engine
 const vscode = require('vscode');
 const { exec } = require('child_process');
 

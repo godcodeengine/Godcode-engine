@@ -16,7 +16,7 @@ Syntax highlighting, smart indentation, snippets, and one-key running of `.god` 
 The God Code interpreter (Python 3.10+):
 
 ```bash
-pip install godcode
+pip install godcode-engine
 ```
 
 ## Install this extension
