@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>God Code for VS Code</title>
+<meta name="description" content="God Code is now on the Visual Studio Marketplace. Install the extension and write creations inside your editor.">
+<style>
+  :root { --paper:#F4F1EA; --card:#FBFAF5; --ink:#1C1A17; --ink-soft:#4A453B; --ink-faint:#7E7666;
+          --bronze:#8A6D1F; --bronze-deep:#6E5718; --line:#DCD4BC; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         line-height: 1.65; font-size: 16px; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 56px 22px 72px; }
+  .mark { display: block; width: 84px; margin: 0 auto 22px; border-radius: 18px; }
+  h1 { text-align: center; font-family: Georgia,'Palatino Linotype',serif; font-weight: 500;
+       font-size: 34px; margin: 0 0 6px; letter-spacing: .01em; }
+  h1 .gold { color: var(--bronze); }
+  .sub { text-align: center; color: var(--ink-soft); margin: 0 0 8px; font-size: 17px; }
+  .date { text-align: center; color: var(--ink-faint); font-size: 13.5px; margin: 0 0 28px; }
+  .topnav { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin: 0 0 36px; }
+  .topnav a { color: var(--ink-faint); font-size: 13.5px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+          padding: 28px 26px; margin-bottom: 20px; }
+  .card h2 { margin: 0 0 10px; font-family: Georgia,serif; font-weight: 500; font-size: 21px; color: var(--bronze); }
+  .card p { color: var(--ink-soft); margin: 0 0 10px; }
+  .card ol, .card ul { padding-left: 20px; color: var(--ink-soft); margin: 0 0 6px; }
+  .card li { margin-bottom: 8px; }
+  .code { font-family: ui-monospace,Menlo,Consolas,monospace; font-size: 14px;
+          background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+          padding: 16px; margin: 14px 0 4px; white-space: pre; overflow-x: auto; color: var(--ink); }
+  .btnrow { text-align: center; margin: 18px 0 6px; }
+  .btn { display: inline-block; background: var(--bronze); color: #F8F4E8; font-weight: 600;
+         border: 1px solid var(--bronze); border-radius: 6px; padding: 12px 24px;
+         font-size: 15px; cursor: pointer; font-family: inherit; text-decoration: none; }
+  .btn:hover { background: var(--bronze-deep); border-color: var(--bronze-deep); }
+  .fine { font-size: 13.5px; color: var(--ink-faint); text-align: center; }
+  .home { display: block; text-align: center; margin-top: 28px; color: var(--bronze); text-decoration: none; }
+  .home:hover { text-decoration: underline; }
+  .verse { text-align: center; font-family: Georgia,serif; font-style: italic;
+           color: var(--ink-soft); margin: 30px 0 6px; font-size: 16px; }
+  .ref { text-align: center; color: var(--ink-faint); font-size: 13px; margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="mark" src="/images/icon.png" alt="God Code mark">
+  <h1>God Code for <span class="gold">VS Code</span></h1>
+  <p class="sub">The language now lives inside the world's most-used editor.</p>
+  <p class="date">October 8, 2026</p>
+  <nav class="topnav">
+    <a href="./">Home</a>
+    <a href="playground/">Playground</a>
+    <a href="learn/">Learn</a>
+    <a href="demos/">Demos</a>
+    <a href="https://github.com/godcodeengine/Godcode-engine">GitHub</a>
+    <a href="https://discord.gg/894FEJhWfZ">Discord</a>
+  </nav>
+
+  <p class="verse">"In the beginning was the Word."</p>
+  <p class="ref">John 1:1</p>
+
+  <div class="card">
+    <h2>The news</h2>
+    <p>God Code is now on the Visual Studio Marketplace. Install the extension and write your creations without ever leaving your editor. No setup, no terminal, no cloning. Search, install, begin.</p>
+    <div class="btnrow">
+      <a class="btn" href="https://marketplace.visualstudio.com/items?itemName=alakanani.godcode">Install God Code for VS Code</a>
+    </div>
+    <p class="fine">Free forever. Open source under the Apache 2.0 license.</p>
+  </div>
+
+  <div class="card">
+    <h2>What you get</h2>
+    <ul>
+      <li>Full syntax highlighting for <b>.god</b> files. Your creations light up like scripture.</li>
+      <li>27 snippets: creation, intent, consult, anchor, and blocks in Setswana and isiZulu.</li>
+      <li>Run the open file with <b>Ctrl+Alt+R</b> and watch it ascend.</li>
+      <li>Smart indentation and comment support, built for the language as it is today.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Install in three steps</h2>
+    <ol>
+      <li>Open VS Code and click the Extensions tab, or press <b>Ctrl+Shift+X</b>.</li>
+      <li>Search for <b>God Code</b>.</li>
+      <li>Click <b>Install</b>. Then open a <b>.god</b> file and write.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2>Try this first creation</h2>
+    <div class="code">BEGIN CREATION
+  DECLARE seeker AS "world"
+  BREATHE life INTO seeker
+  REVEAL("Hello, " + seeker)
+  ASCEND
+END CREATION</div>
+    <p>Save it as <b>hello.god</b> and press <b>Ctrl+Alt+R</b>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Share it</h2>
+    <p>Know someone who should meet God Code? Send them the Marketplace page:</p>
+    <div class="btnrow">
+      <a class="btn" href="https://marketplace.visualstudio.com/items?itemName=alakanani.godcode">marketplace.visualstudio.com/items?itemName=alakanani.godcode</a>
+    </div>
+  </div>
+
+  <a class="home" href="./">&larr; Back to getgodcode.com</a>
+</div>
+</body>
+</html>
