@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>God Code on Windows</title>
+<meta name="description" content="Set up God Code on Windows, step by step. Every hurdle in this guide is one a real first-timer actually hit, and every fix is one that worked.">
+<style>
+  :root { --paper:#F4F1EA; --card:#FBFAF5; --ink:#1C1A17; --ink-soft:#4A453B; --ink-faint:#7E7666;
+          --bronze:#8A6D1F; --bronze-deep:#6E5718; --line:#DCD4BC; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+         font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         line-height: 1.65; font-size: 16px; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 56px 22px 72px; }
+  .mark { display: block; width: 84px; margin: 0 auto 22px; border-radius: 18px; }
+  h1 { text-align: center; font-family: Georgia,'Palatino Linotype',serif; font-weight: 500;
+       font-size: 34px; margin: 0 0 6px; letter-spacing: .01em; }
+  h1 .gold { color: var(--bronze); }
+  .sub { text-align: center; color: var(--ink-soft); margin: 0 0 8px; font-size: 17px; }
+  .date { text-align: center; color: var(--ink-faint); font-size: 13.5px; margin: 0 0 28px; }
+  .topnav { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin: 0 0 36px; }
+  .topnav a { color: var(--ink-faint); font-size: 13.5px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+          padding: 28px 26px; margin-bottom: 20px; }
+  .card h2 { margin: 0 0 10px; font-family: Georgia,serif; font-weight: 500; font-size: 21px; color: var(--bronze); }
+  .card p { color: var(--ink-soft); margin: 0 0 10px; }
+  .card ol, .card ul { padding-left: 20px; color: var(--ink-soft); margin: 0 0 6px; }
+  .card li { margin-bottom: 8px; }
+  .code { font-family: ui-monospace,Menlo,Consolas,monospace; font-size: 14px;
+          background: var(--paper); border: 1px solid var(--line); border-radius: 8px;
+          padding: 16px; margin: 14px 0 4px; white-space: pre; overflow-x: auto; color: var(--ink); }
+  .btnrow { text-align: center; margin: 18px 0 6px; }
+  .btn { display: inline-block; background: var(--bronze); color: #F8F4E8; font-weight: 600;
+         border: 1px solid var(--bronze); border-radius: 6px; padding: 12px 24px;
+         font-size: 15px; cursor: pointer; font-family: inherit; text-decoration: none; }
+  .btn:hover { background: var(--bronze-deep); border-color: var(--bronze-deep); }
+  .fine { font-size: 13.5px; color: var(--ink-faint); text-align: center; }
+  .home { display: block; text-align: center; margin-top: 28px; color: var(--bronze); text-decoration: none; }
+  .home:hover { text-decoration: underline; }
+  .verse { text-align: center; font-family: Georgia,serif; font-style: italic;
+           color: var(--ink-soft); margin: 30px 0 6px; font-size: 16px; }
+  .ref { text-align: center; color: var(--ink-faint); font-size: 13px; margin-bottom: 24px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img class="mark" src="/images/icon.png" alt="God Code mark">
+  <h1>God Code on <span class="gold">Windows</span></h1>
+  <p class="sub">A first-timer's path, walked for real.</p>
+  <p class="date">October 8, 2026</p>
+  <nav class="topnav">
+    <a href="./">Home</a>
+    <a href="playground/">Playground</a>
+    <a href="learn/">Learn</a>
+    <a href="demos/">Demos</a>
+    <a href="vscode/">VS Code</a>
+    <a href="https://github.com/godcodeengine/Godcode-engine">GitHub</a>
+    <a href="https://discord.gg/894FEJhWfZ">Discord</a>
+  </nav>
+
+  <p class="verse">"Your word is a lamp for my feet, a light on my path."</p>
+  <p class="ref">Psalm 119:105</p>
+
+  <div class="card">
+    <h2>Walked before you</h2>
+    <p>This guide was walked by Koketso, the first person outside our own machines to run God Code on Windows. Every hurdle below is one he actually hit, and every fix is one that worked. If he can do it, you can do it.</p>
+  </div>
+
+  <div class="card">
+    <h2>What you need</h2>
+    <ul>
+      <li>Windows 10 or 11.</li>
+      <li>Python 3.10 or newer.</li>
+      <li>VS Code, with the God Code extension.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Step 1: Install Python</h2>
+    <p>Get it from <a href="https://www.python.org/downloads/">python.org</a>. On the very first install screen, tick the box that says <b>Add python.exe to PATH</b> before you click Install. That one tick prevents half the trouble below.</p>
+    <p>Check it worked. Open PowerShell and run:</p>
+    <div class="code">python --version</div>
+    <p>You should see a version number like Python 3.12.</p>
+  </div>
+
+  <div class="card">
+    <h2>Step 2: Upgrade pip</h2>
+    <p>In the same PowerShell window, run:</p>
+    <div class="code">python -m pip install --upgrade pip</div>
+    <p>This makes sure your installer is fresh. Koketso's first hurdle was an old pip, and this cleared it.</p>
+  </div>
+
+  <div class="card">
+    <h2>Step 3: Install God Code</h2>
+    <p>Now install the language itself:</p>
+    <div class="code">python -m pip install --user godcode-engine</div>
+    <p>Note the name carefully: it is <b>godcode-engine</b>, one word with a hyphen. An early version of our own instructions said <b>pip install godcode</b>, which does not exist, and that cost Koketso a good twenty minutes. Learn from his patience.</p>
+  </div>
+
+  <div class="card">
+    <h2>Step 4: The PATH hurdle</h2>
+    <p>After installing, you may see a yellow warning saying the Scripts folder <b>is not on PATH</b>. That means Windows does not know where to find the <b>godcode</b> command yet. Fix it like this:</p>
+    <ol>
+      <li>Press the Windows key, type <b>environment variables</b>, and open it.</li>
+      <li>Click <b>Environment Variables</b>. Under your user variables, select <b>Path</b> and click <b>Edit</b>.</li>
+      <li>Add the folder from the warning. It looks like this:<br><b>C:\Users\YOURNAME\AppData\Roaming\Python\Python312\Scripts</b><br>(yours will show your own username and Python version).</li>
+      <li>Click OK on every window.</li>
+    </ol>
+    <p>Then <b>close your terminal completely and open a fresh one</b>. This is the step everyone forgets. The old window does not know about the change. In the fresh window, run:</p>
+    <div class="code">godcode --help</div>
+    <p>If you see the help text, you are set.</p>
+  </div>
+
+  <div class="card">
+    <h2>Step 5: Install the VS Code extension</h2>
+    <p>Open VS Code, press <b>Ctrl+Shift+X</b>, search for <b>God Code</b>, and click <b>Install</b>. The extension finds your interpreter on its own, on Windows too.</p>
+    <div class="btnrow">
+      <a class="btn" href="https://marketplace.visualstudio.com/items?itemName=alakanani.godcode">Get the extension</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Step 6: Run your first creation</h2>
+    <p>Create a file called <b>hello.god</b> and write:</p>
+    <div class="code">BEGIN CREATION
+  DECLARE seeker AS "world"
+  BREATHE life INTO seeker
+  REVEAL("Hello, " + seeker)
+  ASCEND
+END CREATION</div>
+    <p>Press <b>Ctrl+Alt+R</b> and watch it ascend.</p>
+  </div>
+
+  <div class="card">
+    <h2>If something still will not move</h2>
+    <ul>
+      <li><b>"No matching distribution found"</b> when installing: you typed the wrong package name. It is <b>godcode-engine</b>.</li>
+      <li><b>"God Code interpreter not found"</b> in VS Code: make sure the extension is updated to the latest, then close VS Code completely and open it again.</li>
+      <li><b>Nothing changed after a fix:</b> close the terminal and VS Code fully and reopen them. Windows only picks up new settings in fresh windows. This one caught Koketso twice.</li>
+      <li><b>Still stuck:</b> come to our <a href="https://discord.gg/894FEJhWfZ">Discord</a> and ask. You will be helped by people who have walked this exact path.</li>
+    </ul>
+  </div>
+
+  <a class="home" href="./">&larr; Back to getgodcode.com</a>
+</div>
+</body>
+</html>
