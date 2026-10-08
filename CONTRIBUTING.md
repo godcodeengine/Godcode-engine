@@ -31,15 +31,18 @@ Every contributor to God Code receives:
 
 ## Folder Structure
 
-- `godcode/` – the interpreter package: `lexer.py`, `parser.py`, `ast.py`, `interpreter.py`, `environment.py`, `values.py`, `errors.py`, `spirit.py`, `ledger.py`, `cli.py`
-- `godcode/scrolls/` – the standard library, written in God Code (`math`, `strings`, `lists`, `time`, `prophecy`, `covenant`)
-- `examples/` – twelve working `.god` creations (run with `godcode run examples/<name>.god`)
-- `tests/` – pytest suite
-- `playground/` – web playground
-- `docs/` – tutorial + full language reference
-- `archive/` – the honored original prototype
-- `logs/` – spiritual execution logs (`godcode.log`)
-- `main.py` – entry point (no args → runs `sample.godcode`)
+- `godcode/`. The interpreter package: `lexer.py`, `parser.py`, `ast.py`, `interpreter.py`, `environment.py`, `values.py`, `errors.py`, `spirit.py`, `ledger.py`, `cli.py`.
+- `godcode/tongues.py` and `docs/TONGUES.md`. The blessed keyword tables and guide for writing scrolls in other languages.
+- `godcode/stdlib_commons.py`. Everyday tools for words, lists, maps, and numbers. Its siblings `stdlib_hashes.py`, `stdlib_times.py`, and `stdlib_vault.py` provide hashes, time, and file tools.
+- `godcode/scrolls/`. The standard library written in God Code (`math`, `strings`, `lists`, `time`, `prophecy`, `covenant`).
+- `examples/`. Twenty-seven `.god` creations: language demonstrations, tongues, the commons, and practical file, sales, REST, and daily reports. Every example uses `godcode run examples/<name>.god` from the repo root; see `examples/README.md` for file and network notes.
+- `tests/`. The pytest suite. `tests/test_examples.py` is the safety net for practical examples and the commons demonstration.
+- `editors/`. VS Code support in `editors/vscode/`: highlighting, snippets, and language-server integration.
+- `playground/`. The web playground.
+- `docs/`. The tutorial and full language reference.
+- `archive/`. The honored original prototype.
+- `logs/`. Per-creation spiritual execution logs (`godcode.log`), generated when you run a scroll and never committed.
+- `main.py`. Entry point (no args → runs `sample.godcode`).
 
 ---
 
@@ -62,7 +65,8 @@ Every contributor to God Code receives:
 
 ## Contribution Ideas
 
-- 🌱 See [ISSUES.md](./ISSUES.md) for the roadmap: `ELSE IF` chains, string interpolation, dictionaries, `TRY`/`MERCY`, new scrolls, VS Code highlighting
+- 🌱 Ready for a first creation? Look for issues labelled [`good first issue`](https://github.com/godcodeengine/Godcode-engine/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) and [`hacktoberfest`](https://github.com/godcodeengine/Godcode-engine/issues?q=is%3Aissue+is%3Aopen+label%3Ahacktoberfest), and comment to claim one before you begin.
+- 🌱 See [ISSUES.md](./ISSUES.md) for the roadmap and its original ideas. Check the live issue labels before choosing a task; some of those seeds have already grown into the language.
 - 📜 Add a new scroll to `godcode/scrolls/` — written in God Code, tested, and documented in `docs/LANGUAGE_REFERENCE.md` §14
 - 💠 Add an example to `examples/`. Every creation must be valid and runnable via `godcode run`
 
