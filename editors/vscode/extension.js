@@ -4,12 +4,15 @@ const vscode = require('vscode');
 const { exec } = require('child_process');
 
 function findGodCode() {
-  // Try the `godcode` CLI first, fall back to `python3 -m godcode`.
+  // Try the `godcode` CLI first, then `python3 -m godcode`, then `python -m godcode` (Windows).
   return new Promise((resolve) => {
     exec('godcode --help', (err) => {
       if (!err) return resolve('godcode');
       exec('python3 -m godcode --help', (err2) => {
-        resolve(err2 ? null : 'python3 -m godcode');
+        if (!err2) return resolve('python3 -m godcode');
+        exec('python -m godcode --help', (err3) => {
+          resolve(err3 ? null : 'python -m godcode');
+        });
       });
     });
   });
