@@ -1,0 +1,4 @@
+# The docs website lives in this repo, but it is not the language itself.
+# Keep it out of GitHub's language statistics so the repo reads as Python.
+site/** linguist-vendored
+playground/** linguist-vendored
