@@ -587,7 +587,7 @@ _SNIPPETS: tuple[tuple[str, str, str], ...] = (
     ("INVOKE …", "INVOKE ${1:name}(${2:args})$0", "Call a rite"),
 )
 
-_WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_WORD_RE = re.compile(r"[^\W\d]\w*")  # Unicode letters: dotted Igbo words hover too
 
 
 # ---------------------------------------------------------------------------

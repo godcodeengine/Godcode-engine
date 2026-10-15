@@ -93,7 +93,7 @@ Condensed. Full detail lives in `references/language.md`.
 - `CONSULT("question")` asks the local oracle. `ASCEND` ends a run peacefully. `REPEAT(s, n)` is a word function, not a loop.
 - An unbound name evaluates to a Symbol and does not raise. `BREATHE LIFE INTO` an undeclared name raises.
 - Division by zero is rejected: "division by nothing is not permitted".
-- Tongues: `# tongue: tn` writes keywords in Setswana, `# tongue: zu` in isiZulu. English keywords still work in the same file.
+- Tongues: `# tongue: tn` writes keywords in Setswana, `# tongue: zu` in isiZulu, `# tongue: ig` in Igbo, `# tongue: pg` in Nigerian Pidgin. English keywords still work in the same file.
 
 ## When you need more
 

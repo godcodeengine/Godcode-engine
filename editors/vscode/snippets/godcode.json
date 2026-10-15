@@ -180,5 +180,47 @@
   ],
   "description": "Divine conditional in isiZulu",
   "prefix": "uma"
+ },
+ "Igbo creation block": {
+  "body": [
+   "# tongue: ig",
+   "BIDO OKIKE",
+   "\t${1:# Ndewo}",
+   "\t$0",
+   "\tRỊGOO",
+   "NJEDEBE OKIKE"
+  ],
+  "description": "A God Code creation block in Igbo",
+  "prefix": "ndewo"
+ },
+ "Igbo if": {
+  "body": [
+   "Ọ BỤRỤ ${1:onye} BỤ ${2:ezigbo} MGBE AHỤ",
+   "\t${3:GOSI(\"eluigwe\")}",
+   "NJEDEBE MA$0"
+  ],
+  "description": "Divine conditional in Igbo",
+  "prefix": "oburu"
+ },
+ "Pidgin creation block": {
+  "body": [
+   "# tongue: pg",
+   "OYA KREASHON",
+   "\t${1:# How far}",
+   "\t$0",
+   "\tCOMOT",
+   "FINISH KREASHON"
+  ],
+  "description": "A God Code creation block in Nigerian Pidgin",
+  "prefix": "howfar"
+ },
+ "Pidgin if": {
+  "body": [
+   "IF ${1:person} NA ${2:correct} DEN",
+   "\t${3:SHOW(\"heaven\")}",
+   "FINISH IF$0"
+  ],
+  "description": "Divine conditional in Nigerian Pidgin",
+  "prefix": "ifden"
  }
 }

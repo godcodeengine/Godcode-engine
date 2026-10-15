@@ -40,7 +40,7 @@ SENOLA("Dumela, {leina}.")
 FEDISA TLHOLEGO
 ```
 
-English keywords keep working beside tongue words, `godcode fmt` renders the canonical English, and every tool (`run`, `check`, `lint`, `test`, the debugger, the bridge, the playground) honours the pragma. See `docs/TONGUES.md` for the full word tables and the honest first-edition notes.
+Four tongues are spoken today: Setswana (`tn`), isiZulu (`zu`), Igbo (`ig`), and Nigerian Pidgin (`pg`, or `pcm`). English keywords keep working beside tongue words, `godcode fmt` renders the canonical English, and every tool (`run`, `check`, `lint`, `test`, the debugger, the bridge, the playground) honours the pragma. See `docs/TONGUES.md` for the full word tables and the honest first-edition notes.
 
 ## 2. Words of the Language
 

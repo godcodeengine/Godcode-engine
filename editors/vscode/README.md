@@ -6,7 +6,7 @@ Syntax highlighting, smart indentation, snippets, and one-key running of `.god` 
 ## Features
 
 - 🌈 Full syntax highlighting for God Code (creation blocks, spirit commands, control flow, built-ins)
-- ✍️ Snippets: `creation`, `declare`, `intent`, `consult`, `anchor`, `reveal`, `breathe`, `if`, `for`, `while`, `rite`, `invoke`, `testify`, `seal`, `import`, `bless`, `prophesy`, plus Setswana and isiZulu blocks
+- ✍️ Snippets: `creation`, `declare`, `intent`, `consult`, `anchor`, `reveal`, `breathe`, `if`, `for`, `while`, `rite`, `invoke`, `testify`, `seal`, `import`, `bless`, `prophesy`, plus Setswana, isiZulu, Igbo, and Pidgin blocks
 - ▶️ **God Code: Run Current File** (`Ctrl+Alt+R` / `Cmd+Alt+R`). Runs the open file and shows output in the God Code panel
 - ✔️ **God Code: Check Syntax of Current File**. Parses without executing
 - 💬 `#` line comments, auto-closing brackets and quotes, smart indent/dedent

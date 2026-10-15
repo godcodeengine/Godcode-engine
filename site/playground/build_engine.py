@@ -47,6 +47,8 @@ SAMPLES = [
     ("scroll_blessings_demo.god", "Scroll Registry (IMPORT \"blessings\")"),
     ("rites_demo.god", "Rites and Closures"),
     ("lots.god", "Casting Lots"),
+    ("first_blessing_ig.god", "Ndewo (Igbo)"),
+    ("first_blessing_pg.god", "How far (Nigerian Pidgin)"),
 ]
 
 

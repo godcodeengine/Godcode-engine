@@ -4,6 +4,15 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 ## Just landed
 
+- The third and fourth tongues: God Code speaks Igbo (`# tongue: ig`)
+  and Nigerian Pidgin (`# tongue: pg`, or `pcm`). Igbo words work with
+  or without their dotted vowels, and natural two-word phrases read as
+  one keyword (`Ọ BỤRỤ` for `IF`, `FINISH IF` for `ENDIF`). Every tool
+  honours them: the engine, the playground, the language server, and the
+  VS Code extension. New examples: `examples/first_blessing_ig.god` and
+  `examples/first_blessing_pg.god`. Both tables are first editions
+  awaiting a native speaker's review.
+
 - The playground runs the real engine. `site/playground/` loads this
   repository's own interpreter into the browser (Pyodide, in a Web
   Worker), so the commons, dates, registry scroll imports, `CONSULT`,
@@ -88,7 +97,9 @@ Where the language is headed, in plain words. This is a living document: it chan
 
 ## What is next
 
-- More tongues: community-proposed editions beyond Setswana.
+- More tongues: community-proposed editions beyond Setswana, isiZulu,
+  Igbo, and Nigerian Pidgin, and native-speaker review of the Igbo and
+  Pidgin first editions.
 - More of the standard library: concurrency, and whatever everyday work
   remains beyond the commons.
 - Editor tooling polish: the VS Code extension, the language server, and the playground keeping pace with the language.

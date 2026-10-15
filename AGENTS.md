@@ -78,7 +78,10 @@ godcode ledger verify     # verify the covenant chain
 - Tongues: a scroll with `# tongue: tn` writes keywords in Setswana
   (`SIMOLOLA`/`BEGIN`, `SENOLA`/`REVEAL`, `FA`/`IF`...), and a scroll with
   `# tongue: zu` writes them in isiZulu (`QALA`/`BEGIN`, `VEZA`/`REVEAL`,
-  `UMA`/`IF`...); see `docs/TONGUES.md` for both word tables.
+  `UMA`/`IF`...). `# tongue: ig` is Igbo (`BIDO`/`BEGIN`,
+  `GOSI`/`REVEAL`, `Ọ BỤRỤ`/`IF`), and `# tongue: pg`
+  (or `pcm`) is Nigerian Pidgin (`OYA`/`BEGIN`, `SHOW`/`REVEAL`,
+  `FINISH IF`/`ENDIF`); see `docs/TONGUES.md` for every word table.
   English keywords still work in the same file. `fmt` renders canonical
   English; the named tools (`SHA256`, `UPPER`, ...) never translate. The
   language server reads the pragma: completions offer `SENOLA (REVEAL)`

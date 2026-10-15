@@ -133,17 +133,19 @@ class Lexer:
                 word = src[start:i]
                 col += i - start
                 upper = word.upper()
-                if upper in KEYWORDS:
+                closer = self._compounds.get((prev_word, upper))
+                if (closer is not None and prev_line == ln and tokens
+                        and (tokens[-1].line, tokens[-1].col) == (prev_line, prev_col)):
+                    # A two-word phrase on one line, the words side by side:
+                    # FEDISA FA -> ENDIF, FINISH IF -> ENDIF, Ọ BỤRỤ -> IF.
+                    # Either word may be a keyword, a tongue word, or a name.
+                    tokens.pop()
+                    tokens.append(Token(closer, closer.name, prev_line, prev_col))
+                elif upper in KEYWORDS:
                     tokens.append(Token(KEYWORDS[upper], upper, ln, cl))
                 elif upper in self._aliases:
                     tt = self._aliases[upper]
-                    closer = self._compounds.get((prev_word, upper))
-                    if closer is not None and prev_line == ln:
-                        # A two-word closer on one line: FEDISA FA -> ENDIF.
-                        tokens.pop()
-                        tokens.append(Token(closer, closer.name, prev_line, prev_col))
-                    else:
-                        tokens.append(Token(tt, tt.name, ln, cl))
+                    tokens.append(Token(tt, tt.name, ln, cl))
                 else:
                     tokens.append(Token(TokenType.IDENT, word, ln, cl))
                 prev_word, prev_line, prev_col = upper, ln, cl
