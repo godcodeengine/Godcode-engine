@@ -30,31 +30,15 @@ def run(src, interp=None):
     return interp.output
 
 
-def god_word(raw):
-    """Quote raw text as a God Code word literal.
-
-    Braces are doubled so they survive string interpolation, and the
-    holy escapes are honored, so JSON text can be embedded in sources.
-    """
-    return (
-        '"'
-        + raw.replace("\\", "\\\\")
-        .replace('"', '\\"')
-        .replace("{", "{{")
-        .replace("}", "}}")
-        + '"'
-    )
-
-
 # ------------------------------------------------------------------- JSON
 
 
-def test_json_round_trip():
+def test_json_round_trip(god_word):
     src = f"REVEAL(JSON_STRING(JSON_PARSE({god_word('{"a": 1, "b": [1, 2]}')})))"
     assert run(src) == ['{"a":1,"b":[1,2]}']
 
 
-def test_json_nested_maps_and_lists():
+def test_json_nested_maps_and_lists(god_word):
     raw = (
         '{"users": [{"name": "Amina", "tags": ["grace", "peace"]}],'
         ' "n": 3, "ok": true, "nothing": null}'
@@ -71,7 +55,7 @@ def test_json_nested_maps_and_lists():
     assert run(src) == ["map", "Amina", "peace", "3", "true", "void"]
 
 
-def test_map_indexing_on_parsed_json():
+def test_map_indexing_on_parsed_json(god_word):
     src = (
         f"DECLARE d AS JSON_PARSE({god_word('{"name": "Bakang"}')})\n"
         'REVEAL(d["name"])\n'
@@ -79,7 +63,7 @@ def test_map_indexing_on_parsed_json():
     assert run(src) == ["Bakang"]
 
 
-def test_json_parse_top_level_values():
+def test_json_parse_top_level_values(god_word):
     assert run(f"REVEAL(JSON_PARSE({god_word('[1, 2]')}))") == ["[1, 2]"]
     assert run(f"REVEAL(JSON_PARSE({god_word('42')}))") == ["42"]
     assert run(f"REVEAL(JSON_PARSE({god_word('true')}))") == ["true"]
@@ -92,7 +76,7 @@ def test_json_string_compact_shapes():
     assert run("REVEAL(JSON_STRING(2.5))") == ["2.5"]
 
 
-def test_json_parse_invalid_raises():
+def test_json_parse_invalid_raises(god_word):
     with pytest.raises(GodRuntimeError) as excinfo:
         run(f"REVEAL(JSON_PARSE({god_word('{oops')}))")
     message = str(excinfo.value)
@@ -233,7 +217,7 @@ def test_sandbox_write_grant_allows_write(tmp_path):
     assert (tmp_path / "allowed.txt").read_text(encoding="utf-8") == "yes"
 
 
-def test_json_needs_no_grant_under_sandbox():
+def test_json_needs_no_grant_under_sandbox(god_word):
     interp = sandboxed(SandboxPolicy.strict())
     src = f"REVEAL(JSON_STRING(JSON_PARSE({god_word('{"a": [1]}')})))"
     interp.run_source(src)
