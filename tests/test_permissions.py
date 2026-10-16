@@ -247,12 +247,13 @@ def test_manifest_narrows_sandbox_further(tmp_path, monkeypatch):
 
 # ------------------------------------------------------- import composition
 
-def test_imported_scroll_widens_grants_by_union(tmp_path, monkeypatch):
+def test_imported_scroll_widens_grants_by_union(tmp_path, monkeypatch, god_word):
     (tmp_path / "data").mkdir()
     (tmp_path / "data" / "note.txt").write_text("psalm", encoding="utf-8")
     monkeypatch.chdir(tmp_path)
     (tmp_path / "helper.god").write_text(
-        f'DECLARE PERMISSION TO READ "{tmp_path}/data/"\n'
+        "DECLARE PERMISSION TO READ "
+        f"{god_word(str(tmp_path / 'data') + os.sep)}\n"
         'DECLARE helper_text AS READ_FILE("data/note.txt")\n',
         encoding="utf-8",
     )

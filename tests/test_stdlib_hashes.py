@@ -250,12 +250,12 @@ def test_hashes_scroll_exists_and_runs():
     assert result.ok
 
 
-def test_hashes_scroll_rites():
+def test_hashes_scroll_rites(god_word):
     from godcode import run_source
 
     src = (
         'BEGIN CREATION\n'
-        f'  IMPORT "{_hashes_scroll_entry()}"\n'
+        f"  IMPORT {god_word(str(_hashes_scroll_entry()))}\n"
         '  REVEAL(FINGERPRINT("abc"))\n'
         '  REVEAL(SIGN("msg", "key"))\n'
         '  REVEAL(VERIFY_SIGNATURE("msg", "key", SIGN("msg", "key")))\n'
