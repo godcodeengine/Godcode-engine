@@ -11,6 +11,12 @@ God Code is a **programming language that reads like scripture**. Write real sof
 
 ---
 
+[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/alakanani/badge.svg)](https://hub.xerj.org/contributors/alakanani)
+
+God Code's permission manifests work is indexed in the [XERJ Corpus Hub](https://hub.xerj.org/contributors/alakanani), the open reference memory that AI coding agents consult before they write code.
+
+---
+
 ## ✨ What Is God Code?
 
 A symbolic, prophetic programming language:
