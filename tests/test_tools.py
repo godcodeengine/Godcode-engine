@@ -25,9 +25,9 @@ def _write(tmp_path, name, text):
 
 class TestToolSchemas:
     NAMES = {"check", "run", "consult", "intent", "anchor_verify",
-             "ledger_verify", "permissions"}
+             "ledger_verify", "permissions", "explain", "get_schema"}
 
-    def test_seven_mcp_compatible_tools(self):
+    def test_nine_mcp_compatible_tools(self):
         assert {t["name"] for t in TOOL_SCHEMAS} == self.NAMES
         for tool in TOOL_SCHEMAS:
             assert tool["description"]

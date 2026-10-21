@@ -129,8 +129,9 @@ end to end. Three new commands complete the picture:
 
 - **`godcode intent "words..." [--json]`** — resolve the intent behind any
   words through the Spirit Engine.
-- **`godcode tools [--json]`** — six MCP-compatible tool schemas (`check`,
-  `run`, `consult`, `intent`, `anchor_verify`, `ledger_verify`) for any
+- **`godcode tools [--json]`** — nine MCP-compatible tool schemas (`check`,
+  `run`, `consult`, `intent`, `anchor_verify`, `ledger_verify`,
+  `permissions`, `explain`, `get_schema`) for any
   agent framework that speaks the Model Context Protocol.
 - **`godcode bridge`** — a JSON-RPC 2.0 server over stdio
   (`initialize`, `ping`, `tools/list`, `tools/call`) exposing those tools
@@ -138,5 +139,19 @@ end to end. Three new commands complete the picture:
 
 Anchor receipts from `ANCHOR` can be verified after the fact with the
 `anchor_verify` tool or `godcode ledger verify`, which now attests both
-the covenant chain and the anchor chain. Agents do not just run God Code.
+the covenant chain and the anchor chain. `godcode ledger verify --json`
+emits the same attestation as one JSON document, shaped by the dated
+schema at `https://getgodcode.com/schemas/2026-10/ledger-verify.json`.
+
+## Explain: read a scroll without running it
+
+`godcode explain scroll.god [--json]` walks the parsed scroll
+statically — nothing executes — and reports its tongue, rites and
+their declared intents, declared names, reveals, seals, summoned
+verbs, consults, imports, and permission manifest. The agent bridge
+carries the same facts as the `explain` tool, and `get_schema` fetches
+any of the four dated machine-interface schemas as parsed JSON.
+`godcode schema <name>` prints them from the CLI. The full machine
+contract — commands, exit codes, and the stability promise — lives in
+`docs/machine-interfaces.md`. Agents do not just run God Code.
 They testify in it, and the ledger remembers what they meant.
