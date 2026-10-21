@@ -122,6 +122,40 @@ TOOL_SCHEMAS: list[dict] = [
             "required": ["file"],
         },
     },
+    {
+        "name": "explain",
+        "description": (
+            "Read a God Code scroll without running it and say what it "
+            "does: tongue, rites and their declared intents, declared "
+            "names, reveals, seals, summoned verbs, consults, imports, "
+            "and the permission manifest."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "file": {"type": "string",
+                         "description": "Path to the .god scroll"},
+            },
+            "required": ["file"],
+        },
+    },
+    {
+        "name": "get_schema",
+        "description": (
+            "Fetch one of the dated machine-interface JSON Schemas "
+            "(check, run, explain, ledger-verify) as parsed JSON, so an "
+            "agent can parse every command's output without guessing."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string",
+                         "description": "Schema name: check, run, explain, "
+                                        "or ledger-verify"},
+            },
+            "required": ["name"],
+        },
+    },
 ]
 
 _TOOLS_BY_NAME = {t["name"]: t for t in TOOL_SCHEMAS}
@@ -259,6 +293,39 @@ def tool_permissions(arguments: dict) -> dict:
     return {"ok": True, "permissions": manifest.to_json()}
 
 
+def tool_explain(arguments: dict) -> dict:
+    """Describe a scroll's static facts without running it."""
+    from godcode.errors import GodCodeError
+    from godcode.explain import explain_facts
+
+    file = arguments.get("file")
+    if not isinstance(file, str):
+        return {"ok": False,
+                "error": "explain needs 'file' as a string path"}
+    try:
+        source = Path(file).read_text(encoding="utf-8")
+    except OSError as exc:
+        return {"ok": False,
+                "error": f"cannot read '{file}': {exc.strerror or exc}"}
+    try:
+        facts = explain_facts(source, Path(file).resolve().parent)
+    except GodCodeError as err:
+        return {"ok": False, "error": str(err)}
+    return {"ok": True, **facts}
+
+
+def tool_get_schema(arguments: dict) -> dict:
+    """Fetch one dated machine-interface schema as parsed JSON."""
+    name = arguments.get("name")
+    if not isinstance(name, str):
+        return {"ok": False,
+                "error": "get_schema needs 'name' as a string"}
+    text, error = read_schema(name)
+    if error is not None:
+        return {"ok": False, "error": error}
+    return {"ok": True, "schema": json.loads(text)}
+
+
 def tool_ledger_verify(arguments: dict) -> dict:
     from godcode.chain import SimulatedChainAdapter
     from godcode.ledger import CovenantLedger
@@ -282,7 +349,47 @@ _TOOL_FUNCS = {
     "anchor_verify": tool_anchor_verify,
     "ledger_verify": tool_ledger_verify,
     "permissions": tool_permissions,
+    "explain": tool_explain,
+    "get_schema": tool_get_schema,
 }
+
+
+# ---------------------------------------------------------------------------
+# dated machine-interface schemas
+# ---------------------------------------------------------------------------
+SCHEMA_NAMES = ("check", "run", "explain", "ledger-verify")
+
+SCHEMA_DESCRIPTIONS = {
+    "check": "the shape of godcode check --json",
+    "run": "the shape of godcode run --sandbox --json",
+    "explain": "the shape of godcode explain --json",
+    "ledger-verify": "the shape of godcode ledger verify --json",
+}
+
+
+def read_schema(name):
+    """Return (text, error) for a dated schema.
+
+    Resolves through importlib.resources so an installed package serves
+    its shipped schemas; falls back to the repository's schemas/
+    directory when running from source.
+    """
+    if name not in SCHEMA_NAMES:
+        return None, f"no schema named '{name}'"
+    rel = Path("schemas") / "2026-10" / f"{name}.json"
+    try:
+        from importlib.resources import files
+
+        candidate = files("godcode").joinpath("schemas/2026-10",
+                                              f"{name}.json")
+        if candidate.is_file():
+            return candidate.read_text(encoding="utf-8"), None
+    except Exception:
+        pass
+    fallback = Path(__file__).resolve().parent / rel
+    if fallback.is_file():
+        return fallback.read_text(encoding="utf-8"), None
+    return None, f"schema '{name}' is not installed here"
 
 
 def call_tool(name: str, arguments: dict) -> dict:

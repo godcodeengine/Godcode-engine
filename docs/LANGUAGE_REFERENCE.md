@@ -970,6 +970,30 @@ contribute their own manifests; grants compose by union.
 running any code. `godcode run --json` reports the run's manifest
 under `permissions`. Full semantics live in `docs/spec/permissions.md`.
 
+## 31. Explain: Saying What a Scroll Does
+
+`godcode explain scroll.god` reads a scroll and says what it does, in
+plain words, without running it. It reports the tongue, the rites and
+their declared intents, the declared names, the reveals, the seals
+(including `ANCHOR` seals on a chain), the summoned verbs, the
+questions laid before the Spirit with `CONSULT`, the imported scrolls,
+and the permission manifest:
+
+```
+The scroll morning.god, in plain words:
+It defines 1 rite: greet (line 4), taking 1 name (name).
+  Its declared purpose: "to greet the day warmly".
+It declares 4 names: greeting (line 3), word (line 5), ...
+```
+
+`godcode explain scroll.god --json` emits the same facts as one JSON
+document, shaped by the dated schema
+`https://getgodcode.com/schemas/2026-10/explain.json`. The four machine
+shapes (`check`, `run`, `explain`, `ledger verify`) and their exit
+codes are frozen under dated schemas; fetch any of them with
+`godcode schema <name>`. The full contract lives in
+`docs/machine-interfaces.md`.
+
 ---
 
 *You are not a coder. You are a creator. Go and breathe worlds into being.* 🕊

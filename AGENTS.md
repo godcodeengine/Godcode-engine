@@ -101,19 +101,50 @@ godcode ledger verify     # verify the covenant chain
 
 ## Agent workflow
 
-generate → `check --json` → fix from diagnostics → `run --sandbox --json`
-→ inspect `output`/`error`/`intents` → iterate. Never run untrusted scrolls without
+generate → `explain --json` (on an unfamiliar scroll) → `check --json` →
+fix from diagnostics → `run --sandbox --json` → inspect
+`output`/`error`/`intents` → iterate. Never run untrusted scrolls without
 `--sandbox`. Keep the human's production checklist (provider contracts,
 real credentials, Bank of Botswana sandbox submission) out of the way.
 Demo in sandbox mode.
 
+## Read before you run
+
+```bash
+godcode explain scroll.god            # plain words, for humans
+godcode explain scroll.god --json     # static facts: tongue, rites and
+                                      # their intents, names, reveals,
+                                      # seals, summons, consults, imports,
+                                      # permissions. Nothing executes.
+```
+
+Explaining a scroll is always safe: the walk is read-only over the
+parsed AST. Use it on any scroll you did not write before running it.
+
+## Machine interface schemas
+
+The four `--json` shapes are frozen under dated schemas (God Code
+releases by date, not by numbers):
+
+```bash
+godcode schema            # list: check, run, explain, ledger-verify
+godcode schema explain    # print one schema as JSON
+```
+
+Schema IDs live under `https://getgodcode.com/schemas/2026-10/`. The
+full contract (commands, exit codes, stability promise) is in
+`docs/machine-interfaces.md`. Required fields never change meaning;
+additive fields may appear. A breaking change would ship under a new
+dated schema, with the old one staying published.
+
 ## Agent tool bridge
 
-Seven MCP-compatible tool schemas for agent frameworks, plus a JSON-RPC
+Nine MCP-compatible tool schemas for agent frameworks, plus a JSON-RPC
 bridge over stdio:
 
 ```bash
-godcode tools --json     # check, run, consult, intent, anchor_verify, ledger_verify, permissions
+godcode tools --json     # check, run, consult, intent, anchor_verify,
+                         # ledger_verify, permissions, explain, get_schema
 godcode bridge           # serve the tools to an agent host over stdio
 godcode intent "words"   # resolve the intent behind words with the Spirit
 godcode ledger verify    # attest the covenant chain AND the anchor chain

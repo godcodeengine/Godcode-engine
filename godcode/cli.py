@@ -554,11 +554,24 @@ def cmd_fmt(args: argparse.Namespace) -> int:
 # ---------------------------------------------------------------------------
 def cmd_ledger_verify(args: argparse.Namespace) -> int:
     # v4.0: verifies the covenant chain AND the anchor chain, reporting both.
+    import json as _json
+
     from godcode.chain import SimulatedChainAdapter
     from godcode.ledger import CovenantLedger
 
     cov_ok, cov_message = CovenantLedger(args.file).verify()
     anc_ok, anc_message = SimulatedChainAdapter(args.anchor_file).verify_chain()
+    if getattr(args, "json", False):
+        _json_doc = {
+            "tool": "godcode",
+            "command": "ledger",
+            "subcommand": "verify",
+            "ok": cov_ok and anc_ok,
+            "covenant": {"ok": cov_ok, "message": cov_message},
+            "anchors": {"ok": anc_ok, "message": anc_message},
+        }
+        print(_json.dumps(_json_doc, ensure_ascii=False))
+        return 0 if (cov_ok and anc_ok) else 1
     print(cov_message)
     print(anc_message)
     return 0 if (cov_ok and anc_ok) else 1
@@ -878,6 +891,82 @@ def cmd_permissions(args: argparse.Namespace) -> int:
     return 0
 # --- end permission manifests ---
 
+# --- machine interfaces: `godcode explain` ---
+def cmd_explain(args: argparse.Namespace) -> int:
+    """`godcode explain scroll.god [--json]`: say what a scroll does.
+
+    Parses the scroll and reports its static facts: tongue, rites and
+    their declared intents, declared names, reveals, seals, summons,
+    consults, imports, and the permission manifest. No code runs, so
+    explaining a scroll is always safe.
+    """
+    import json as _json
+
+    from godcode.errors import GodCodeError
+    from godcode.explain import explain_facts, explain_payload, human_summary
+
+    try:
+        source = Path(args.file).read_text(encoding="utf-8")
+    except OSError as exc:
+        if getattr(args, "json", False):
+            from godcode import agentics
+            agentics.emit(explain_payload(
+                args.file, False, [agentics._file_error_diagnostic(args.file, exc)]))
+        else:
+            print(f"godcode: cannot read '{args.file}': {exc.strerror or exc}",
+                  file=sys.stderr)
+        return 1
+    try:
+        facts = explain_facts(source, Path(args.file).resolve().parent)
+    except GodCodeError as err:
+        if getattr(args, "json", False):
+            from godcode import agentics
+            agentics.emit(explain_payload(
+                args.file, False, [agentics.diagnostic(err)]))
+        else:
+            print(f"godcode: the scroll could not be read: {err}",
+                  file=sys.stderr)
+        return 1
+    if getattr(args, "json", False):
+        from godcode import agentics
+        agentics.emit(explain_payload(args.file, True, [], facts))
+        return 0
+    print(human_summary(args.file, facts))
+    return 0
+# --- end machine interfaces ---
+
+# --- machine interfaces: `godcode schema` ---
+def cmd_schema(args: argparse.Namespace) -> int:
+    """`godcode schema [name] [--json]`: list or print dated JSON schemas.
+
+    The schemas freeze the machine shapes of `check --json`,
+    `run --sandbox --json`, `explain --json`, and `ledger verify --json`
+    under their dated contract; additive fields may appear but required
+    fields never change meaning.
+    """
+    import json as _json
+
+    from godcode.tools import SCHEMA_DESCRIPTIONS, SCHEMA_NAMES, read_schema
+
+    if not args.name:
+        print("God Code machine interfaces (dated schemas):")
+        for name in SCHEMA_NAMES:
+            print(f"  {name}: {SCHEMA_DESCRIPTIONS[name]}")
+        return 0
+    text, error = read_schema(args.name)
+    if error is not None:
+        if getattr(args, "json", False):
+            print(_json.dumps({"tool": "godcode", "command": "schema",
+                               "ok": False, "error": error},
+                              ensure_ascii=False))
+        else:
+            print(f"godcode: {error}. The schemas are: "
+                  f"{', '.join(SCHEMA_NAMES)}.", file=sys.stderr)
+        return 1
+    print(text)
+    return 0
+# --- end machine interfaces ---
+
 # --- v4.0: intent command ---
 def cmd_intent(args: argparse.Namespace) -> int:
     """`godcode intent "some words" [--json]`: resolve intent via the Spirit."""
@@ -1023,6 +1112,11 @@ def build_parser() -> argparse.ArgumentParser:
                           metavar="PATH",
                           help="Anchor chain file (default: anchors.chain)")
     # --- end v4.0 ---
+    # --- machine interfaces: ledger verify --json ---
+    p_verify.add_argument("--json", action="store_true",
+                          help="Emit a machine-readable JSON report "
+                               "on stdout")
+    # --- end machine interfaces ---
     p_verify.set_defaults(func=cmd_ledger_verify)
 
     # --- v4.0: intent, tools, bridge commands ---
@@ -1054,6 +1148,28 @@ def build_parser() -> argparse.ArgumentParser:
                                    "(JSON-RPC 2.0 over stdio)")
     p_bridge.set_defaults(func=cmd_bridge)
     # --- end v4.0 ---
+
+    # --- machine interfaces: explain + schema commands ---
+    p_explain = sub.add_parser("explain",
+                               help="Say what a scroll does, in plain words, "
+                                    "without running it")
+    p_explain.add_argument("file", help="The .god scroll to explain")
+    p_explain.add_argument("--json", action="store_true",
+                           help="Emit a machine-readable JSON report "
+                                "on stdout")
+    p_explain.set_defaults(func=cmd_explain)
+
+    p_schema = sub.add_parser("schema",
+                              help="List or print the dated JSON schemas "
+                                   "for the machine interfaces")
+    p_schema.add_argument("name", nargs="?", default=None,
+                          help="Schema to print: check, run, explain, "
+                               "ledger-verify")
+    p_schema.add_argument("--json", action="store_true",
+                          help="Emit a machine-readable JSON error on "
+                               "stdout for unknown names")
+    p_schema.set_defaults(func=cmd_schema)
+    # --- end machine interfaces ---
 
     # --- v3: scroll commands ---
     _add_scroll_commands(sub)
