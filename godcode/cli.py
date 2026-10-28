@@ -1007,6 +1007,12 @@ def cmd_bridge(args: argparse.Namespace) -> int:
     from godcode.tools import cmd_bridge as _cmd_bridge
 
     return _cmd_bridge(args)
+
+
+def cmd_mcp(args: argparse.Namespace) -> int:
+    from godcode.mcp import cmd_mcp as _cmd_mcp
+
+    return _cmd_mcp(args)
 # --- end v4.0 ---
 
 
@@ -1147,6 +1153,11 @@ def build_parser() -> argparse.ArgumentParser:
                               help="Serve the agent tool bridge "
                                    "(JSON-RPC 2.0 over stdio)")
     p_bridge.set_defaults(func=cmd_bridge)
+
+    p_mcp = sub.add_parser("mcp",
+                           help="Serve the MCP server over stdio "
+                                "(runs are always sandboxed)")
+    p_mcp.set_defaults(func=cmd_mcp)
     # --- end v4.0 ---
 
     # --- machine interfaces: explain + schema commands ---

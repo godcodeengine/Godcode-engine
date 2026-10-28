@@ -54,12 +54,14 @@ godcode schema            # list the four schema names
 godcode schema explain    # print the explain schema as JSON
 ```
 
-The same schemas ride the agent bridge: `godcode tools --json` lists
-nine tools (`check`, `run`, `consult`, `intent`, `anchor_verify`,
-`ledger_verify`, `permissions`, `explain`, `get_schema`), and
+The same schemas ride the agent tools: `godcode tools --json` lists
+eleven tools (`check`, `run`, `consult`, `intent`, `anchor_verify`,
+`ledger_verify`, `permissions`, `explain`, `get_schema`, `format`,
+`list_scrolls`), and
 `get_schema` returns any schema as parsed JSON. The schemas also ship
 inside the installed package, so an agent can resolve them without the
-CLI.
+CLI. The tools are served to MCP clients by `godcode mcp`
+(see `docs/mcp.md`); runs through it are always sandboxed.
 
 ## The stability promise
 
