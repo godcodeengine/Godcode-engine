@@ -139,12 +139,15 @@ dated schema, with the old one staying published.
 
 ## Agent tool bridge
 
-Nine MCP-compatible tool schemas for agent frameworks, plus a JSON-RPC
-bridge over stdio:
+Eleven MCP-compatible tool schemas for agent frameworks, plus an MCP
+server and a JSON-RPC bridge over stdio:
 
 ```bash
 godcode tools --json     # check, run, consult, intent, anchor_verify,
-                         # ledger_verify, permissions, explain, get_schema
+                         # ledger_verify, permissions, explain, get_schema,
+                         # format, list_scrolls
+godcode mcp              # the MCP server over stdio; runs are always
+                         # sandboxed, whatever the client asks for
 godcode bridge           # serve the tools to an agent host over stdio
 godcode intent "words"   # resolve the intent behind words with the Spirit
 godcode ledger verify    # attest the covenant chain AND the anchor chain
