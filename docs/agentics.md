@@ -129,12 +129,12 @@ end to end. Three new commands complete the picture:
 
 - **`godcode intent "words..." [--json]`** — resolve the intent behind any
   words through the Spirit Engine.
-- **`godcode tools [--json]`** — eleven MCP-compatible tool schemas
+- **`godcode tools [--json]`**: eleven MCP-compatible tool schemas
   (`check`, `run`, `consult`, `intent`, `anchor_verify`,
   `ledger_verify`, `permissions`, `explain`, `get_schema`, `format`,
   `list_scrolls`) for any
   agent framework that speaks the Model Context Protocol.
-- **`godcode mcp`** — the MCP server over stdio, serving those tools
+- **`godcode mcp`**: the MCP server over stdio, serving those tools
   to any MCP client, with runs always sandboxed. See `docs/mcp.md`.
 - **`godcode bridge`** — a JSON-RPC 2.0 server over stdio
   (`initialize`, `ping`, `tools/list`, `tools/call`) exposing those tools
