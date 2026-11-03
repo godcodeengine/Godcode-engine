@@ -156,6 +156,34 @@ TOOL_SCHEMAS: list[dict] = [
             "required": ["name"],
         },
     },
+    {
+        "name": "format",
+        "description": (
+            "Re-emit a God Code scroll in canonical form without running "
+            "it: upper-case keywords, tidy spacing, the shape `godcode "
+            "fmt` prints. Returns the formatted scroll as text."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "file": {"type": "string",
+                         "description": "Path to the .god scroll"},
+            },
+            "required": ["file"],
+        },
+    },
+    {
+        "name": "list_scrolls",
+        "description": (
+            "List the scrolls installed in the local scroll registry, "
+            "with their versions and locations. Takes no arguments."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+        },
+    },
 ]
 
 _TOOLS_BY_NAME = {t["name"]: t for t in TOOL_SCHEMAS}
@@ -195,11 +223,19 @@ def tool_run(arguments: dict) -> dict:
     except OSError as exc:
         return {"ok": False, "error": f"cannot read '{file}': {exc.strerror or exc}"}
     if sandbox:
+        # The engine prints notices (intent counsel, warnings) straight
+        # to stdout; a tool caller reads stdout as the protocol stream,
+        # so those prints would corrupt it. The CLI's --json path does
+        # the same: run muted, report only the collected output.
+        import contextlib
+        import io
+
         from godcode.sandbox import run_sandboxed_with_interpreter
 
         try:
-            output, interp = run_sandboxed_with_interpreter(
-                source, source_name=file)
+            with contextlib.redirect_stdout(io.StringIO()):
+                output, interp = run_sandboxed_with_interpreter(
+                    source, source_name=file)
         except GodCodeError as err:
             return {"ok": False, "output": [], "error": str(err)}
         manifest = getattr(interp, "manifest", None)
@@ -326,6 +362,38 @@ def tool_get_schema(arguments: dict) -> dict:
     return {"ok": True, "schema": json.loads(text)}
 
 
+def tool_format(arguments: dict) -> dict:
+    """Re-emit a scroll in canonical form without running it."""
+    from godcode.errors import GodCodeError
+    from godcode.tongues import parse_source
+
+    file = arguments.get("file")
+    if not isinstance(file, str):
+        return {"ok": False, "error": "format needs 'file' as a string path"}
+    try:
+        source = Path(file).read_text(encoding="utf-8")
+    except OSError as exc:
+        return {"ok": False, "error": f"cannot read '{file}': {exc.strerror or exc}"}
+    try:
+        program = parse_source(source)
+    except GodCodeError as err:
+        return {"ok": False, "error": str(err)}
+    from godcode.cli import CanonicalFormatter
+
+    return {"ok": True, "formatted": CanonicalFormatter().format(program)}
+
+
+def tool_list_scrolls(arguments: dict) -> dict:
+    """List the scrolls installed in the local scroll registry."""
+    from godcode.registry import ScrollError, ScrollRegistry
+
+    try:
+        rows = ScrollRegistry().list_installed()
+    except ScrollError as exc:
+        return {"ok": False, "error": str(exc)}
+    return {"ok": True, "scrolls": rows}
+
+
 def tool_ledger_verify(arguments: dict) -> dict:
     from godcode.chain import SimulatedChainAdapter
     from godcode.ledger import CovenantLedger
@@ -351,6 +419,8 @@ _TOOL_FUNCS = {
     "permissions": tool_permissions,
     "explain": tool_explain,
     "get_schema": tool_get_schema,
+    "format": tool_format,
+    "list_scrolls": tool_list_scrolls,
 }
 
 
@@ -419,7 +489,8 @@ def cmd_tools(args) -> int:
     for tool in TOOL_SCHEMAS:
         required = ", ".join(tool["inputSchema"].get("required", [])) or "none"
         print(f"  {tool['name']}({required}): {tool['description']}")
-    print("Speak them through `godcode bridge`, the stdio JSON-RPC loop.")
+    print("Speak them through `godcode mcp`, the MCP server over stdio,")
+    print("or through `godcode bridge`, the plain stdio JSON-RPC loop.")
     return 0
 
 

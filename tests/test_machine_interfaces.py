@@ -294,11 +294,12 @@ def test_bridge_get_schema_unknown():
     assert "error" in result
 
 
-def test_bridge_lists_nine_tools():
+def test_bridge_lists_eleven_tools():
     assert SCHEMA_NAMES == ("check", "run", "explain", "ledger-verify")
     from godcode.tools import TOOL_SCHEMAS
 
     assert [t["name"] for t in TOOL_SCHEMAS] == [
         "check", "run", "consult", "intent", "anchor_verify",
         "ledger_verify", "permissions", "explain", "get_schema",
+        "format", "list_scrolls",
     ]
