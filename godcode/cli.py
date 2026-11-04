@@ -62,6 +62,12 @@ def cmd_run(args: argparse.Namespace) -> int:
     # --- v3: sandbox commands ---
     if getattr(args, "sandbox", False):
         return _cmd_run_sandboxed(args)
+    if getattr(args, "allow_read", None):
+        print("godcode: --allow-read only has meaning with --sandbox. "
+              "A plain run is unbound by the host, and the scroll's own "
+              "permission manifest still narrows it.",
+              file=sys.stderr)
+        return 2
     # --- end v3: sandbox commands ---
 
     # --- v3: agentics --json ---
@@ -111,9 +117,13 @@ def _cmd_run_sandboxed(args: argparse.Namespace) -> int:
         return 1
 
     source_dir = str(Path(args.file).resolve().parent)
+    read_grants = tuple(
+        str(Path(path).resolve())
+        for path in (getattr(args, "allow_read", None) or []))
     policy = SandboxPolicy.strict(
         source_dir=source_dir,
         timeout_seconds=args.sandbox_timeout,
+        allow_read_paths=read_grants or None,
     )
     if getattr(args, "json", False):
         # Machine-readable report; stdout carries exactly one JSON document.
@@ -1048,6 +1058,13 @@ def build_parser() -> argparse.ArgumentParser:
                        metavar="SECS",
                        help="Wall-clock grant for --sandbox runs "
                             "(default: 5.0 seconds)")
+    p_run.add_argument("--allow-read", action="append", default=[],
+                       metavar="DIR",
+                       help="With --sandbox, grant the run host reads "
+                            "under DIR (repeatable). The scroll's "
+                            "permission manifest still narrows the "
+                            "grant: the run may read only what both "
+                            "the host and the scroll allow.")
     # --- end v3: sandbox commands ---
     # --- v3: agentics --json ---
     p_run.add_argument("--json", action="store_true",

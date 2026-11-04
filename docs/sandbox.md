@@ -30,7 +30,7 @@ The sandbox withholds this power: the rite ASK would speak with the outer world.
 
 | Field | Default | Meaning |
 |---|---|---|
-| `allow_read_paths` | `None` (deny all) | Directories the creation may read files from. No file-reading rites exist yet; enforced if any are added. |
+| `allow_read_paths` | `None` (deny all) | Directories the creation may read files from. The CLI sets it with `run --sandbox --allow-read DIR` (repeatable); the scroll's permission manifest still narrows the grant. |
 | `allow_write` | `False` | Filesystem writes. No file-writing rites exist yet; enforced if any are added. |
 | `allow_network` | `False` | Network access. The `HTTP_GET` rite (see §13) is the one network rite: when network is denied it is withheld and raises instead of reaching out. |
 | `allow_subprocess` | `False` | Spawning subprocesses. No subprocess rites exist yet; enforced if any are added. |
