@@ -153,7 +153,7 @@ statically — nothing executes — and reports its tongue, rites and
 their declared intents, declared names, reveals, seals, summoned
 verbs, consults, imports, and permission manifest. The agent bridge
 carries the same facts as the `explain` tool, and `get_schema` fetches
-any of the four dated machine-interface schemas as parsed JSON.
+any of the five dated machine-interface schemas as parsed JSON.
 `godcode schema <name>` prints them from the CLI. The full machine
 contract — commands, exit codes, and the stability promise — lives in
 `docs/machine-interfaces.md`. Agents do not just run God Code.

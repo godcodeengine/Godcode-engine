@@ -33,5 +33,5 @@ godcode = "godcode.cli:main"
 include = ["godcode*"]
 
 [tool.setuptools.package-data]
-godcode = ["scrolls/*.god", "scrolls/*.toml", "schemas/2026-10/*.json"]
+godcode = ["scrolls/*.god", "scrolls/*.toml", "schemas/2026-10/*.json", "schemas/2026-11/*.json"]
 
