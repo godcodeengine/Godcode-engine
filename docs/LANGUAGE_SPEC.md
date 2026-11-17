@@ -46,11 +46,11 @@ Any expression wrapped in braces inside a double-quoted string has its revealed 
 
 ### 2.8 Lists
 
-A list is written with square brackets and holds an ordered sequence of values of any mixed types: `[1, two, "three"]`. An empty list is `[]`. Declaring several comma-separated values also builds a list: `DECLARE prophets AS Isaiah, Elijah, Jeremiah` binds `prophets` to a list of three symbols.
+A list is written with square brackets and holds an ordered sequence of values of any mixed types: `[1, :two, "three"]`. An empty list is `[]`. Declaring several comma-separated values also builds a list: `DECLARE prophets AS :Isaiah, :Elijah, :Jeremiah` binds `prophets` to a list of three symbols.
 
 ### 2.9 Symbols
 
-A bare word that is bound to nothing evaluates to a Symbol carrying its own name, instead of raising an error. This is the founding idiom of the language: `DECLARE seeker AS worthy` works with no prior binding of `worthy`, and `IF seeker IS worthy` then holds true. In practice a Symbol behaves like a small piece of text: it reveals as its own name, and it compares equal by text to the same word written as a string, so `"worthy" IS worthy` is true. Two facts set Symbols apart from plain strings. First, Symbols are always truthy, even in positions where an empty string would be falsy. Second, a FOR loop refuses to walk through a bare Symbol and raises a runtime error naming it, asking for a list or a word instead. The type name of a Symbol, as reported by `TYPE`, is `"symbol"`.
+A bare word spoken on purpose, written with its mark as `:worthy`, evaluates to a Symbol carrying its own name. A plain name that is bound to nothing is never read silently: reading it raises a gentle runtime error that names the name and offers the two honest fixes, declare it first or mark it as a bare word. This is the founding idiom of the language, kept honest: `DECLARE seeker AS :worthy` needs no prior binding of `worthy`, and `IF seeker IS :worthy` then holds true. In practice a Symbol behaves like a small piece of text: it reveals as its own name, and it compares equal by text to the same word written as a string, so `"worthy" IS :worthy` is true. Two facts set Symbols apart from plain strings. First, Symbols are always truthy, even in positions where an empty string would be falsy. Second, a FOR loop refuses to walk through a bare Symbol and raises a runtime error naming it, asking for a list or a word instead. The type name of a Symbol, as reported by `TYPE`, is `"symbol"`. The mark is punctuation, not a keyword, so it speaks the same in every tongue.
 
 ## 3. Program structure
 
@@ -82,7 +82,7 @@ A rite's parameters are declared in its header: `DEFINE RITE BLESSING(name)`. Wh
 
 ### 4.4 Scope rules as implemented
 
-Names resolve outward through enclosing scopes: the innermost binding wins, and a name bound nowhere evaluates to a Symbol (see 2.9). The scopes work as follows.
+Names resolve outward through enclosing scopes: the innermost binding wins, and a name bound nowhere is never read silently. Reading one raises a gentle runtime error (see 2.9). The scopes work as follows.
 
 * The top level of a scroll is the root scope.
 * An IF body and an ELSE body run in the enclosing scope. There is no new scope.
@@ -109,14 +109,14 @@ A condition is any expression. It is weighed by truthiness: `FALSE`, `0`, `0.0`,
 The block form, for many statements, closes with `ENDIF`:
 
 ```godcode
-IF heart IS pure THEN
+IF heart IS :pure THEN
   REVEAL("the way is open")
 ELSE
   REVEAL("wait and be still")
 ENDIF
 ```
 
-The inline form puts one statement per branch on a single line: `IF seeker IS worthy THEN REVEAL("heaven") ELSE REVEAL("test")`. The ELSE may be omitted in either form. There is no `ELSE IF` keyword. Chained conditions are written as a nested IF inside the ELSE branch, and each nested IF needs its own ENDIF. IFs nest freely, and an ELSE always belongs to the nearest IF. The IF body and the ELSE body run in the enclosing scope (see 4.4).
+The inline form puts one statement per branch on a single line: `IF seeker IS :worthy THEN REVEAL("heaven") ELSE REVEAL("test")`. The ELSE may be omitted in either form. There is no `ELSE IF` keyword. Chained conditions are written as a nested IF inside the ELSE branch, and each nested IF needs its own ENDIF. IFs nest freely, and an ELSE always belongs to the nearest IF. The IF body and the ELSE body run in the enclosing scope (see 4.4).
 
 ### 5.2 FOR
 
@@ -422,7 +422,7 @@ Unresolvable imports make the rule hold its peace rather than guess.
 REVEAL(wanderer)     # GC002: undefined name 'wanderer'
 ```
 
-Rationale: an unbound name becomes a Symbol instead of raising, so the
+Rationale: an unbound name stops the run when it is read, so the
 linter is the place where a typo is caught before it becomes doctrine.
 
 **GC003: shadowing.** Flags a `DECLARE`, rite parameter, or `FOR` loop
@@ -445,7 +445,7 @@ the confusion always surfaces at the worst moment.
 bodies are checked.
 
 ```godcode
-IF heart IS pure THEN     # GC004: empty IF body
+IF heart IS :pure THEN     # GC004: empty IF body
 ENDIF
 ```
 

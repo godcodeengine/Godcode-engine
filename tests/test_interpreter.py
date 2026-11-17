@@ -178,7 +178,7 @@ class TestArithmetic:
         assert run(interp, 'REVEAL("alpha" + "bet")') == ["alphabet"]
 
     def test_symbol_concat_yields_plain_str(self, interp):
-        out = run(interp, "DECLARE a AS hello\nREVEAL(a + \" world\")")
+        out = run(interp, "DECLARE a AS :hello\nREVEAL(a + \" world\")")
         assert out == ["hello world"]
         assert type(interp.env.get("a")) is Symbol
 
@@ -207,10 +207,10 @@ class TestComparisons:
 
     def test_is_and_is_not(self, interp):
         src = (
-            "DECLARE seeker AS worthy\n"
-            "REVEAL(seeker IS worthy)\n"
-            "REVEAL(seeker IS NOT worthy)\n"
-            "REVEAL(seeker IS unworthy)"
+            "DECLARE seeker AS :worthy\n"
+            "REVEAL(seeker IS :worthy)\n"
+            "REVEAL(seeker IS NOT :worthy)\n"
+            "REVEAL(seeker IS :unworthy)"
         )
         assert run(interp, src) == ["true", "false", "false"]
 
@@ -233,7 +233,7 @@ class TestLogic:
         assert run(interp, src) == ["true", "true", "false"]
 
     def test_symbol_is_truthy(self, interp):
-        assert run(interp, "DECLARE s AS anything\nREVEAL(NOT s)") == ["false"]
+        assert run(interp, "DECLARE s AS :anything\nREVEAL(NOT s)") == ["false"]
 
     def test_falsy_values(self, interp):
         src = 'REVEAL(NOT 0)\nREVEAL(NOT "")\nREVEAL(NOT [])\nREVEAL(NOT 1)'
@@ -257,18 +257,18 @@ class TestListsIndexing:
         assert exc.value.line == 2
 
     def test_declare_comma_list(self, interp):
-        src = "DECLARE prophets AS Isaiah,Elijah,Jeremiah\nREVEAL(LEN(prophets))"
+        src = "DECLARE prophets AS :Isaiah,:Elijah,:Jeremiah\nREVEAL(LEN(prophets))"
         assert run(interp, src) == ["3"]
 
 
 @needs_siblings
 class TestIf:
     def test_inline_true_branch(self, interp):
-        src = 'DECLARE seeker AS worthy\nIF seeker IS worthy THEN REVEAL("heaven") ELSE REVEAL("test")'
+        src = 'DECLARE seeker AS :worthy\nIF seeker IS :worthy THEN REVEAL("heaven") ELSE REVEAL("test")'
         assert run(interp, src) == ["heaven"]
 
     def test_inline_false_branch(self, interp):
-        src = 'DECLARE seeker AS lowly\nIF seeker IS worthy THEN REVEAL("heaven") ELSE REVEAL("test")'
+        src = 'DECLARE seeker AS :lowly\nIF seeker IS :worthy THEN REVEAL("heaven") ELSE REVEAL("test")'
         assert run(interp, src) == ["test"]
 
     def test_block_form(self, interp):
@@ -298,8 +298,11 @@ class TestFor:
 
     def test_loop_var_scoped_to_loop(self, interp):
         src = "FOR x IN [1]\nREVEAL(x)\nENDFOR\nREVEAL(x)"
-        # x is unbound after the loop -> Symbol fallback
-        assert run(interp, src) == ["1", "x"]
+        # x lives only inside the loop; reading it after ENDFOR is loud
+        with pytest.raises(GodRuntimeError) as exc:
+            run(interp, src)
+        assert "'x'" in str(exc.value)
+        assert interp.output == ["1"]
 
     def test_for_over_non_iterable_errors(self, interp):
         with pytest.raises(GodRuntimeError):
@@ -443,7 +446,7 @@ class TestBuiltins:
         src = (
             "REVEAL(TYPE(1))\n"
             'REVEAL(TYPE("s"))\n'
-            "REVEAL(TYPE(sym))\n"
+            "REVEAL(TYPE(:sym))\n"
             "REVEAL(TYPE([1]))\n"
             "REVEAL(TYPE(INVOKE contract(\"c\")))\n"
             "REVEAL(TYPE(1 < 2))\n"
@@ -513,12 +516,19 @@ class TestAscend:
 
 
 @needs_siblings
-class TestSymbolFallback:
-    def test_bare_words_are_symbols(self, interp):
-        assert run(interp, "REVEAL(undeclared)") == ["undeclared"]
+class TestBareWords:
+    def test_undeclared_name_is_loud(self, interp):
+        with pytest.raises(GodRuntimeError) as exc:
+            run(interp, "REVEAL(undeclared)")
+        assert "'undeclared'" in str(exc.value)
+        assert ":undeclared" in str(exc.value)
 
-    def test_symbol_compares_with_identifier(self, interp):
-        assert run(interp, "REVEAL(manna = manna)") == ["true"]
+    def test_explicit_symbol_reveals_its_word(self, interp):
+        assert run(interp, "REVEAL(:undeclared)") == ["undeclared"]
+
+    def test_symbol_compares_with_symbol(self, interp):
+        assert run(interp, "REVEAL(:manna = :manna)") == ["true"]
+        assert run(interp, "DECLARE s AS :manna\nREVEAL(s IS :manna)") == ["true"]
 
 
 @needs_siblings

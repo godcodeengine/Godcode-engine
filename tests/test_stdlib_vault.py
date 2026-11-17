@@ -99,7 +99,7 @@ def test_json_string_rejects_rite():
 
 def test_json_string_rejects_symbol():
     with pytest.raises(GodRuntimeError) as excinfo:
-        run("REVEAL(JSON_STRING(some_unbound_name))")
+        run("REVEAL(JSON_STRING(:some_name))")
     assert "cannot carry a symbol" in str(excinfo.value)
 
 

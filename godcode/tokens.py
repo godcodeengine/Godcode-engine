@@ -61,6 +61,7 @@ class TokenType(Enum):
     NUMBER = auto()
     STRING = auto()
     IDENT = auto()
+    SYMBOL = auto()    # :name — an explicit bare word
     # --- operators ----------------------------------------------------------
     PLUS = auto()      # +
     MINUS = auto()     # -

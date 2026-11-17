@@ -69,8 +69,12 @@ godcode ledger verify     # verify the covenant chain
   invocation the Spirit checks alignment and counsels gently on drift.
   Drift can never fail a run.
 - `ASCEND` ends the run peacefully (not an error).
-- An unbound name evaluates to a Symbol. It does not raise. `BREATHE LIFE INTO`
-  an undeclared name *does* raise at runtime.
+- Reading a name that was never declared is loud: it raises a gentle runtime
+  error naming the name, with a did-you-mean when a declared name stands
+  near. A bare word spoken on purpose carries its mark, `:worthy`, and
+  evaluates to a Symbol: `DECLARE seeker AS :worthy`, `IF seeker IS :worthy
+  THEN`. The mark is punctuation, not a keyword, so it speaks the same in
+  every tongue. `BREATHE LIFE INTO` an undeclared name also raises.
 - Error messages may end with `Did you mean 'X'?` (misspelled rite, variable,
   bless target, or map key). The human CLI (`run`, `run --sandbox`, `check`,
   `fmt`) prints the offending source line beneath the message, with a caret at

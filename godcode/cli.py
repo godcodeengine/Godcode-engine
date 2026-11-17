@@ -389,6 +389,8 @@ class CanonicalFormatter:
             return f'"{_escape(node.source)}"'
         if kind == "Identifier":
             return node.name
+        if kind == "SymbolLiteral":
+            return ":" + node.name
         if kind == "ListLiteral":
             return "[" + ", ".join(self._expr(i) for i in node.items) + "]"
         if kind == "Index":

@@ -153,7 +153,7 @@
  },
  "Setswana if": {
   "body": [
-   "FA ${1:seeker} KE ${2:worthy} TLOGA",
+   "FA ${1:seeker} KE :${2:worthy} TLOGA",
    "\t${3:SENOLA(\"heaven\")}",
    "FEDISA FA$0"
   ],
@@ -174,7 +174,7 @@
  },
  "Zulu if": {
   "body": [
-   "UMA ${1:isihambi} NGU ${2:ufanelekile} KHONA",
+   "UMA ${1:isihambi} NGU :${2:ufanelekile} KHONA",
    "\t${3:VEZA(\"izulu\")}",
    "QEDA UMA$0"
   ],

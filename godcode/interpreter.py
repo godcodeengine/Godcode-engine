@@ -43,6 +43,7 @@ from godcode.ast import (
     Return,
     Reveal,
     SealStmt,
+    SymbolLiteral,
     Testify,
     TryStmt,
     UnaryOp,
@@ -639,7 +640,23 @@ class Interpreter:
                 else self.stringify(self._eval_expr(part, env))
                 for part in expr.parts
             )
+        if isinstance(expr, SymbolLiteral):
+            # A bare word spoken on purpose: :name is the word itself.
+            return Symbol(expr.name)
         if isinstance(expr, Identifier):
+            if not env.is_bound(expr.name):
+                raise GodRuntimeError(
+                    with_suggestion(
+                        f"There is no '{expr.name}' in this creation. "
+                        "It was never spoken into being. DECLARE it first, "
+                        "or, if the bare word itself is meant, mark it as "
+                        f"one: :{expr.name}",
+                        expr.name,
+                        env.names(),
+                    ),
+                    line,
+                    getattr(expr, "col", None),
+                )
             return env.get(expr.name)
         if isinstance(expr, ListLiteral):
             return [self._eval_expr(item, env) for item in expr.items]

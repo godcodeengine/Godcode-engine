@@ -12,7 +12,7 @@ from typing import Union
 
 # Filled in below once the classes exist; string form keeps runtime cheap.
 Expr = Union[
-    "BinaryOp", "UnaryOp", "Literal", "Identifier",
+    "BinaryOp", "UnaryOp", "Literal", "Identifier", "SymbolLiteral",
     "ListLiteral", "Index", "CallExpr",
 ]
 
@@ -256,6 +256,19 @@ class InterpolatedString:
 
 @dataclass
 class Identifier:
+    name: str
+    line: int = 1
+    col: int = 1
+
+
+@dataclass
+class SymbolLiteral:
+    """An explicit bare word, written ``:name`` in the scroll.
+
+    The one honest way to speak a Symbol: the colon marks the word as a
+    word, so a plain name that was never declared can stay loud.
+    """
+
     name: str
     line: int = 1
     col: int = 1

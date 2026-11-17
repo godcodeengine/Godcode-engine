@@ -25,7 +25,7 @@
 
 **Forgetting `INVOKE`.** `DEFINE RITE` only teaches the rite. `INVOKE name()` is what calls it.
 
-**An unbound name that stays silent.** An unbound name evaluates to a Symbol and does not raise. If a value looks wrong, check the spelling. The engine may add `Did you mean 'X'?` to the message. Trust it.
+**A name that was never declared.** Reading one is loud now: the run stops with "There is no 'name' in this creation. It was never spoken into being", and a `Did you mean 'X'?` when a declared name stands near. Trust the suggestion. If the bare word itself was the value you wanted, mark it: `:name`.
 
 **Division by zero.** Rejected outright: "division by nothing is not permitted". Guard the divisor first.
 

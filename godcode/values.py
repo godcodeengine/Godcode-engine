@@ -1,7 +1,8 @@
 """Divine value types for God Code.
 
-In God Code, every unnamed thing is still a named spirit: a bare word with
-no binding evaluates to a Symbol rather than raising an error.
+A Symbol is a bare word spoken on purpose: a scroll writes it with the
+explicit mark, ``:worthy``, and the word itself is the value. A plain
+name that was never declared is never read silently; it raises.
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from typing import Any
 
 
 class Symbol(str):
-    """A bare word with no binding — a named spirit.
+    """A bare word spoken on purpose, written ``:name`` in a scroll.
 
     A str subclass, so Symbol("worthy") compares equal to "worthy" by text
     and behaves like a string everywhere, while remaining distinguishable

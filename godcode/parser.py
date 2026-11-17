@@ -632,6 +632,9 @@ class Parser:
         if tt is TT.VOID:
             self._advance()
             return A.Literal(value=None, line=t.line, col=t.col)
+        if tt is TT.SYMBOL:
+            self._advance()
+            return A.SymbolLiteral(name=t.value, line=t.line, col=t.col)
         if tt is TT.IDENT:
             self._advance()
             if self._check(TT.LPAREN):
