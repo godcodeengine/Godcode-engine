@@ -108,15 +108,18 @@ def run_creation(
     buf = io.StringIO()
     error: dict | None = None
     intents: list[dict] = []
+    contracts: list[dict] = []
     start = time.perf_counter()
     with contextlib.redirect_stdout(buf):
         try:
             _, interp = run_sandboxed_with_interpreter(
                 source, policy, source_name=source_name)
             intents = list(getattr(interp, "intent_checks", []) or [])
+            contracts = list(getattr(interp, "contract_checks", []) or [])
         except GodCodeError as err:
             error = diagnostic(err)
             error["trace"] = error_trace(err)
+            contracts = list(getattr(err, "contracts", []) or [])
         except Exception as exc:  # a host failure outside the divine errors
             error = {
                 "line": None,
@@ -136,6 +139,7 @@ def run_creation(
         "ok": error is None,
         "output": buf.getvalue().splitlines(),
         "intents": intents,
+        "contracts": contracts,
         "error": error,
         "stats": {"ms": ms},
     }

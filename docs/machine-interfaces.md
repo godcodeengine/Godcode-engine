@@ -17,10 +17,14 @@ godcode ledger verify --json
 `check --json` lexes and parses without running: `ok` plus a
 `diagnostics` array (`line`, `col`, `code`, `severity`, `message`,
 `hint`). `run --sandbox --json` runs inside the deny-by-default
-sandbox and reports `output`, `seals`, `intents`, `permissions`, and
-`error` (null on a clean run; `line`, `col`, `code`, `message`, and a
-rite call `trace` on failure), with `stats` timing the run. `explain
---json` reads the scroll's static facts without running it: tongue,
+sandbox and reports `output`, `seals`, `intents`, `contracts`,
+`permissions`, and `error` (null on a clean run; `line`, `col`,
+`code`, `message`, and a rite call `trace` on failure), with `stats`
+timing the run. The `contracts` array is additive: one entry per
+contract clause weighed at a rite's thresholds, each holding `rite`,
+`kind`, `text`, and `passed`; a broken clause fails the run with
+code `CONTRACT_ERROR`. `explain --json` reads the scroll's static
+facts without running it: tongue,
 rites and their declared intents, declared names, reveals, seals,
 summoned verbs, consults, imports, and the permission manifest.
 `ledger verify --json` attests the covenant chain and the anchor chain

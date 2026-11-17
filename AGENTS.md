@@ -68,6 +68,18 @@ godcode ledger verify     # verify the covenant chain
 - `DECLARE INTENT "words..." ON rite_name` names a rite's purpose; at
   invocation the Spirit checks alignment and counsels gently on drift.
   Drift can never fail a run.
+- Contract clauses are the checkable half of that promise. Inside a rite
+  body, `REQUIRE expr` is weighed at entry (parameters bound, body not
+  yet run), `ENSURE expr` at exit (the body's declared names still in
+  scope, after `RETURN` too), and `NEVER expr` at both thresholds; in
+  this first form `NEVER` is weighed only at the thresholds, never
+  continuously. Clauses are declarations, not steps: the parser gathers
+  them into the rite's contract in written order, and one spoken outside
+  a rite body (or nested in a branch) is a parse error. A broken clause
+  FAILS the run with `CONTRACT_ERROR`, naming the rite, the clause, and
+  the values weighed. Run reports carry a `contracts` array
+  (`{rite, kind, text, passed}`) beside `intents`. Clause words are
+  English in every tongue for now; tongue equivalents are not yet vetted.
 - `ASCEND` ends the run peacefully (not an error).
 - An unbound name evaluates to a Symbol. It does not raise. `BREATHE LIFE INTO`
   an undeclared name *does* raise at runtime.
@@ -97,13 +109,14 @@ godcode ledger verify     # verify the covenant chain
 | `LEXER_ERROR` | bad characters / unterminated string | check quotes on the reported line |
 | `PARSE_ERROR` | grammar violation | missing BEGIN/END CREATION or block closer |
 | `RUNTIME_ERROR` | failed while running | DECLARE names before use; re-read the line |
+| `CONTRACT_ERROR` | a rite broke a REQUIRE / ENSURE / NEVER clause | mend the offering or the promise; see `contracts` in the report |
 | `FILE_ERROR` | scroll unreadable | check the path |
 
 ## Agent workflow
 
 generate → `explain --json` (on an unfamiliar scroll) → `check --json` →
 fix from diagnostics → `run --sandbox --json` → inspect
-`output`/`error`/`intents` → iterate. Never run untrusted scrolls without
+`output`/`error`/`intents`/`contracts` → iterate. Never run untrusted scrolls without
 `--sandbox`. Keep the human's production checklist (provider contracts,
 real credentials, Bank of Botswana sandbox submission) out of the way.
 Demo in sandbox mode.

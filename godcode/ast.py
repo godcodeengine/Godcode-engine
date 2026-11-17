@@ -184,10 +184,26 @@ class TryStmt:
 
 
 @dataclass
+class ContractClause:
+    """REQUIRE / ENSURE / NEVER expr: one checkable promise of a rite.
+
+    Clauses are declarations inside a rite body, collected by the parser
+    into ``DefineRite.contract``. They never execute as ordinary
+    statements: REQUIRE and NEVER are weighed at the rite's entry,
+    ENSURE and NEVER again at its exit.
+    """
+    kind: str  # "REQUIRE" | "ENSURE" | "NEVER"
+    expr: Expr
+    line: int = 1
+    col: int = 1
+
+
+@dataclass
 class DefineRite:
     name: str
     params: list = field(default_factory=list)  # list[str]
     body: list = field(default_factory=list)
+    contract: list = field(default_factory=list)  # list[ContractClause]
     line: int = 1
     col: int = 1
 

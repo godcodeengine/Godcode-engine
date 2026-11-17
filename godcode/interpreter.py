@@ -53,6 +53,7 @@ from godcode.errors import (
     AscendSignal,
     BreakSignal,
     ContinueSignal,
+    ContractError,
     GodCodeError,
     GodRuntimeError,
     ReturnSignal,
@@ -116,6 +117,12 @@ class Interpreter:
         # --- v4.0: intent layer + chain adapters ---
         self.intents: dict[str, str] = {}  # rite name -> declared intent text
         self.intent_checks: list[dict] = []  # per-invocation alignment records
+        # --- contract clauses: per-clause weighing records ---
+        # One {"rite", "kind", "text", "passed"} entry per clause weighed
+        # at a rite's thresholds, in the order they were weighed. Surfaced
+        # in run --json as the additive `contracts` array.
+        self.contract_checks: list[dict] = []
+        # --- end contract clauses ---
         self.chain_adapters = (
             chain_adapters
             if chain_adapters is not None
@@ -328,7 +335,9 @@ class Interpreter:
         elif isinstance(stmt, TryStmt):
             self._exec_try(stmt, env)
         elif isinstance(stmt, DefineRite):
-            env.define(stmt.name, RiteFunction(stmt.name, stmt.params, stmt.body, env))
+            env.define(stmt.name, RiteFunction(
+                stmt.name, stmt.params, stmt.body, env,
+                contract=list(stmt.contract)))
         elif isinstance(stmt, Return):
             raise ReturnSignal(self._eval_expr(stmt.expr, env) if stmt.expr is not None else None)
         elif isinstance(stmt, Import):
@@ -887,8 +896,10 @@ class Interpreter:
         # --- v4.0: intent layer — discern the rite's actual intent when it
         # carries a declared one. Never fails the run; counsel, don't punish.
         declared = self.intents.get(rite.name)
+        intent_index: int | None = None
         if declared is not None and self.spirit is not None:
             self._discern_intent(rite, declared)
+            intent_index = len(self.intent_checks) - 1
         # --- end v4.0 ---
         call_env = Environment(parent=rite.closure_env)
         for param, value in zip(rite.params, args):
@@ -901,10 +912,17 @@ class Interpreter:
         if self.debugger is not None:
             self.debugger.enter_rite(rite, call_env)
         try:
+            # --- contract clauses: the rite's promises are weighed at its
+            # thresholds. REQUIRE and NEVER at the door, before the body;
+            # ENSURE and NEVER again as the work ends. A broken clause is
+            # a broken promise: ContractError, and the run fails.
+            self._weigh_contract(rite, call_env, at_entry=True,
+                                 intent_index=intent_index)
             try:
                 self._exec_block(rite.body, call_env)
+                result = None
             except ReturnSignal as ret:
-                return ret.value
+                result = ret.value
             except (BreakSignal, ContinueSignal) as sig:
                 # The parser binds every BREAK/CONTINUE to a lexically
                 # enclosing loop, so this is unreachable from parsed source.
@@ -916,13 +934,143 @@ class Interpreter:
                     f"only release a loop within rite '{rite.name}' itself.",
                     line,
                 ) from None
-            return None
+            # Exit checks run only when the body completed (by RETURN or by
+            # walking off its end). A body that raised, or a run ASCENDed
+            # out of the rite, is weighed no further: it has already spoken.
+            self._weigh_contract(rite, call_env, at_entry=False,
+                                 intent_index=intent_index)
+            return result
         finally:
             # --- v5.2 ---
             self.call_stack.pop()
             # --- end v5.2 ---
             if self.debugger is not None:
                 self.debugger.exit_rite(rite)
+
+    # ------------------------------------------------- contract clauses
+
+    def _weigh_contract(self, rite: RiteFunction, env: Environment, *,
+                        at_entry: bool, intent_index: int | None) -> None:
+        """Weigh a rite's contract clauses at one of its thresholds.
+
+        At entry, REQUIRE clauses must hold and NEVER clauses must not;
+        at exit, ENSURE clauses must hold and NEVER clauses must not.
+        Every clause weighed leaves a record in ``contract_checks``.
+        The first broken clause raises ContractError.
+        """
+        for clause in rite.contract:
+            if at_entry and clause.kind not in ("REQUIRE", "NEVER"):
+                continue
+            if not at_entry and clause.kind not in ("ENSURE", "NEVER"):
+                continue
+            value = self._eval_expr(clause.expr, env)
+            if clause.kind == "NEVER":
+                passed = not self._truthy(value)
+            else:
+                passed = self._truthy(value)
+            self.contract_checks.append(
+                {
+                    "rite": rite.name,
+                    "kind": clause.kind,
+                    "text": self._clause_text(clause),
+                    "passed": passed,
+                }
+            )
+            if not passed:
+                # A rite that broke its sworn clause does not walk in its
+                # declared intent either: mark this invocation's record.
+                if intent_index is not None:
+                    self.intent_checks[intent_index]["aligned"] = False
+                err = ContractError(
+                    self._contract_message(rite, clause, env, at_entry=at_entry),
+                    clause.line,
+                    clause.col,
+                )
+                # Snapshot the trace here, while this rite's frame is
+                # still on the stack (the error rises outside _exec_block,
+                # whose own snapshot would miss the frame). The contract
+                # records ride along too, so hosts that lose the
+                # interpreter on failure (the sandbox path) can still
+                # report every clause that was weighed.
+                err.call_trace = self.call_trace()
+                err.contracts = list(self.contract_checks)
+                raise err
+
+    @staticmethod
+    def _clause_text(clause) -> str:
+        """The clause's expression in canonical form, as the report shows it."""
+        from godcode.cli import CanonicalFormatter  # lazy: cli imports us lazily
+
+        return CanonicalFormatter()._expr(clause.expr)
+
+    def _contract_message(self, rite: RiteFunction, clause, env: Environment,
+                          *, at_entry: bool) -> str:
+        text = self._clause_text(clause)
+        values = self._clause_values(clause.expr, env)
+        weighed = f" ({values})" if values else ""
+        if clause.kind == "REQUIRE":
+            return (
+                f"The rite '{rite.name}' broke its covenant. "
+                f"REQUIRE {text} did not hold{weighed}. The promise was "
+                "weighed at the rite's door, before its work began, so "
+                "the body of the rite did not run."
+            )
+        if clause.kind == "ENSURE":
+            return (
+                f"The rite '{rite.name}' broke its covenant. "
+                f"ENSURE {text} did not hold{weighed}. The promise was "
+                "weighed as the rite's work ended, and the work does not stand."
+            )
+        threshold = "as the rite began" if at_entry else "as the rite ended"
+        return (
+            f"The rite '{rite.name}' broke its covenant. "
+            f"NEVER {text} was sworn, yet it held true{weighed} "
+            f"{threshold}. What must never be, was."
+        )
+
+    def _clause_values(self, expr, env: Environment) -> str:
+        """The names a clause speaks of, with their values in this frame.
+
+        Factual ground for a broken-promise message: ``loaves = 0``.
+        Names bound to rites are skipped; at most six names are named.
+        """
+        names: list[str] = []
+
+        def walk(node) -> None:
+            if isinstance(node, Identifier):
+                if node.name not in names:
+                    names.append(node.name)
+            elif isinstance(node, BinaryOp):
+                walk(node.left)
+                walk(node.right)
+            elif isinstance(node, UnaryOp):
+                walk(node.operand)
+            elif isinstance(node, Index):
+                walk(node.obj)
+                walk(node.index)
+            elif isinstance(node, ListLiteral):
+                for item in node.items:
+                    walk(item)
+            elif isinstance(node, CallExpr):
+                for arg in node.args:
+                    walk(arg)
+            elif isinstance(node, InterpolatedString):
+                for part in node.parts:
+                    if not isinstance(part, str):
+                        walk(part)
+
+        walk(expr)
+        parts: list[str] = []
+        for name in names:
+            if len(parts) >= 6:
+                break
+            if not env.is_bound(name):
+                continue
+            value = env.get(name)
+            if isinstance(value, RiteFunction):
+                continue
+            parts.append(f"{name} = {self.stringify(value)}")
+        return ", ".join(parts)
 
     def call_trace(self) -> list[dict]:
         """A snapshot of the rite call stack for uncaught-error reports.

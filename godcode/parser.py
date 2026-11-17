@@ -17,6 +17,8 @@ Statement forms (spec §4):
 - WHILE expr DO ... (block: ENDWHILE / inline)      -> WhileLoop
 - TRY ... CATCH [name] ... ENDTRY (block)           -> TryStmt
 - DEFINE RITE name(params) ... END RITE (block or inline) -> DefineRite
+- REQUIRE / ENSURE / NEVER expr (rite bodies only)  -> ContractClause,
+  collected into the rite's contract, never ordinary statements
 - RETURN expr?                        -> Return
 - IMPORT "path"                       -> Import
 - INVOKE name(args) | any expression   -> CallExpr / ExprStmt
@@ -61,6 +63,11 @@ class Parser:
         # can be rejected at parse time when no loop holds them. A rite
         # body resets this to 0: loop signals never cross a rite boundary.
         self._loop_depth = 0
+        # True only while parsing the top-level statements of a rite body:
+        # REQUIRE / ENSURE / NEVER clauses may be spoken there, and only
+        # there. Nested blocks (IF, FOR, WHILE, TRY) clear it while their
+        # own bodies are parsed.
+        self._clauses_ok = False
 
     # -- public ------------------------------------------------------------
 
@@ -221,6 +228,8 @@ class Parser:
             return self._parse_try()
         if tt is TT.DEFINE:
             return self._parse_define_rite()
+        if tt in (TT.REQUIRE, TT.ENSURE, TT.NEVER):
+            return self._parse_contract_clause()
         if tt is TT.RETURN:
             return self._parse_return()
         if tt is TT.IMPORT:
@@ -345,6 +354,20 @@ class Parser:
             line=t.line, col=t.col,
         )
 
+    def _parse_contract_clause(self) -> A.ContractClause:
+        kw = self._advance()  # REQUIRE / ENSURE / NEVER
+        kind = kw.value
+        if not self._clauses_ok:
+            raise ParseError(
+                f"{kind} is a promise a rite makes about itself, so it may "
+                "only be spoken inside a rite body, as one of the rite's "
+                f"own lines. Place the {kind} within the DEFINE RITE it "
+                "guards.",
+                line=kw.line, col=kw.col,
+            )
+        expr = self._parse_expr()
+        return A.ContractClause(kind=kind, expr=expr, line=kw.line, col=kw.col)
+
     def _parse_breathe(self) -> A.Breathe:
         b = self._expect(TT.BREATHE)
         self._expect(TT.LIFE)
@@ -373,6 +396,15 @@ class Parser:
 
     def _parse_if(self) -> A.IfStmt:
         i = self._expect(TT.IF)
+        # Contract clauses belong to the rite itself, never to a branch:
+        # they are not collected from within an IF.
+        saved_clauses, self._clauses_ok = self._clauses_ok, False
+        try:
+            return self._parse_if_body(i)
+        finally:
+            self._clauses_ok = saved_clauses
+
+    def _parse_if_body(self, i) -> A.IfStmt:
         cond = self._parse_expr()
         self._expect(TT.THEN)
         if self._check(TT.NEWLINE):
@@ -405,6 +437,7 @@ class Parser:
         self._expect(TT.IN)
         iterable = self._parse_expr()
         self._loop_depth += 1
+        saved_clauses, self._clauses_ok = self._clauses_ok, False
         try:
             if self._check(TT.NEWLINE):
                 body = self._parse_body(end={TT.ENDFOR}, missing="ENDFOR",
@@ -415,6 +448,7 @@ class Parser:
                 body = [self._parse_statement()]
         finally:
             self._loop_depth -= 1
+            self._clauses_ok = saved_clauses
         return A.ForLoop(var=var, iterable=iterable, body=body,
                          line=f.line, col=f.col)
 
@@ -423,6 +457,7 @@ class Parser:
         cond = self._parse_expr()
         self._expect(TT.DO)
         self._loop_depth += 1
+        saved_clauses, self._clauses_ok = self._clauses_ok, False
         try:
             if self._check(TT.NEWLINE):
                 body = self._parse_body(end={TT.ENDWHILE}, missing="ENDWHILE",
@@ -432,6 +467,7 @@ class Parser:
                 body = [self._parse_statement()]
         finally:
             self._loop_depth -= 1
+            self._clauses_ok = saved_clauses
         return A.WhileLoop(cond=cond, body=body, line=w.line, col=w.col)
 
     def _parse_break(self) -> A.Break:
@@ -463,15 +499,19 @@ class Parser:
                 line=t.line, col=t.col,
             )
         self._skip_newlines()
-        try_body = self._parse_body(end={TT.CATCH}, missing="CATCH", opening=t)
-        self._expect(TT.CATCH)
-        if self._check(TT.IDENT):
-            error_name = self._advance().value
-        else:
-            error_name = "ERROR"
-        self._skip_newlines()
-        catch_body = self._parse_body(end={TT.ENDTRY}, missing="ENDTRY",
-                                      opening=t)
+        saved_clauses, self._clauses_ok = self._clauses_ok, False
+        try:
+            try_body = self._parse_body(end={TT.CATCH}, missing="CATCH", opening=t)
+            self._expect(TT.CATCH)
+            if self._check(TT.IDENT):
+                error_name = self._advance().value
+            else:
+                error_name = "ERROR"
+            self._skip_newlines()
+            catch_body = self._parse_body(end={TT.ENDTRY}, missing="ENDTRY",
+                                          opening=t)
+        finally:
+            self._clauses_ok = saved_clauses
         self._expect(TT.ENDTRY)
         return A.TryStmt(try_body=try_body, catch_body=catch_body,
                          error_name=error_name, line=t.line, col=t.col)
@@ -489,8 +529,10 @@ class Parser:
                 params.append(self._expect(TT.IDENT, "a parameter name").value)
         self._expect(TT.RPAREN)
         # A rite body is a fresh boundary: BREAK/CONTINUE inside it may only
-        # answer to loops within the rite, never to a caller's loop.
+        # answer to loops within the rite, never to a caller's loop. It is
+        # also the one place contract clauses may be spoken.
         saved_depth, self._loop_depth = self._loop_depth, 0
+        saved_clauses, self._clauses_ok = self._clauses_ok, True
         try:
             if self._check(TT.NEWLINE):
                 self._skip_newlines()
@@ -501,10 +543,15 @@ class Parser:
                 self._skip_newlines()
         finally:
             self._loop_depth = saved_depth
+            self._clauses_ok = saved_clauses
         self._expect(TT.END)
         self._expect(TT.RITE)
+        # Clauses are declarations, not steps: they leave the body and
+        # gather into the rite's contract, in the order they were written.
+        contract = [s for s in body if isinstance(s, A.ContractClause)]
+        body = [s for s in body if not isinstance(s, A.ContractClause)]
         return A.DefineRite(name=name, params=params, body=body,
-                            line=d.line, col=d.col)
+                            contract=contract, line=d.line, col=d.col)
 
     def _parse_return(self) -> A.Return:
         r = self._expect(TT.RETURN)

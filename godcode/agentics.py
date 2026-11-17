@@ -68,6 +68,11 @@ _HINTS = {
         "The scroll parsed but stumbled while running. DECLARE every "
         "name before use and re-read the reported line."
     ),
+    "CONTRACT_ERROR": (
+        "A rite broke one of its contract clauses (REQUIRE, ENSURE, or "
+        "NEVER). Either the offering did not meet the promise, or the "
+        "promise was sworn too tightly. Mend one of them."
+    ),
     "FILE_ERROR": "Check the path. The scroll must exist and be readable.",
 }
 
@@ -148,7 +153,8 @@ def check_payload(file: str, ok: bool, diagnostics: list[dict]) -> dict:
 def run_payload(file: str, ok: bool, output: list[str],
                 seals: list[dict], error: dict | None, ms: int,
                 intents: list[dict] | None = None,
-                permissions: dict | None = None) -> dict:
+                permissions: dict | None = None,
+                contracts: list[dict] | None = None) -> dict:
     return {
         "tool": TOOL_NAME,
         "command": "run",
@@ -157,6 +163,7 @@ def run_payload(file: str, ok: bool, output: list[str],
         "output": output,
         "seals": seals,
         "intents": intents if intents is not None else [],
+        "contracts": contracts if contracts is not None else [],
         "permissions": permissions if permissions is not None else {},
         "error": error,
         "stats": {"ms": ms},
@@ -247,8 +254,10 @@ def cmd_run_json(args) -> int:
     output = buf.getvalue().splitlines()
     seals = _new_seals(interp, seals_before)
     intents = list(getattr(interp, "intent_checks", []) or [])
+    contracts = list(getattr(interp, "contract_checks", []) or [])
     manifest = getattr(interp, "manifest", None)
     emit(run_payload(args.file, error is None, output, seals, error, ms,
                      intents=intents,
+                     contracts=contracts,
                      permissions=manifest.to_json() if manifest else {}))
     return 0 if error is None else 1

@@ -127,6 +127,7 @@ def _cmd_run_sandboxed(args: argparse.Namespace) -> int:
         error = None
         output: list[str] = []
         intents: list[dict] = []
+        contracts: list[dict] = []
         interp = None
         start = _time.perf_counter()
         with contextlib.redirect_stdout(io.StringIO()):
@@ -134,14 +135,19 @@ def _cmd_run_sandboxed(args: argparse.Namespace) -> int:
                 output, interp = run_sandboxed_with_interpreter(
                     source, policy, source_name=args.file)
                 intents = list(getattr(interp, "intent_checks", []) or [])
+                contracts = list(getattr(interp, "contract_checks", []) or [])
             except GodCodeError as err:
                 error = agentics.diagnostic(err)
                 error["trace"] = agentics.error_trace(err)
+                # The sandbox path loses the interpreter when a run
+                # fails; a contract failure carries its records with it.
+                contracts = list(getattr(err, "contracts", []) or [])
         ms = int((_time.perf_counter() - start) * 1000)
         manifest = getattr(interp, "manifest", None)
         agentics.emit(agentics.run_payload(
             args.file, error is None, output, [], error, ms,
             intents=intents,
+            contracts=contracts,
             permissions=manifest.to_json() if manifest else {}))
         return 0 if error is None else 1
     try:
@@ -499,6 +505,10 @@ class CanonicalFormatter:
     def _stmt_DefineRite(self, node) -> None:
         params = ", ".join(node.params)
         self._line(f"DEFINE RITE {node.name}({params})")
+        self._depth += 1
+        for clause in getattr(node, "contract", []):
+            self._line(f"{clause.kind} {self._expr(clause.expr)}")
+        self._depth -= 1
         self._block(node.body)
         self._line("END RITE")
 

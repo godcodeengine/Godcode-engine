@@ -33,7 +33,7 @@ lexes as `REVEAL 1 NEWLINE REVEAL 2 EOF`. The language is line-oriented, and the
 
 **LX-7.** The keywords are these, and only these:
 
-`BEGIN` `CREATION` `END` `DECLARE` `AS` `BREATHE` `LIFE` `INTO` `REVEAL` `PROPHESY` `ASCEND` `IF` `THEN` `ELSE` `ENDIF` `FOR` `IN` `ENDFOR` `WHILE` `DO` `ENDWHILE` `BREAK` `CONTINUE` `TRY` `CATCH` `ENDTRY` `DEFINE` `RITE` `INVOKE` `RETURN` `IMPORT` `IS` `NOT` `AND` `OR` `REFLECT` `BLESS` `ANOINT` `SEAL` `TESTIFY` `TRUE` `FALSE` `VOID`
+`BEGIN` `CREATION` `END` `DECLARE` `AS` `BREATHE` `LIFE` `INTO` `REVEAL` `PROPHESY` `ASCEND` `IF` `THEN` `ELSE` `ENDIF` `FOR` `IN` `ENDFOR` `WHILE` `DO` `ENDWHILE` `BREAK` `CONTINUE` `TRY` `CATCH` `ENDTRY` `DEFINE` `RITE` `INVOKE` `RETURN` `IMPORT` `IS` `NOT` `AND` `OR` `REFLECT` `BLESS` `ANOINT` `SEAL` `TESTIFY` `REQUIRE` `ENSURE` `NEVER` `TRUE` `FALSE` `VOID`
 
 Multi-word phrases like `BEGIN CREATION`, `END RITE`, and `BREATHE LIFE INTO` are separate keyword tokens at this layer. Joining them into phrases is the syntax layer's work. `TRUE`, `FALSE`, and `VOID` are keywords, so they work in any letter case.
 

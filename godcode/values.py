@@ -45,12 +45,17 @@ class Contract:
 
 @dataclass
 class RiteFunction:
-    """A user-defined rite: name, parameter names, body, and closure env."""
+    """A user-defined rite: name, parameter names, body, and closure env.
+
+    ``contract`` holds the rite's ContractClause declarations (REQUIRE /
+    ENSURE / NEVER), weighed by the interpreter at every invocation.
+    """
 
     name: str
     params: list[str] = field(default_factory=list)
     body: list[Any] = field(default_factory=list)
     closure_env: Any = None  # godcode.environment.Environment (Any avoids a cycle)
+    contract: list[Any] = field(default_factory=list)  # list[ast.ContractClause]
 
     def __str__(self) -> str:  # pragma: no cover - cosmetic
         return f"rite {self.name}"

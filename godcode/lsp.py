@@ -262,6 +262,32 @@ LSP_DOCS: dict[str, str] = {
         "```godcode\nDECLARE INTENT \"bring peace\" ON evening_blessing\n```"
     ),
     # --- end v4.0 ---
+    # --- contract clauses ---
+    "REQUIRE": (
+        "**REQUIRE**\n\n"
+        "A contract clause inside a rite body: `REQUIRE expr` is weighed "
+        "at the rite's door, with its parameters bound, before the body "
+        "runs. If it does not hold, the body does not run and the run "
+        "fails with a contract error.\n\n"
+        "```godcode\nREQUIRE loaves > 0\n```"
+    ),
+    "ENSURE": (
+        "**ENSURE**\n\n"
+        "A contract clause inside a rite body: `ENSURE expr` is weighed "
+        "as the rite's work ends, in the rite's own frame, where the "
+        "names the body declared are still in scope. If it does not "
+        "hold, the run fails with a contract error.\n\n"
+        "```godcode\nENSURE loaves IS 5\n```"
+    ),
+    "NEVER": (
+        "**NEVER**\n\n"
+        "A contract clause inside a rite body: `NEVER expr` must be "
+        "false as the rite begins and false again as it ends; it is "
+        "weighed at both thresholds, and only there. If it holds true "
+        "at either door, the run fails with a contract error.\n\n"
+        "```godcode\nNEVER debt > 0\n```"
+    ),
+    # --- end contract clauses ---
     "TESTIFY": (
         "**TESTIFY**\n\n"
         "Bear witness to a value. Affirm it before the heavens.\n\n"

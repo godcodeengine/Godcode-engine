@@ -354,6 +354,29 @@ REVEAL(word)                           # grace upon seeker
 - Calling with the wrong number of arguments is an error.
 - `RETURN` with no value returns `void`.
 
+### Contract clauses: `REQUIRE`, `ENSURE`, `NEVER`
+
+A rite may swear to its own behaviour with contract clauses, written as lines of its body:
+
+```godcode
+DEFINE RITE bake(loaves)
+  REQUIRE loaves > 0
+  ENSURE loaves IS 5
+  NEVER loaves < 0
+  REVEAL("the oven holds {loaves} loaves")
+END RITE
+```
+
+Clauses are declarations, not steps. The parser gathers them into the rite's contract, in the order written, and they are weighed at the rite's thresholds every time it is invoked:
+
+- **`REQUIRE expr`** is weighed at the door, in the invocation frame with the parameters bound, before the body runs. If it does not hold, the body does not run and the run fails.
+- **`ENSURE expr`** is weighed as the work ends, after the body completes (by `RETURN` or by walking off its end), in the rite's own frame, where the names the body declared are still in scope. If it does not hold, the run fails; the work was done, but it does not stand.
+- **`NEVER expr`** is weighed at both doors: the expression must be false as the rite begins and false again as it ends. In this first form `NEVER` is weighed only at the thresholds, not continuously while the body runs.
+
+A broken clause is a broken promise, and it is not counsel: the run fails with a `CONTRACT_ERROR` naming the rite, the clause as written, and the values it was weighed against. If the body itself raises, or the run ascends out of the rite, the exit clauses are weighed no further. A clause spoken outside a rite body, or nested inside a branch within one, is a parse error. `TRY`/`CATCH` at a call site may shelter a broken clause, as it shelters any runtime failure.
+
+Clauses are the checkable half of the promise that `DECLARE INTENT` speaks in prose (§16): the intent is discerned and drift is counseled, but a clause binds, and a rite that breaks one also has its invocation recorded as unaligned in the run's `intents` array. Every clause weighed leaves a record in the run report's `contracts` array: `{rite, kind, text, passed}`. The clause words are English in every tongue for now; their tongue equivalents are the founder's to vet and are not yet spoken. The law lives in the spec at SX-40 to SX-45.
+
 ## 10. Calling Things
 
 When you call `NAME(args)`, the heavens are searched in this order:
