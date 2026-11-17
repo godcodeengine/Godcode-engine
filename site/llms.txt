@@ -108,7 +108,7 @@ The human CLI (run, check, fmt) prints the offending source line beneath the mes
 
 - `godcode new my-scroll` raises a project: main.god, test_main.god, scroll.toml, README.md. Add --json for machine-readable output.
 - `godcode scroll ...` installs, publishes, and verifies reusable scrolls in the registry.
-- Nine MCP-compatible tools are exposed for agent frameworks: check, run, consult, intent, anchor_verify, ledger_verify, permissions, explain, get_schema. List them with `godcode tools --json`. Serve them to an agent host over stdio with `godcode bridge` (JSON-RPC).
+- Eleven MCP-compatible tools are exposed for agent frameworks: check, run, consult, intent, anchor_verify, ledger_verify, permissions, explain, get_schema, format, list_scrolls. List them with `godcode tools --json`. Serve them to an agent host over stdio with `godcode bridge` (JSON-RPC).
 - `godcode intent "words"` resolves the intent behind words. `godcode lsp` runs the language server.
 - The four --json shapes (check, run, explain, ledger-verify) are frozen under dated schemas. `godcode schema` lists them and `godcode schema explain` prints one. Required fields never change meaning; additive fields may appear.
 
