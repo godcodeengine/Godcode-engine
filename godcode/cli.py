@@ -967,6 +967,92 @@ def cmd_schema(args: argparse.Namespace) -> int:
     return 0
 # --- end machine interfaces ---
 
+
+# --- replayable receipts: `godcode receipt record|verify` ---
+def cmd_receipt_record(args: argparse.Namespace) -> int:
+    """`godcode receipt record scroll.god [receipt.json] [--json]`.
+
+    Runs the scroll sandboxed, then writes the receipt document: the
+    source, its fingerprint, the revealed lines, the outcome, and the
+    receipt's own fingerprint. A failed run still records, so the
+    failure itself can be replayed and checked.
+    """
+    import json as _json
+
+    from godcode import receipt as _receipt
+
+    try:
+        source = Path(args.file).read_text(encoding="utf-8")
+    except OSError as exc:
+        print(f"godcode: cannot read '{args.file}': {exc.strerror or exc}",
+              file=sys.stderr)
+        return 1
+    source_dir = str(Path(args.file).resolve().parent)
+    doc = _receipt.record(source, source_name=args.file,
+                          source_dir=source_dir)
+    out_path = args.out
+    if out_path is None:
+        stem = Path(args.file)
+        out_path = str(stem.with_suffix("")) + ".receipt.json"
+    try:
+        Path(out_path).write_text(
+            _json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8")
+    except OSError as exc:
+        print(f"godcode: cannot write '{out_path}': {exc.strerror or exc}",
+              file=sys.stderr)
+        return 1
+    if getattr(args, "json", False):
+        print(_json.dumps(doc, ensure_ascii=False))
+        return 0
+    lines = len(doc["output"])
+    if doc["ok"]:
+        print(f"Receipt recorded: {out_path} "
+              f"({lines} line{'s' if lines != 1 else ''} revealed, "
+              f"run finished cleanly).")
+    else:
+        code = (doc["error"] or {}).get("code", "error")
+        print(f"Receipt recorded: {out_path} "
+              f"(run failed with {code}; the failure is recorded too).")
+    print("Anyone can check it with: "
+          f"godcode receipt verify {out_path}")
+    return 0
+
+
+def cmd_receipt_verify(args: argparse.Namespace) -> int:
+    """`godcode receipt verify receipt.json [--json] [--import-dir DIR]`.
+
+    Checks the receipt's fingerprint, then replays its source sandboxed
+    and compares the outcome, the revealed lines, and the failure code.
+    Exit 0 only when the replay matches the record exactly.
+    """
+    import json as _json
+
+    from godcode import receipt as _receipt
+
+    doc, error = _receipt.load_receipt(args.file)
+    if error is not None:
+        if getattr(args, "json", False):
+            print(_json.dumps({"tool": "godcode", "command": "receipt-verify",
+                               "verified": False, "error": error},
+                              ensure_ascii=False))
+        else:
+            print(f"godcode: {error}", file=sys.stderr)
+        return 1
+    report = _receipt.verify(doc, import_dir=args.import_dir)
+    if getattr(args, "json", False):
+        print(_json.dumps(report, ensure_ascii=False))
+        return 0 if report["verified"] else 1
+    if report["verified"]:
+        print(f"Receipt verified: {args.file} replays exactly as recorded.")
+        return 0
+    print(f"Receipt does not verify: {args.file}")
+    for difference in report["differences"]:
+        print(f"  - {difference}")
+    return 1
+# --- end replayable receipts ---
+
+
 # --- v4.0: intent command ---
 def cmd_intent(args: argparse.Namespace) -> int:
     """`godcode intent "some words" [--json]`: resolve intent via the Spirit."""
@@ -1175,12 +1261,43 @@ def build_parser() -> argparse.ArgumentParser:
                                    "for the machine interfaces")
     p_schema.add_argument("name", nargs="?", default=None,
                           help="Schema to print: check, run, explain, "
-                               "ledger-verify")
+                               "ledger-verify, receipt")
     p_schema.add_argument("--json", action="store_true",
                           help="Emit a machine-readable JSON error on "
                                "stdout for unknown names")
     p_schema.set_defaults(func=cmd_schema)
     # --- end machine interfaces ---
+
+    # --- replayable receipts: `godcode receipt record|verify` ---
+    p_receipt = sub.add_parser("receipt",
+                               help="Record or verify a replayable "
+                                    "receipt of a sandboxed run")
+    receipt_sub = p_receipt.add_subparsers(dest="receipt_command",
+                                           required=True)
+    p_record = receipt_sub.add_parser(
+        "record",
+        help="Run a scroll sandboxed and write its receipt document")
+    p_record.add_argument("file", help="The .god scroll to run")
+    p_record.add_argument("out", nargs="?", default=None,
+                          help="Receipt file to write "
+                               "(default: the scroll's name with "
+                               ".receipt.json)")
+    p_record.add_argument("--json", action="store_true",
+                          help="Also print the receipt document on stdout")
+    p_record.set_defaults(func=cmd_receipt_record)
+    p_rverify = receipt_sub.add_parser(
+        "verify",
+        help="Check a receipt's fingerprint, then replay its source "
+             "sandboxed and compare")
+    p_rverify.add_argument("file", help="The receipt document to verify")
+    p_rverify.add_argument("--json", action="store_true",
+                           help="Emit a machine-readable JSON report "
+                                "on stdout")
+    p_rverify.add_argument("--import-dir", default=None, metavar="DIR",
+                           help="Directory the recorded scroll imported "
+                                "from, when it imported local scrolls")
+    p_rverify.set_defaults(func=cmd_receipt_verify)
+    # --- end replayable receipts ---
 
     # --- v3: scroll commands ---
     _add_scroll_commands(sub)

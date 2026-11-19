@@ -123,15 +123,20 @@ parsed AST. Use it on any scroll you did not write before running it.
 
 ## Machine interface schemas
 
-The four `--json` shapes are frozen under dated schemas (God Code
+The `--json` shapes are frozen under dated schemas (God Code
 releases by date, not by numbers):
 
 ```bash
-godcode schema            # list: check, run, explain, ledger-verify
+godcode schema            # list: check, run, explain, ledger-verify, receipt
 godcode schema explain    # print one schema as JSON
 ```
 
-Schema IDs live under `https://getgodcode.com/schemas/2026-10/`. The
+Schema IDs live under `https://getgodcode.com/schemas/2026-10/` for the
+October shapes and `https://getgodcode.com/schemas/2026-11/` for the
+receipt shape. A receipt records one sandboxed run with its source, so
+anyone holding only the receipt file can replay it:
+`godcode receipt record scroll.god`, then
+`godcode receipt verify scroll.receipt.json` (see `docs/receipts.md`). The
 full contract (commands, exit codes, stability promise) is in
 `docs/machine-interfaces.md`. Required fields never change meaning;
 additive fields may appear. A breaking change would ship under a new
