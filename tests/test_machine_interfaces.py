@@ -235,10 +235,10 @@ def test_ledger_verify_json_tampered(tmp_path, capsys):
 
 # ---------------------------------------------------------------- schema command
 
-def test_schema_lists_four_names(capsys):
+def test_schema_lists_five_names(capsys):
     assert _run_cli("schema") == 0
     out = capsys.readouterr().out
-    for name in ("check", "run", "explain", "ledger-verify"):
+    for name in ("check", "run", "explain", "ledger-verify", "receipt"):
         assert name in out
 
 
@@ -295,7 +295,8 @@ def test_bridge_get_schema_unknown():
 
 
 def test_bridge_lists_eleven_tools():
-    assert SCHEMA_NAMES == ("check", "run", "explain", "ledger-verify")
+    assert SCHEMA_NAMES == ("check", "run", "explain", "ledger-verify",
+                            "receipt")
     from godcode.tools import TOOL_SCHEMAS
 
     assert [t["name"] for t in TOOL_SCHEMAS] == [

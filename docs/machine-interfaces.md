@@ -1,9 +1,9 @@
 # Machine interfaces: the contract for agents
 
 God Code speaks JSON as fluently as it speaks in tongues. Four commands
-emit one JSON document each on stdout, shaped by four dated schemas. An
-agent parses every output without guessing: read the schema first, then
-trust the shape.
+emit one JSON document each on stdout, shaped by dated schemas, and a
+fifth shape records a run for later replay. An agent parses every
+output without guessing: read the schema first, then trust the shape.
 
 ## The four commands
 
@@ -37,7 +37,7 @@ warm plain words, for humans.
 | 1 | diagnostics present, run failed, explain could not read the scroll, or a chain failed verification |
 | 2 | usage error (argparse: bad flags, missing file argument) |
 
-## The four schemas
+## The five schemas
 
 | Command | Schema |
 |---------|--------|
@@ -45,14 +45,21 @@ warm plain words, for humans.
 | `run --sandbox --json` | https://getgodcode.com/schemas/2026-10/run.json |
 | `explain --json` | https://getgodcode.com/schemas/2026-10/explain.json |
 | `ledger verify --json` | https://getgodcode.com/schemas/2026-10/ledger-verify.json |
+| `receipt record` | https://getgodcode.com/schemas/2026-11/receipt.json |
 
 God Code releases by date, not by numbers, so the machine interfaces
 are dated, not versioned. Fetch any schema from the engine itself:
 
 ```bash
-godcode schema            # list the four schema names
+godcode schema            # list the five schema names
 godcode schema explain    # print the explain schema as JSON
+godcode schema receipt    # print the receipt schema as JSON
 ```
+
+Receipts are documented in full in `docs/receipts.md`: a receipt
+records one sandboxed run with its source, so anyone holding only the
+receipt file can replay it with `godcode receipt verify` and confirm
+the recorded result.
 
 The same schemas ride the agent tools: `godcode tools --json` lists
 eleven tools (`check`, `run`, `consult`, `intent`, `anchor_verify`,
