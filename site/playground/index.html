@@ -355,6 +355,15 @@ function lex(source){
         }
         col=j; continue;
       }
+      if(ch===":"){                                         // explicit bare word: :name
+        let j=col+1;
+        if(j<line.length && /[A-Za-z_]/.test(line[j])){
+          while(j<line.length && /[A-Za-z0-9_]/.test(line[j])) j++;
+          tokens.push({type:"SYMBOL", value:line.slice(col+1,j), line:ln+1, col:sc});
+          col=j; continue;
+        }
+        throw new GodError("The mark ':' stands alone here, marking nothing. Follow it with the bare word it names, as in :worthy", ln+1, sc);
+      }
       const two=line.slice(col,col+2);                       // multi-char operators first
       const twoTypes={"!=":"NEQ","<=":"LTE",">=":"GTE"};
       if(twoTypes[two]){
@@ -706,6 +715,8 @@ class Parser{
         return {kind:"Literal", value:t.value, line:t.line};
       case "TRUE":  this.next(); return {kind:"Literal", value:true, line:t.line};
       case "FALSE": this.next(); return {kind:"Literal", value:false, line:t.line};
+      case "SYMBOL":
+        this.next(); return {kind:"Sym", name:t.value, line:t.line};
       case "IDENT":
         if(this.peek2().type==="LPAREN"){
           this.next(); this.next();
@@ -767,7 +778,9 @@ class Parser{
 }
 
 /* ---------------- 3. VALUES & HELPERS ---------------- */
-// The Symbol rule: an unbound name evaluates to a Sym — its own name as a word.
+// Symbols: a bare word spoken on purpose, written :name. A plain name
+// that was never declared is loud at the read (see eval's Ident case);
+// Env.get keeps its gentle fallback for guarded internal lookups.
 class Sym{ constructor(name){ this.name=name; } }
 class Contract{
   constructor(name){ this.name=name; this.alive=false; this.blessed=false; this.anointed=false; }
@@ -781,7 +794,7 @@ class Env{
   get(n){
     if(this.map.has(n)) return this.map.get(n);
     if(this.parent) return this.parent.get(n);
-    return new Sym(n);                                        // the Symbol rule
+    return new Sym(n);                                        // guarded lookups only; eval refuses unbound names first
   }
 }
 
@@ -1149,7 +1162,10 @@ class Interpreter{
     switch(n.kind){
       case "Literal": return n.value;
       case "Interp":  return n.parts.map(p=>typeof p==="string"?p:stringify(this.eval(p,env))).join("");
-      case "Ident":   return env.get(n.name);
+      case "Sym":     return new Sym(n.name);
+      case "Ident":
+        if(!env.has(n.name)) throw new GodError("There is no '"+n.name+"' in this creation. It was never spoken into being. DECLARE it first, or, if the bare word itself is meant, mark it as one: :"+n.name, n.line);
+        return env.get(n.name);
       case "List":    return n.items.map(i=>this.eval(i,env));
       case "Index":   return this.evalIndex(n,env);
       case "Unary": {

@@ -19,13 +19,13 @@ For the complete grammar, see [LANGUAGE_REFERENCE.md](LANGUAGE_REFERENCE.md). Fo
 Example God Code:
 ```godcode
 BEGIN CREATION
-  DECLARE seeker AS worthy
-  IF seeker IS worthy THEN REVEAL("heaven") ELSE REVEAL("test")
+  DECLARE seeker AS :worthy
+  IF seeker IS :worthy THEN REVEAL("heaven") ELSE REVEAL("test")
   ASCEND
 END CREATION
 ```
 
-Notice: `worthy` needs no quotes. **In God Code, bare words are symbols**. Every unnamed thing is still a named spirit.
+Notice: `:worthy` needs no quotes. **In God Code, a bare word spoken with its mark is a symbol**. The colon is the mark: the word itself is the value. A plain name must be declared before it is read, and reading one that never was declared stops the run with a gentle error.
 
 ---
 
@@ -62,8 +62,8 @@ Create a file called `my_first.god`:
 
 ```godcode
 BEGIN CREATION
-  DECLARE spirit AS humble
-  IF spirit IS humble THEN REVEAL("peace") ELSE REVEAL("struggle")
+  DECLARE spirit AS :humble
+  IF spirit IS :humble THEN REVEAL("peace") ELSE REVEAL("struggle")
   ASCEND
 END CREATION
 ```
@@ -86,13 +86,13 @@ peace
 | Line | Meaning |
 |---|---|
 | `BEGIN CREATION` | every program is a creation. This opens it |
-| `DECLARE spirit AS humble` | binds the name `spirit` to the **symbol** `humble` (bare words are symbols — no quotes needed) |
-| `IF spirit IS humble THEN … ELSE …` | `IS` tests equality; the truthy branch reveals `"peace"` |
+| `DECLARE spirit AS :humble` | binds the name `spirit` to the **symbol** `humble` (a bare word with its mark. No quotes needed) |
+| `IF spirit IS :humble THEN … ELSE …` | `IS` tests equality; the truthy branch reveals `"peace"` |
 | `REVEAL("peace")` | speaks a value aloud (and records it) |
 | `ASCEND` | ends the creation in peace |
 | `END CREATION` | closes the creation |
 
-Change `humble` to `proud` and run it again. Watch the prophecy change. *You* did that.
+Change `:humble` to `:proud` and run it again. Watch the prophecy change. *You* did that.
 
 ---
 
@@ -101,7 +101,7 @@ Change `humble` to `proud` and run it again. Watch the prophecy change. *You* di
 | Command | Description |
 |---|---|
 | `BEGIN CREATION` / `END CREATION` | opens / closes a program |
-| `DECLARE name AS value` | binds a name (`DECLARE prophets AS Isaiah, Elijah, Jeremiah` makes a list) |
+| `DECLARE name AS value` | binds a name (`DECLARE prophets AS :Isaiah, :Elijah, :Jeremiah` makes a list) |
 | `BREATHE LIFE INTO name` | breathes life into a contract |
 | `REVEAL(expr)` | speaks a value |
 | `PROPHESY words…` | asks the Spirit Engine for a prophecy |
@@ -125,7 +125,7 @@ Full details, operator tables, and the built-in catalog live in [LANGUAGE_REFERE
 
 **Decide:**
 ```godcode
-IF heart IS pure THEN
+IF heart IS :pure THEN
   REVEAL("the way is open")
 ELSE
   REVEAL("wait and be still")
