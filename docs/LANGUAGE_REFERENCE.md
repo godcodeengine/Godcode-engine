@@ -17,8 +17,8 @@ Every God Code program is a **creation**. It opens with `BEGIN CREATION` and clo
 
 ```godcode
 BEGIN CREATION
-  DECLARE seeker AS worthy
-  IF seeker IS worthy THEN REVEAL("heaven") ELSE REVEAL("test")
+  DECLARE seeker AS :worthy
+  IF seeker IS :worthy THEN REVEAL("heaven") ELSE REVEAL("test")
   ASCEND
 END CREATION
 ```
@@ -56,25 +56,25 @@ Four tongues are spoken today: Setswana (`tn`), isiZulu (`zu`), Igbo (`ig`), and
 |---|---|---|
 | number | `3`, `4.5` | int or float |
 | string | `"peace"` | double-quoted, with escapes and `{expr}` interpolation |
-| **symbol** | `worthy` | any bare word — see the Symbol Rule |
+| **symbol** | `:worthy` | a bare word spoken with its mark. See the Symbol Rule |
 | boolean | `TRUE`, `FALSE` | literals; also produced by comparisons; revealed as `true`/`false` |
-| list | `[1, two, "three"]` | ordered, mixed types allowed |
+| list | `[1, :two, "three"]` | ordered, mixed types allowed |
 | contract | `contract("everlasting")` | created with the `contract()` rite |
 | rite | *(from DEFINE RITE)* | a named, callable blessing |
 | void | *(from rites with no RETURN)* | the absence of a value |
 
 ### The Symbol Rule 🕊
 
-**In God Code, every unnamed thing is still a named spirit. Bare words are symbols.**
+**In God Code, a bare word is a value when it is spoken on purpose. Its mark is the colon.**
 
-An identifier that is not bound to anything does not raise an error; it evaluates to a `Symbol` carrying its own name. This is what makes the founding idiom work:
+A Symbol is written `:worthy`. The colon marks the word as a word, and the word itself is the value. A plain name is a different thing: it must be declared before it is read. Reading a name that was never declared stops the run with a gentle error that names the name and offers the two honest fixes, declare it first or mark it as a bare word. When a declared name stands near the misspelling, the error adds "Did you mean ...?" This is what makes the founding idiom honest:
 
 ```godcode
-DECLARE seeker AS worthy     # `worthy` is a symbol — no quotes needed
-IF seeker IS worthy THEN REVEAL("heaven")
+DECLARE seeker AS :worthy     # `:worthy` is a symbol — no quotes needed
+IF seeker IS :worthy THEN REVEAL("heaven")
 ```
 
-Symbols are always truthy, and compare by their text: `worthy IS worthy` is true.
+Symbols are always truthy, and compare by their text: `:worthy IS :worthy` is true. The mark is punctuation, not a keyword, so it speaks the same in every tongue.
 
 ### How values are revealed
 
@@ -118,12 +118,12 @@ The braces may hold any expression: names, arithmetic, comparisons, builtin rite
 ## 5. The Statements
 
 ### `DECLARE name AS value`
-Binds a name. Multiple comma-separated values become a list. The original idiom is honored:
+Binds a name. Multiple comma-separated values become a list. The founding idiom stands, with its mark:
 
 ```godcode
-DECLARE seeker AS worthy
+DECLARE seeker AS :worthy
 DECLARE pi AS 3.14159
-DECLARE prophets AS Isaiah, Elijah, Jeremiah   # a list of three symbols
+DECLARE prophets AS :Isaiah, :Elijah, :Jeremiah   # a list of three symbols
 DECLARE pair AS [1, "two"]
 ```
 
@@ -226,7 +226,7 @@ REVEAL([1, 2] + [3])               # [1, 2, 3]
 Equality is generous: numbers compare across int/float, symbols compare by text, contracts by name, lists element-wise. Ordering comparisons (`<`, …) on mixed non-numeric values are rejected.
 
 ```godcode
-IF seeker IS worthy THEN REVEAL("heaven")
+IF seeker IS :worthy THEN REVEAL("heaven")
 IF count IS NOT 0 THEN REVEAL("not empty")
 ```
 
@@ -235,7 +235,7 @@ IF count IS NOT 0 THEN REVEAL("not empty")
 `AND`, `OR` (short-circuiting), and `NOT` / unary `-`:
 
 ```godcode
-IF heart IS pure AND hands IS willing THEN REVEAL("go")
+IF heart IS :pure AND hands IS :willing THEN REVEAL("go")
 REVEAL(NOT 0)          # true
 ```
 
@@ -257,14 +257,14 @@ So `NOT a IS b` means `NOT (a IS b)`, and `2 + 3 * 4` is `14`.
 **Inline** — one statement per branch, all on one line:
 
 ```godcode
-IF seeker IS worthy THEN REVEAL("heaven") ELSE REVEAL("test")
+IF seeker IS :worthy THEN REVEAL("heaven") ELSE REVEAL("test")
 IF n % 7 IS 0 THEN REVEAL("seal")        # ELSE may be omitted
 ```
 
 **Block** — for many statements, closed with `ENDIF`:
 
 ```godcode
-IF heart IS pure THEN
+IF heart IS :pure THEN
   REVEAL("the way is open")
   BLESS seeker
 ELSE
@@ -353,6 +353,29 @@ REVEAL(word)                           # grace upon seeker
 - Parameters bind in a child scope of the rite's **definition site**. Rites are closures.
 - Calling with the wrong number of arguments is an error.
 - `RETURN` with no value returns `void`.
+
+### Contract clauses: `REQUIRE`, `ENSURE`, `NEVER`
+
+A rite may swear to its own behaviour with contract clauses, written as lines of its body:
+
+```godcode
+DEFINE RITE bake(loaves)
+  REQUIRE loaves > 0
+  ENSURE loaves IS 5
+  NEVER loaves < 0
+  REVEAL("the oven holds {loaves} loaves")
+END RITE
+```
+
+Clauses are declarations, not steps. The parser gathers them into the rite's contract, in the order written, and they are weighed at the rite's thresholds every time it is invoked:
+
+- **`REQUIRE expr`** is weighed at the door, in the invocation frame with the parameters bound, before the body runs. If it does not hold, the body does not run and the run fails.
+- **`ENSURE expr`** is weighed as the work ends, after the body completes (by `RETURN` or by walking off its end), in the rite's own frame, where the names the body declared are still in scope. If it does not hold, the run fails; the work was done, but it does not stand.
+- **`NEVER expr`** is weighed at both doors: the expression must be false as the rite begins and false again as it ends. In this first form `NEVER` is weighed only at the thresholds, not continuously while the body runs.
+
+A broken clause is a broken promise, and it is not counsel: the run fails with a `CONTRACT_ERROR` naming the rite, the clause as written, and the values it was weighed against. If the body itself raises, or the run ascends out of the rite, the exit clauses are weighed no further. A clause spoken outside a rite body, or nested inside a branch within one, is a parse error. `TRY`/`CATCH` at a call site may shelter a broken clause, as it shelters any runtime failure.
+
+Clauses are the checkable half of the promise that `DECLARE INTENT` speaks in prose (§16): the intent is discerned and drift is counseled, but a clause binds, and a rite that breaks one also has its invocation recorded as unaligned in the run's `intents` array. Every clause weighed leaves a record in the run report's `contracts` array: `{rite, kind, text, passed}`. The clause words are English in every tongue for now; their tongue equivalents are the founder's to vet and are not yet spoken. The law lives in the spec at SX-40 to SX-45.
 
 ## 10. Calling Things
 

@@ -389,7 +389,10 @@ def test_vscode_snippets_zulu_starters_run():
     cond_body = re.sub(r"\$\{[12]:[^}]*\}", "izulu", cond_body)
     cond_body = re.sub(r"\$\{\d+:([^}]*)\}", r"\1", cond_body)
     cond_body = cond_body.replace("$0", "")
-    wrapped = "# tongue: zu\nQALA INDALO\n" + cond_body + "\nQEDA INDALO\n"
+    # the compared name is declared first, as a real scroll declares it;
+    # the snippet's bare word now carries its mark (:izulu)
+    wrapped = ("# tongue: zu\nQALA INDALO\n"
+               "MEMEZELA izulu NJENGA :izulu\n" + cond_body + "\nQEDA INDALO\n")
     buf = io.StringIO()
     with redirect_stdout(buf):
         Interpreter().run(parse_source(wrapped))

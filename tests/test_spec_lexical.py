@@ -108,7 +108,7 @@ def test_lx7_keyword_inventory_matches_the_spec_list():
         "IN", "ENDFOR", "WHILE", "DO", "ENDWHILE", "BREAK", "CONTINUE", "TRY",
         "CATCH", "ENDTRY", "DEFINE", "RITE", "INVOKE", "RETURN", "IMPORT",
         "IS", "NOT", "AND", "OR", "REFLECT", "BLESS", "ANOINT", "SEAL",
-        "TESTIFY", "TRUE", "FALSE", "VOID",
+        "TESTIFY", "REQUIRE", "ENSURE", "NEVER", "TRUE", "FALSE", "VOID",
     }
     assert set(KEYWORDS) == documented
 

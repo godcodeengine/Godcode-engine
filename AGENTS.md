@@ -27,6 +27,11 @@ Same exit-code convention. JSON shape: `{"tool","command","file","ok",
 notices like `[SEAL]`); on runtime error it holds lines revealed *before*
 the error, and `error` carries `line`/`col`/`code`/`message`. `--sandbox`
 confines execution; `--json` composes with plain `run`/`check` too.
+A sandboxed run denies every file read until the invoker grants one:
+`run --sandbox --allow-read DIR scroll.god` (repeatable). The scroll's
+permission manifest still narrows the grant, so the run may read only
+what both the host and the scroll allow. See
+`docs/accountable-agent.md` for the worked demo.
 
 ## Share scrolls
 
@@ -68,9 +73,25 @@ godcode ledger verify     # verify the covenant chain
 - `DECLARE INTENT "words..." ON rite_name` names a rite's purpose; at
   invocation the Spirit checks alignment and counsels gently on drift.
   Drift can never fail a run.
+- Contract clauses are the checkable half of that promise. Inside a rite
+  body, `REQUIRE expr` is weighed at entry (parameters bound, body not
+  yet run), `ENSURE expr` at exit (the body's declared names still in
+  scope, after `RETURN` too), and `NEVER expr` at both thresholds; in
+  this first form `NEVER` is weighed only at the thresholds, never
+  continuously. Clauses are declarations, not steps: the parser gathers
+  them into the rite's contract in written order, and one spoken outside
+  a rite body (or nested in a branch) is a parse error. A broken clause
+  FAILS the run with `CONTRACT_ERROR`, naming the rite, the clause, and
+  the values weighed. Run reports carry a `contracts` array
+  (`{rite, kind, text, passed}`) beside `intents`. Clause words are
+  English in every tongue for now; tongue equivalents are not yet vetted.
 - `ASCEND` ends the run peacefully (not an error).
-- An unbound name evaluates to a Symbol. It does not raise. `BREATHE LIFE INTO`
-  an undeclared name *does* raise at runtime.
+- Reading a name that was never declared is loud: it raises a gentle runtime
+  error naming the name, with a did-you-mean when a declared name stands
+  near. A bare word spoken on purpose carries its mark, `:worthy`, and
+  evaluates to a Symbol: `DECLARE seeker AS :worthy`, `IF seeker IS :worthy
+  THEN`. The mark is punctuation, not a keyword, so it speaks the same in
+  every tongue. `BREATHE LIFE INTO` an undeclared name also raises.
 - Error messages may end with `Did you mean 'X'?` (misspelled rite, variable,
   bless target, or map key). The human CLI (`run`, `run --sandbox`, `check`,
   `fmt`) prints the offending source line beneath the message, with a caret at
@@ -97,13 +118,14 @@ godcode ledger verify     # verify the covenant chain
 | `LEXER_ERROR` | bad characters / unterminated string | check quotes on the reported line |
 | `PARSE_ERROR` | grammar violation | missing BEGIN/END CREATION or block closer |
 | `RUNTIME_ERROR` | failed while running | DECLARE names before use; re-read the line |
+| `CONTRACT_ERROR` | a rite broke a REQUIRE / ENSURE / NEVER clause | mend the offering or the promise; see `contracts` in the report |
 | `FILE_ERROR` | scroll unreadable | check the path |
 
 ## Agent workflow
 
 generate → `explain --json` (on an unfamiliar scroll) → `check --json` →
 fix from diagnostics → `run --sandbox --json` → inspect
-`output`/`error`/`intents` → iterate. Never run untrusted scrolls without
+`output`/`error`/`intents`/`contracts` → iterate. Never run untrusted scrolls without
 `--sandbox`. Keep the human's production checklist (provider contracts,
 real credentials, Bank of Botswana sandbox submission) out of the way.
 Demo in sandbox mode.
@@ -123,15 +145,20 @@ parsed AST. Use it on any scroll you did not write before running it.
 
 ## Machine interface schemas
 
-The four `--json` shapes are frozen under dated schemas (God Code
+The `--json` shapes are frozen under dated schemas (God Code
 releases by date, not by numbers):
 
 ```bash
-godcode schema            # list: check, run, explain, ledger-verify
+godcode schema            # list: check, run, explain, ledger-verify, receipt
 godcode schema explain    # print one schema as JSON
 ```
 
-Schema IDs live under `https://getgodcode.com/schemas/2026-10/`. The
+Schema IDs live under `https://getgodcode.com/schemas/2026-10/` for the
+October shapes and `https://getgodcode.com/schemas/2026-11/` for the
+receipt shape. A receipt records one sandboxed run with its source, so
+anyone holding only the receipt file can replay it:
+`godcode receipt record scroll.god`, then
+`godcode receipt verify scroll.receipt.json` (see `docs/receipts.md`). The
 full contract (commands, exit codes, stability promise) is in
 `docs/machine-interfaces.md`. Required fields never change meaning;
 additive fields may appear. A breaking change would ship under a new

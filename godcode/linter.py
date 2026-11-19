@@ -383,7 +383,11 @@ class _Linter:
         scope.children.append(child)
         for param in node.params:
             self._declare(child, param, _PARAM, node.line, node.col)
-        if not node.body:
+        # Contract clauses speak in the rite's own frame: the names they
+        # read are weighed there, so they are walked in the child scope.
+        for clause in getattr(node, "contract", []):
+            self._walk_expr(clause.expr, child)
+        if not node.body and not getattr(node, "contract", []):
             self._finding(node.line, node.col, "GC004",
                           f"empty rite body for '{node.name}'")
         self._walk_block(node.body, child)

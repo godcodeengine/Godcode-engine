@@ -237,9 +237,12 @@ def tool_run(arguments: dict) -> dict:
                 output, interp = run_sandboxed_with_interpreter(
                     source, source_name=file)
         except GodCodeError as err:
-            return {"ok": False, "output": [], "error": str(err)}
+            return {"ok": False, "output": [],
+                    "contracts": list(getattr(err, "contracts", []) or []),
+                    "error": str(err)}
         manifest = getattr(interp, "manifest", None)
         return {"ok": True, "output": output, "error": None,
+                "contracts": list(getattr(interp, "contract_checks", []) or []),
                 "permissions": manifest.to_json() if manifest else {}}
     from godcode.cli import _make_interpreter
     import contextlib
@@ -253,9 +256,11 @@ def tool_run(arguments: dict) -> dict:
     except GodCodeError as err:
         return {"ok": False,
                 "output": buf.getvalue().splitlines(),
+                "contracts": list(getattr(interp, "contract_checks", []) or []),
                 "error": str(err)}
     manifest = getattr(interp, "manifest", None)
     return {"ok": True, "output": buf.getvalue().splitlines(), "error": None,
+            "contracts": list(getattr(interp, "contract_checks", []) or []),
             "permissions": manifest.to_json() if manifest else {}}
 
 
@@ -427,13 +432,23 @@ _TOOL_FUNCS = {
 # ---------------------------------------------------------------------------
 # dated machine-interface schemas
 # ---------------------------------------------------------------------------
-SCHEMA_NAMES = ("check", "run", "explain", "ledger-verify")
+SCHEMA_NAMES = ("check", "run", "explain", "ledger-verify", "receipt")
 
 SCHEMA_DESCRIPTIONS = {
     "check": "the shape of godcode check --json",
     "run": "the shape of godcode run --sandbox --json",
     "explain": "the shape of godcode explain --json",
     "ledger-verify": "the shape of godcode ledger verify --json",
+    "receipt": "the shape of a replayable receipt document",
+}
+
+# Each schema lives under the month its shape was frozen.
+SCHEMA_DATES = {
+    "check": "2026-10",
+    "run": "2026-10",
+    "explain": "2026-10",
+    "ledger-verify": "2026-10",
+    "receipt": "2026-11",
 }
 
 
@@ -446,11 +461,12 @@ def read_schema(name):
     """
     if name not in SCHEMA_NAMES:
         return None, f"no schema named '{name}'"
-    rel = Path("schemas") / "2026-10" / f"{name}.json"
+    dated = SCHEMA_DATES[name]
+    rel = Path("schemas") / dated / f"{name}.json"
     try:
         from importlib.resources import files
 
-        candidate = files("godcode").joinpath("schemas/2026-10",
+        candidate = files("godcode").joinpath(f"schemas/{dated}",
                                               f"{name}.json")
         if candidate.is_file():
             return candidate.read_text(encoding="utf-8"), None

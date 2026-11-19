@@ -168,7 +168,7 @@ class TestAnchorBuiltin:
     def test_named_chain_as_symbol(self, tmp_path):
         interp = _interp({"simulated": SimulatedChainAdapter(tmp_path / "a.chain")})
         interp.run_source(
-            "BEGIN CREATION\n  DECLARE r AS ANCHOR(\"manna\", simulated)\n  REVEAL(r[\"chain\"])\nEND CREATION\n"
+            "BEGIN CREATION\n  DECLARE r AS ANCHOR(\"manna\", :simulated)\n  REVEAL(r[\"chain\"])\nEND CREATION\n"
         )
         assert interp.output == ["simulated"]
 

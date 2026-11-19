@@ -27,4 +27,4 @@ Never run an untrusted scroll without `--sandbox`.
 - Pure, no import: `SHA256`, `HMAC`, `BASE64_ENCODE`, `BASE64_DECODE`, `REPEAT(s, n)`, `TRIM`, `SORT`, `SUM_OF`, `FIRST`, `LAST`, `UNIQUE`, `INDEX_OF`, `KEYS`, `VALUES`, `HAS_KEY`, `MERGE`, `ABS`, `ROUND`, `SQRT`, `POW`.
 - Permission manifests sit at the top inside `BEGIN CREATION`: `DECLARE PERMISSION TO READ "data/"`, `TO WRITE "out/"`, `TO SPEAK WITH "host"`, `TO ASK THE WORLD`, `TO SUMMON "verb"`. Undeclared powers are stopped. Read a foreign manifest with `godcode permissions --json scroll.god`.
 - `# tongue: tn` for Setswana, `# tongue: zu` for isiZulu. English still works.
-- Gotchas: unbound names become Symbols silently; division by zero is rejected; keywords are case-insensitive.
+- Gotchas: reading an undeclared name raises a gentle error (a bare word needs its mark, `:word`, to be a Symbol); division by zero is rejected; keywords are case-insensitive.

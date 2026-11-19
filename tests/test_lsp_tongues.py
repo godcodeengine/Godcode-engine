@@ -374,7 +374,10 @@ def test_vscode_snippets_setswana_starters_run() -> None:
     # placeholder 3 keeps its SENOLA("heaven") default
     cond_body = re.sub(r"\$\{[12]:[^}]*\}", "heaven", cond_body)
     cond_body = re.sub(r"\$\{\d+:([^}]*)\}", r"\1", cond_body).replace("$0", "")
-    wrapped = "# tongue: tn\nSIMOLOLA TLHOLEGO\n" + cond_body + "\nFEDISA TLHOLEGO\n"
+    # the compared name is declared first, as a real scroll declares it;
+    # the snippet's bare word now carries its mark (:heaven)
+    wrapped = ("# tongue: tn\nSIMOLOLA TLHOLEGO\n"
+               "BOLELA heaven JAAKA :heaven\n" + cond_body + "\nFEDISA TLHOLEGO\n")
     tree = parse_source(wrapped)
     buf = io.StringIO()
     with redirect_stdout(buf):
