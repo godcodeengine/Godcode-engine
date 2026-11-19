@@ -91,7 +91,7 @@ Condensed. Full detail lives in `references/language.md`.
 - `DECLARE INTENT "plain words" ON rite_name` names a rite's purpose. Drift can counsel, never fail a run.
 - `SEAL(expr)` writes to the covenant ledger. `ANCHOR(expr)` returns a receipt map. `SHA256`, `HMAC`, `BASE64_ENCODE`, `BASE64_DECODE` are pure and sandbox-safe.
 - `CONSULT("question")` asks the local oracle. `ASCEND` ends a run peacefully. `REPEAT(s, n)` is a word function, not a loop.
-- An unbound name evaluates to a Symbol and does not raise. `BREATHE LIFE INTO` an undeclared name raises.
+- Reading a name that was never declared is loud: it raises a gentle runtime error naming the name, with a did-you-mean when a declared name stands near. A bare word spoken on purpose carries its mark, `:worthy`, and evaluates to a Symbol. `BREATHE LIFE INTO` an undeclared name also raises.
 - Division by zero is rejected: "division by nothing is not permitted".
 - Tongues: `# tongue: tn` writes keywords in Setswana, `# tongue: zu` in isiZulu, `# tongue: ig` in Igbo, `# tongue: pg` in Nigerian Pidgin. English keywords still work in the same file.
 

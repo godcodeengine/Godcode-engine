@@ -61,10 +61,11 @@ def test_st2_while_declare_visible_after():
 # -- ST-3: FOR runs its body in one child scope -------------------------------
 
 def test_st3_loop_var_unbound_after_endfor():
-    """ST-3: after ENDFOR the loop variable is bound nowhere, so it reads as a Symbol."""
+    """ST-3: after ENDFOR the loop variable is bound nowhere, and reading it is loud."""
     r = run('FOR i IN RANGE(1, 4)\nREVEAL(i)\nENDFOR\nREVEAL(i)')
-    assert r.error is None
-    assert out('FOR i IN RANGE(1, 4)\nREVEAL(i)\nENDFOR\nREVEAL(i)') == ["1", "2", "3", "i"]
+    assert r.error is not None
+    assert "'i'" in r.error
+    assert r.output.split("\n") == ["1", "2", "3"]
 
 
 def test_st3_linter_flags_loop_var_after_loop_as_undefined():
@@ -78,15 +79,16 @@ def test_st3_linter_flags_loop_var_after_loop_as_undefined():
 def test_st4_rite_local_invisible_after_call():
     """ST-4: a DECLARE inside a rite body is not visible after the call returns."""
     r = run('DEFINE RITE f()\nDECLARE hidden AS 1\nEND RITE\nf()\nREVEAL(hidden)')
-    assert r.error is None
-    assert out('DEFINE RITE f()\nDECLARE hidden AS 1\nEND RITE\nf()\nREVEAL(hidden)') == ["hidden"]
+    assert r.error is not None
+    assert "'hidden'" in r.error
 
 
 def test_st4_params_live_in_the_child_scope():
     """ST-4: parameters are bound in the body scope and unbound outside the rite."""
     r = run('DEFINE RITE f(a)\nRETURN a\nEND RITE\nREVEAL(f(3))\nREVEAL(a)')
-    assert r.error is None
-    assert out('DEFINE RITE f(a)\nRETURN a\nEND RITE\nREVEAL(f(3))\nREVEAL(a)') == ["3", "a"]
+    assert r.error is not None
+    assert "'a'" in r.error
+    assert r.output.split("\n") == ["3"]
 
 
 # -- ST-5: closures capture the definition scope by reference -----------------
@@ -114,10 +116,10 @@ def test_st6_rite_may_call_itself():
 # -- ST-7: names are case-sensitive -------------------------------------------
 
 def test_st7_case_mismatch_reads_as_symbol():
-    """ST-7: DECLARE MyName does not bind myname; the read yields the bare word."""
+    """ST-7: DECLARE MyName does not bind myname; the mismatched read is loud."""
     r = run('DECLARE MyName AS 5\nREVEAL(myname)')
-    assert r.error is None
-    assert out('DECLARE MyName AS 5\nREVEAL(myname)') == ["myname"]
+    assert r.error is not None
+    assert "'myname'" in r.error
 
 
 def test_st7_case_mismatch_is_gc002():
@@ -168,10 +170,10 @@ def test_st11_update_reads_old_value():
 
 
 def test_st11_self_read_with_no_prior_binding_is_symbol():
-    """ST-11: with no prior binding the self-read yields the bare word."""
+    """ST-11: with no prior binding the self-read is loud, naming the name."""
     r = run('DECLARE y AS y\nREVEAL(y)')
-    assert r.error is None
-    assert out('DECLARE y AS y\nREVEAL(y)') == ["y"]
+    assert r.error is not None
+    assert "'y'" in r.error
 
 
 # -- ST-12: the update idiom is never GC006 -----------------------------------
@@ -200,35 +202,43 @@ def test_st13_redeclare_is_gc006():
 # -- ST-14: unbound names read as Symbols -------------------------------------
 
 def test_st14_unbound_name_reveals_bare_word():
-    """ST-14: REVEAL of a name bound nowhere reveals the word, and never errors."""
+    """ST-14: REVEAL of a name bound nowhere is a loud error naming the name."""
     r = run('REVEAL(grace)')
+    assert r.error is not None
+    assert "'grace'" in r.error
+    assert ":grace" in r.error
+
+
+def test_st14_explicit_symbol_reveals_the_word():
+    """ST-14: a bare word spoken with the mark, :grace, reveals the word itself."""
+    r = run('REVEAL(:grace)')
     assert r.error is None
-    assert out('REVEAL(grace)') == ["grace"]
+    assert out('REVEAL(:grace)') == ["grace"]
 
 
 # -- ST-15: use before declare ------------------------------------------------
 
 def test_st15_read_before_declare_sees_symbol():
-    """ST-15: a name read before its DECLARE sees the bare word, then the value."""
+    """ST-15: a name read before its DECLARE is loud at the read; the DECLARE never lands."""
     r = run('REVEAL(grace)\nDECLARE grace AS 7\nREVEAL(grace)')
-    assert r.error is None
-    assert out('REVEAL(grace)\nDECLARE grace AS 7\nREVEAL(grace)') == ["grace", "7"]
+    assert r.error is not None
+    assert "'grace'" in r.error
 
 
 # -- ST-16: Symbols are always truthy -----------------------------------------
 
 def test_st16_symbol_is_truthy():
-    """ST-16: an unbound name in a condition takes the THEN path."""
-    r = run('IF grace THEN\nREVEAL("yes")\nELSE\nREVEAL("no")\nENDIF')
+    """ST-16: an explicit Symbol in a condition takes the THEN path."""
+    r = run('IF :grace THEN\nREVEAL("yes")\nELSE\nREVEAL("no")\nENDIF')
     assert r.error is None
-    assert out('IF grace THEN\nREVEAL("yes")\nELSE\nREVEAL("no")\nENDIF') == ["yes"]
+    assert out('IF :grace THEN\nREVEAL("yes")\nELSE\nREVEAL("no")\nENDIF') == ["yes"]
 
 
 # -- ST-17: Symbols act like words, but the engine can tell -------------------
 
 def test_st17_for_refuses_a_symbol():
     """ST-17: FOR will not walk a mere Symbol; the error names the bare spirit."""
-    r = run('FOR x IN grace\nREVEAL(x)\nENDFOR')
+    r = run('FOR x IN :grace\nREVEAL(x)\nENDFOR')
     assert r.error is not None
     assert "not the bare spirit 'grace'" in r.error
 

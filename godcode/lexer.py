@@ -21,7 +21,7 @@ from .tongues import detect_tongue, resolve as resolve_tongue
 # Every alphabetic TokenType name that is not a literal/structural/operator
 # token is a keyword. New keyword TokenTypes are picked up automatically.
 _NON_KEYWORD_NAMES = {
-    "NUMBER", "STRING", "IDENT", "NEWLINE", "EOF",
+    "NUMBER", "STRING", "IDENT", "SYMBOL", "NEWLINE", "EOF",
     "PLUS", "MINUS", "STAR", "SLASH", "PERCENT",
     "EQ", "NEQ", "LT", "GT", "LTE", "GTE",
     "LPAREN", "RPAREN", "LBRACKET", "RBRACKET", "COMMA",
@@ -150,6 +150,28 @@ class Lexer:
                     tokens.append(Token(TokenType.IDENT, word, ln, cl))
                 prev_word, prev_line, prev_col = upper, ln, cl
                 continue
+
+            # explicit bare words: :name is a Symbol spoken on purpose.
+            # The colon is punctuation, not a keyword, so it speaks the
+            # same in every tongue.
+            if c == ":":
+                ln, cl = here()
+                if i + 1 < n and (src[i + 1].isalpha() or src[i + 1] == "_"):
+                    start = i + 1
+                    j = start
+                    while j < n and (src[j].isalnum() or src[j] == "_"):
+                        j += 1
+                    tokens.append(
+                        Token(TokenType.SYMBOL, src[start:j], ln, cl))
+                    col += j - i
+                    i = j
+                    continue
+                raise LexerError(
+                    "The mark ':' stands alone here, marking nothing. "
+                    "Follow it with the bare word it names, as in :worthy",
+                    line=ln,
+                    col=cl,
+                )
 
             # operators: multi-char first, then single-char
             two = src[i : i + 2]

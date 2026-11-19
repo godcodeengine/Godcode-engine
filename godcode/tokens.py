@@ -42,6 +42,10 @@ class TokenType(Enum):
     RITE = auto()
     INVOKE = auto()
     RETURN = auto()
+    # contract clauses: a rite's checkable promises (weighed at its thresholds)
+    REQUIRE = auto()
+    ENSURE = auto()
+    NEVER = auto()
     IMPORT = auto()
     IS = auto()
     NOT = auto()
@@ -61,6 +65,7 @@ class TokenType(Enum):
     NUMBER = auto()
     STRING = auto()
     IDENT = auto()
+    SYMBOL = auto()    # :name — an explicit bare word
     # --- operators ----------------------------------------------------------
     PLUS = auto()      # +
     MINUS = auto()     # -
