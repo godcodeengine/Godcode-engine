@@ -1,0 +1,128 @@
+# God Code
+
+> God Code is a programming language that reads like scripture. Write real software in words of faith, in your own language, and watch it run. Human-readable, safe, and built for humans and AI creating together. Created in Botswana, open to the world.
+
+This file teaches an AI model how to write, check, and safely run God Code. A God Code program is called a scroll and lives in a .god file. Everything here is the working truth of the engine: prefer the commands below over guessing, and prefer the JSON output over scraping prose.
+
+## Install
+
+Install the engine and CLI:
+
+    pip install godcode-engine
+
+Confirm the CLI answers:
+
+    godcode --help
+
+From a source checkout, `pip install -e .` gives the same `godcode` command.
+
+## The safe workflow
+
+Follow this loop every time you work with a scroll.
+
+1. Generate the scroll. Every program needs BEGIN CREATION ... END CREATION. Nothing outside that block runs.
+2. Read before you run. `godcode explain scroll.god --json` reports static facts about a scroll (its tongue, rites and their intents, names, reveals, seals, summons, consults, imports, permissions) and executes nothing. Use it on any scroll you did not write.
+3. Check. `godcode check --json scroll.god` returns one JSON document: {"tool":"godcode","command":"check","file":...,"ok":true|false,"diagnostics":[{line,col,code,severity,message,hint}]}. Exit 0 means pure, exit 1 means diagnostics, exit 2 is a usage error. Line and col are 1-based; col may be null. Fix every diagnostic before running.
+4. Run safely. `godcode run --sandbox --json scroll.god` returns {"tool","command","file","ok","output":[...],"seals":[{block,hash}],"error":{...}|null,"stats":{"ms":...}}. The output array holds every line printed during the run (REVEAL lines plus engine notices such as [SEAL] and [INTENT]). On a runtime error, output holds the lines revealed before the error, and error carries line, col, code, and message. The report also carries an intents array and a permissions block, described below.
+5. Iterate until check is clean and the run reveals what you intended.
+
+Never run an untrusted scroll without --sandbox. The sandbox confines execution: no files, no network, no subprocesses, with time and step limits.
+
+A minimal scroll, to prove the loop:
+
+    BEGIN CREATION
+      DECLARE name AS "world"
+      REVEAL("Hello, {name}. Grace upon grace.")
+    END CREATION
+
+`godcode check --json hello.god` answers ok: true, and `godcode run --sandbox --json hello.god` reveals "Hello, world. Grace upon grace."
+
+## Language essentials
+
+- Assignment is `DECLARE x AS ...`. There is no other assignment form.
+- Output is `REVEAL(expr)`. The language is input-free; there is no stdin.
+- Comparisons use IS and IS NOT (== and != also work). IF takes THEN: `IF n IS 3 THEN`.
+- Strings breathe values in: "grace upon {name}" interpolates any expression, including {a * b} and {UPPER(name)}. To write a literal brace, double it: "{{" writes { and "}}" writes }.
+- Comments start with # and run to end of line.
+- Keywords are case-insensitive. Canonical style is UPPER.
+- Blocks close explicitly: ENDIF, ENDFOR, ENDWHILE, END RITE.
+- FOR walks a list or a range: `FOR i IN RANGE(1, 6)`.
+- A rite is a function: `DEFINE RITE name(params)` ... `END RITE`, invoked with `INVOKE name(args)`. Rites support parameters, RETURN, and closures.
+- ASCEND ends a run peacefully. It is not an error.
+- An unbound name evaluates to a Symbol and does not raise. This is the Symbol Rule: `IF seeker IS worthy THEN` works because worthy is a symbol. But `BREATHE LIFE INTO` an undeclared name does raise at runtime.
+- Division by zero is rejected: "division by nothing is not permitted".
+- Error messages may end with "Did you mean 'X'?" for a misspelled rite, variable, bless target, or map key. Take the hint.
+
+## Seals, anchors, and pure tools
+
+- `SEAL(expr)` appends a tamper-evident, hash-chained covenant block to the ledger. `godcode ledger verify` attests the covenant chain and the anchor chain.
+- `ANCHOR(expr [, chain])` anchors a value's hash on a chain and returns a receipt map {chain, anchor_hash, height, timestamp, payload_hash}. Index it like receipt["anchor_hash"]; TYPE(receipt) is "map". The default chain is `simulated`, a local genesis-anchored chain.
+- `SHA256(x)` fingerprints a word, number, or truth as 64 hex characters. `HMAC(key, message)` seals a message under a key (HMAC-SHA-256). `BASE64_ENCODE(x)` and `BASE64_DECODE(s)` veil and unveil words. All four are pure: they need no import and run unchanged under --sandbox.
+- `CONSULT("question")` asks the local Spirit oracle. It answers in two or three sentences, works in the sandbox, and never fails the run.
+
+## The commons
+
+Everyday tools, always present, pure, and sandbox-safe. Words: TRIM, REPLACE, STARTS_WITH, ENDS_WITH, SUBSTRING, CONTAINS, COUNT, REPEAT. Lists: SORT (returns a new list), MIN_OF, MAX_OF, SUM_OF, FIRST, LAST, UNIQUE, INDEX_OF (returns -1 when absent). Maps: KEYS, VALUES, HAS_KEY, MERGE (returns a new map). Numbers: ABS, ROUND (half away from zero), FLOOR, CEIL, SQRT, POW. REPEAT(s, n) is a word function, not a loop.
+
+## Declared intent
+
+A rite can carry its purpose in plain words:
+
+    DECLARE INTENT "bring peace to the household" ON morning_blessing
+
+At invocation, the engine discerns whether the rite's words still walk in its declared intent. The run report's intents array carries one entry per invoked rite with an intent: {declared, discerned, confidence, aligned}. Alignment is blessed; drift is counseled gently and can never fail a run. When you generate a rite, declare its intent, and after each run check the intents array for drift.
+
+## Permission manifests
+
+A scroll should declare what it may touch, at the top inside BEGIN CREATION:
+
+    DECLARE PERMISSION TO READ "data/"
+    DECLARE PERMISSION TO WRITE "out/"
+    DECLARE PERMISSION TO SPEAK WITH "api.example.com"
+    DECLARE PERMISSION TO ASK THE WORLD
+    DECLARE PERMISSION TO SUMMON "reports.weekly"
+
+Any rite that reaches for an undeclared power is stopped. The manifest never widens the host policy: --sandbox still narrows everything. Read a scroll's manifest without running anything: `godcode permissions --json scroll.god`. The manifest is a promise; the sandbox is the wall. Keep both.
+
+## Tongues: write keywords in your own language
+
+A scroll may open with a tongue pragma and write its keywords in that language. English keywords still work in the same file.
+
+- `# tongue: tn` is Setswana: SIMOLOLA (BEGIN), SENOLA (REVEAL), FA (IF), FEDISA (END).
+- `# tongue: zu` is isiZulu: QALA (BEGIN), VEZA (REVEAL), UMA (IF).
+- `# tongue: ig` is Igbo: BIDO (BEGIN), GOSI (REVEAL).
+- `# tongue: pg` (or pcm) is Nigerian Pidgin: OYA (BEGIN), SHOW (REVEAL), FINISH IF (ENDIF).
+
+Named tools (SHA256, UPPER, and the commons) never translate. `godcode fmt` renders canonical English. The language server reads the pragma and offers completions in the scroll's tongue.
+
+## Error codes
+
+- LEXER_ERROR: bad characters or an unterminated string. Check the quotes on the reported line.
+- PARSE_ERROR: a grammar violation, usually a missing BEGIN/END CREATION or a missing block closer.
+- RUNTIME_ERROR: the scroll failed while running. DECLARE names before use and re-read the reported line.
+- FILE_ERROR: the scroll could not be read. Check the path.
+
+The human CLI (run, check, fmt) prints the offending source line beneath the message, with a caret at the column when known.
+
+## Projects, the registry, and the tool bridge
+
+- `godcode new my-scroll` raises a project: main.god, test_main.god, scroll.toml, README.md. Add --json for machine-readable output.
+- `godcode scroll ...` installs, publishes, and verifies reusable scrolls in the registry.
+- Eleven MCP-compatible tools are exposed for agent frameworks: check, run, consult, intent, anchor_verify, ledger_verify, permissions, explain, get_schema, format, list_scrolls. List them with `godcode tools --json`. Serve them to an agent host over stdio with `godcode bridge` (JSON-RPC).
+- `godcode intent "words"` resolves the intent behind words. `godcode lsp` runs the language server.
+- The four --json shapes (check, run, explain, ledger-verify) are frozen under dated schemas. `godcode schema` lists them and `godcode schema explain` prints one. Required fields never change meaning; additive fields may appear.
+
+## Safety rules for agents
+
+- Validate first, always. Never skip check.
+- Never run untrusted scrolls without --sandbox.
+- Read a scroll's permission manifest before running it.
+- Production moves (real credentials, real money, signed contracts, regulator submissions) belong to the human. Demo in sandbox mode.
+
+## Links
+
+- Site: https://getgodcode.com
+- Playground (runs in the browser, nothing to install): https://getgodcode.com/playground
+- Blog: https://getgodcode.com/blog
+- Repository: https://github.com/godcodeengine/Godcode-engine
+- Discord: https://discord.gg/894FEJhWfZ
