@@ -27,6 +27,11 @@ Same exit-code convention. JSON shape: `{"tool","command","file","ok",
 notices like `[SEAL]`); on runtime error it holds lines revealed *before*
 the error, and `error` carries `line`/`col`/`code`/`message`. `--sandbox`
 confines execution; `--json` composes with plain `run`/`check` too.
+A sandboxed run denies every file read until the invoker grants one:
+`run --sandbox --allow-read DIR scroll.god` (repeatable). The scroll's
+permission manifest still narrows the grant, so the run may read only
+what both the host and the scroll allow. See
+`docs/accountable-agent.md` for the worked demo.
 
 ## Share scrolls
 
