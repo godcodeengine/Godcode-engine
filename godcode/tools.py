@@ -427,13 +427,23 @@ _TOOL_FUNCS = {
 # ---------------------------------------------------------------------------
 # dated machine-interface schemas
 # ---------------------------------------------------------------------------
-SCHEMA_NAMES = ("check", "run", "explain", "ledger-verify")
+SCHEMA_NAMES = ("check", "run", "explain", "ledger-verify", "receipt")
 
 SCHEMA_DESCRIPTIONS = {
     "check": "the shape of godcode check --json",
     "run": "the shape of godcode run --sandbox --json",
     "explain": "the shape of godcode explain --json",
     "ledger-verify": "the shape of godcode ledger verify --json",
+    "receipt": "the shape of a replayable receipt document",
+}
+
+# Each schema lives under the month its shape was frozen.
+SCHEMA_DATES = {
+    "check": "2026-10",
+    "run": "2026-10",
+    "explain": "2026-10",
+    "ledger-verify": "2026-10",
+    "receipt": "2026-11",
 }
 
 
@@ -446,11 +456,12 @@ def read_schema(name):
     """
     if name not in SCHEMA_NAMES:
         return None, f"no schema named '{name}'"
-    rel = Path("schemas") / "2026-10" / f"{name}.json"
+    dated = SCHEMA_DATES[name]
+    rel = Path("schemas") / dated / f"{name}.json"
     try:
         from importlib.resources import files
 
-        candidate = files("godcode").joinpath("schemas/2026-10",
+        candidate = files("godcode").joinpath(f"schemas/{dated}",
                                               f"{name}.json")
         if candidate.is_file():
             return candidate.read_text(encoding="utf-8"), None

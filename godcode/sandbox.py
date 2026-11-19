@@ -105,16 +105,24 @@ class SandboxPolicy:
         *,
         source_dir: str | None = None,
         timeout_seconds: float | None = 5.0,
+        allow_read_paths: tuple[str, ...] | None = None,
     ) -> "SandboxPolicy":
         """The CLI's strict policy: deny everything, bless the stdlib.
 
         Scroll imports are allowed from the bundled stdlib scrolls and,
         when given, the creation's own directory — nothing else.
+        Filesystem reads stay denied unless the invoker names them:
+        ``allow_read_paths`` grants host reads under those trees only,
+        and the scroll's own permission manifest still narrows the
+        grant, so the effective read set is host grant intersect
+        manifest. The invoker's grant is the invoker's own act, never
+        the creation's: a scroll cannot widen its own cage.
         """
         paths = [_stdlib_scrolls_dir()]
         if source_dir:
             paths.append(str(source_dir))
         return cls(
+            allow_read_paths=allow_read_paths,
             allowed_import_paths=tuple(paths),
             timeout_seconds=timeout_seconds,
         )

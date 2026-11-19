@@ -6,6 +6,9 @@ runs as-is. Just pick one.
 
 ## The four examples
 
+- `examples/accountable_agent.god`. The accountable agent flagship demo: an agent given exactly one folder, `examples/accountable_agent_data`, and nothing else. It declares one read permission, fingerprints every file, and reports the count. Read its manifest first, then run it sandboxed with the one host grant. See `docs/accountable-agent.md`.
+  `godcode permissions examples/accountable_agent.god`
+  `godcode run --sandbox --allow-read examples/accountable_agent_data examples/accountable_agent.god`
 - `examples/file_reporter.god`. Walks a directory, lists every file it finds, and reveals a total. Shows off the file builtins (LIST_DIR, READ_FILE, FILE_EXISTS).
   `godcode run examples/file_reporter.god`
 - `examples/sales_summary.god`. Reads a JSON sales ledger from `examples/data/sales.json`, computes totals and averages, and writes a plain-text summary to `examples/data/sales_report.txt`. Shows off JSON parsing, WHILE loops, and file output.
