@@ -36,12 +36,12 @@
     <div class="code-card">
       <div class="code-head">the_shape.god</div>
       <pre class="code godcode">BEGIN CREATION
-  DECLARE seeker AS worthy
-  IF seeker IS worthy THEN REVEAL("heaven") ELSE REVEAL("test")
+  DECLARE seeker AS :worthy
+  IF seeker IS :worthy THEN REVEAL("heaven") ELSE REVEAL("test")
   ASCEND
 END CREATION</pre>
     </div>
-    <p>Notice: <code>worthy</code> needs no quotes. <strong style="color:var(--ink)">In God Code, bare words are symbols</strong>. Every unnamed thing is still a named spirit. This is the Symbol Rule, and it is the heart of the language.</p>
+    <p>Notice: <code>:worthy</code> needs no quotes. <strong style="color:var(--ink)">In God Code, a bare word spoken with its mark is a symbol</strong>. The colon is the mark, and the word itself is the value. A plain name must be declared before it is read, and reading one that never was declared stops the run with a gentle error. This is the Symbol Rule, and it is the heart of the language.</p>
     <a class="try" href="../playground/">Try this shape in the playground →</a>
 
     <h2><span class="secnum">02</span> Your first creation</h2>
@@ -49,8 +49,8 @@ END CREATION</pre>
     <div class="code-card">
       <div class="code-head">my_first.god</div>
       <pre class="code godcode">BEGIN CREATION
-  DECLARE spirit AS humble
-  IF spirit IS humble THEN REVEAL("peace") ELSE REVEAL("struggle")
+  DECLARE spirit AS :humble
+  IF spirit IS :humble THEN REVEAL("peace") ELSE REVEAL("struggle")
   ASCEND
 END CREATION</pre>
       <pre class="out">peace
@@ -60,7 +60,7 @@ Creation ascended in peace.</pre>
     <table>
       <tr><th>Line</th><th>Meaning</th></tr>
       <tr><td>BEGIN CREATION</td><td>every program is a creation — this opens it</td></tr>
-      <tr><td>DECLARE spirit AS humble</td><td>binds the name <code>spirit</code> to the symbol <code>humble</code></td></tr>
+      <tr><td>DECLARE spirit AS :humble</td><td>binds the name <code>spirit</code> to the symbol <code>humble</code></td></tr>
       <tr><td>IF … THEN … ELSE …</td><td><code>IS</code> tests equality; the truthy branch reveals <code>"peace"</code></td></tr>
       <tr><td>REVEAL("peace")</td><td>speaks a value aloud</td></tr>
       <tr><td>ASCEND</td><td>ends the creation in peace</td></tr>
@@ -113,7 +113,7 @@ REVEAL("a plain {{ brace }} stays a brace")</pre>
     <h3>Decide</h3>
     <div class="code-card">
       <div class="code-head">decide.god</div>
-      <pre class="code godcode">IF heart IS pure THEN
+      <pre class="code godcode">IF heart IS :pure THEN
   REVEAL("the way is open")
 ELSE
   REVEAL("wait and be still")

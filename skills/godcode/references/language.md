@@ -123,7 +123,7 @@ ASCEND   # ends the run peacefully; not an error
 
 ## Gotchas that bite generators
 
-- An unbound name evaluates to a Symbol. It does not raise. `BREATHE LIFE INTO` an undeclared name *does* raise.
+- Reading a name that was never declared is loud: it raises a gentle runtime error naming the name. A bare word spoken on purpose carries its mark, `:worthy`, and evaluates to a Symbol. `BREATHE LIFE INTO` an undeclared name *does* raise.
 - Division by zero is rejected: "division by nothing is not permitted".
 - Keywords are case-insensitive. Canonical style is UPPER.
 - `REPEAT(s, n)` is a word function, not a loop.

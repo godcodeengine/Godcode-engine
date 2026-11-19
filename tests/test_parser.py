@@ -44,12 +44,14 @@ def test_sample_godcode_parses():
 
     d = block.statements[0]
     assert isinstance(d, A.Declare) and d.name == "seeker"
-    assert isinstance(d.value, A.Identifier) and d.value.name == "worthy"
+    assert isinstance(d.value, A.SymbolLiteral) and d.value.name == "worthy"
 
     cond = block.statements[1]
     assert isinstance(cond, A.IfStmt)
     assert isinstance(cond.cond, A.BinaryOp) and cond.cond.op == "=="
-    assert cond.cond.left.name == "seeker" and cond.cond.right.name == "worthy"
+    assert cond.cond.left.name == "seeker"
+    assert isinstance(cond.cond.right, A.SymbolLiteral)
+    assert cond.cond.right.name == "worthy"
     assert len(cond.then_body) == 1 and len(cond.else_body) == 1
     assert isinstance(cond.then_body[0], A.Reveal)
     assert cond.then_body[0].expr.value == "heaven"
@@ -58,6 +60,7 @@ def test_sample_godcode_parses():
     dp = block.statements[2]
     assert isinstance(dp, A.Declare) and dp.name == "prophets"
     assert isinstance(dp.value, A.ListLiteral)
+    assert all(isinstance(i, A.SymbolLiteral) for i in dp.value.items)
     assert [i.name for i in dp.value.items] == ["Isaiah", "Elijah", "Jeremiah"]
 
     loop = block.statements[3]

@@ -1,13 +1,16 @@
 """Lexically scoped environments for God Code.
 
-Scope rule: names resolve outward through parent environments. An unbound
-name does not raise — it resolves to a Symbol of that name, because in God
-Code every unnamed thing is still a named spirit (this is what makes
-`DECLARE seeker AS worthy` / `IF seeker IS worthy` work with no prior
-binding of `worthy`).
-
-DECLARE always defines in the *current* environment; it never rebinds an
+Scope rule: names resolve outward through parent environments. DECLARE
+always defines in the *current* environment; it never rebinds an
 outer scope. Use set_existing() to reshape a name that must already exist.
+
+Reading a name that is bound nowhere is loud: the interpreter raises
+before it ever asks here, because a bare word is only ever spoken on
+purpose, with the explicit ``:name`` mark (``DECLARE seeker AS :worthy``
+/ ``IF seeker IS :worthy``). This lookup still answers Symbol(name) for
+an unbound name, and guarded internal callers (rite lookup, REFLECT,
+the debugger) rely on that; the law is enforced where names are read
+in a running scroll, in the interpreter.
 """
 
 from __future__ import annotations
@@ -28,7 +31,11 @@ class Environment:
         self._bindings[name] = value
 
     def get(self, name: str) -> object:
-        """Walk outward for name; return Symbol(name) if nowhere bound."""
+        """Walk outward for name; return Symbol(name) if nowhere bound.
+
+        The interpreter never lets a scroll read an unbound name: it
+        raises first. This fallback serves guarded internal lookups.
+        """
         env: Environment | None = self
         while env is not None:
             if name in env._bindings:

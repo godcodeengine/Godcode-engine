@@ -50,7 +50,7 @@ def test_interpolates_lists_and_comparisons():
 def test_interpolates_symbols_and_void():
     out = revealed(
         "BEGIN CREATION\n"
-        'REVEAL("unnamed {worthy}")\n'
+        'REVEAL("unnamed {:worthy}")\n'
         "DEFINE RITE quiet()\nEND RITE\n"
         'REVEAL("rite returns {INVOKE quiet()}")\n'
         "END CREATION"
@@ -133,9 +133,11 @@ def test_broken_expression_inside_braces():
     assert isinstance(result.error, str)
 
 
-def test_unbound_name_becomes_symbol():
-    out = revealed('BEGIN CREATION\nREVEAL("hello {stranger}")\nEND CREATION')
-    assert out == "hello stranger"
+def test_unbound_name_in_braces_is_loud():
+    result = run_source('BEGIN CREATION\nREVEAL("hello {stranger}")\nEND CREATION')
+    assert not result.ok
+    assert "'stranger'" in result.error
+    assert ":stranger" in result.error
 
 
 def test_works_in_sandbox():

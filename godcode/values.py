@@ -1,7 +1,8 @@
 """Divine value types for God Code.
 
-In God Code, every unnamed thing is still a named spirit: a bare word with
-no binding evaluates to a Symbol rather than raising an error.
+A Symbol is a bare word spoken on purpose: a scroll writes it with the
+explicit mark, ``:worthy``, and the word itself is the value. A plain
+name that was never declared is never read silently; it raises.
 """
 
 from __future__ import annotations
@@ -11,7 +12,7 @@ from typing import Any
 
 
 class Symbol(str):
-    """A bare word with no binding — a named spirit.
+    """A bare word spoken on purpose, written ``:name`` in a scroll.
 
     A str subclass, so Symbol("worthy") compares equal to "worthy" by text
     and behaves like a string everywhere, while remaining distinguishable
@@ -45,12 +46,17 @@ class Contract:
 
 @dataclass
 class RiteFunction:
-    """A user-defined rite: name, parameter names, body, and closure env."""
+    """A user-defined rite: name, parameter names, body, and closure env.
+
+    ``contract`` holds the rite's ContractClause declarations (REQUIRE /
+    ENSURE / NEVER), weighed by the interpreter at every invocation.
+    """
 
     name: str
     params: list[str] = field(default_factory=list)
     body: list[Any] = field(default_factory=list)
     closure_env: Any = None  # godcode.environment.Environment (Any avoids a cycle)
+    contract: list[Any] = field(default_factory=list)  # list[ast.ContractClause]
 
     def __str__(self) -> str:  # pragma: no cover - cosmetic
         return f"rite {self.name}"

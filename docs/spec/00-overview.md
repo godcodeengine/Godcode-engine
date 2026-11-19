@@ -10,7 +10,7 @@ The old `docs/LANGUAGE_SPEC.md` was one long document that described the languag
 
 1. **Lexical** (`lexical.md`): how source text becomes tokens. What counts as a word, a number, a string, a comment, a line break. Nothing about meaning yet.
 2. **Syntax** (`syntax.md`): how tokens become a scroll's shape. The grammar, the closers, the one-line forms.
-3. **Static meaning** (`static-meaning.md`): what can be known before a scroll runs. Names, scopes, the linter's counsel, check-time warnings, the Symbol Rule's classic face.
+3. **Static meaning** (`static-meaning.md`): what can be known before a scroll runs. Names, scopes, the linter's counsel, check-time warnings, and the loud reading of names.
 4. **Dynamic meaning** (coming): what happens when a scroll runs. Values, truth, rites, errors, the ledger.
 5. **Standard library** (coming): the built-in rites and scrolls, and what they promise.
 6. **Interfaces** (coming): the machine faces of the language. CLI JSON shapes, exit codes, the bridge.

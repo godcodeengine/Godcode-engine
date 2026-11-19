@@ -84,6 +84,20 @@ parses to a `Program` holding one `CreationBlock`, which holds the `REVEAL`.
 
 **SX-27.** A call names a rite directly: `name(args)` wherever a value is expected, or `INVOKE name(args)` as a statement. Arguments are comma-separated expressions; empty parentheses call with none. There are no method calls: a call's target is always a plain name.
 
+## Covenants: contract clauses
+
+**SX-40.** A rite body may carry contract clauses: `REQUIRE expr`, `ENSURE expr`, and `NEVER expr`. A clause is a declaration, not a step. The parser lifts every clause out of the body, in the order written, and gathers it into the rite's contract; clauses never execute as ordinary statements, and a clause written after a `RETURN` binds exactly as one written before it.
+
+**SX-41.** A clause may only be spoken as a direct line of a rite body. At the top level of a creation, in a bare fragment, or nested inside a branch or loop within the rite, it is a parse error, answered gently with the way back.
+
+**SX-42.** `REQUIRE` is weighed at the rite's door: the expression is evaluated in the rite's invocation frame, its parameters bound, before the body runs. If it does not hold, the body does not run and the run fails with a contract error naming the rite, the clause, and the values it was weighed against.
+
+**SX-43.** `ENSURE` is weighed as the rite's work ends: after the body completes, whether by `RETURN` or by walking off its end, in the rite's own frame, where the names the body declared are still in scope. If it does not hold, the run fails with a contract error; the work was done, but it does not stand.
+
+**SX-44.** `NEVER` is weighed at both doors: the expression must be false as the rite begins and false again as it ends; if it holds true at either threshold, the run fails with a contract error. In this first form `NEVER` is weighed only at the thresholds, not continuously while the body runs. The docs say so plainly, and so does this rule.
+
+**SX-45.** Every clause weighed leaves a record. A run report carries a `contracts` array, one entry per weighing, holding the rite, the kind, the clause's text, and whether it passed; a broken clause reports the error code `CONTRACT_ERROR`. The sandbox weighs clauses exactly as the open run does. The clause words are English in every tongue for now; their tongue equivalents are the founder's to vet and are not yet spoken.
+
 ## Imports
 
 **SX-28.** `IMPORT "path"` names a scroll in quotes. Anything but a quoted string is rejected where it stands.

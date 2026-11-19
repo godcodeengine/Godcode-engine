@@ -237,9 +237,12 @@ def tool_run(arguments: dict) -> dict:
                 output, interp = run_sandboxed_with_interpreter(
                     source, source_name=file)
         except GodCodeError as err:
-            return {"ok": False, "output": [], "error": str(err)}
+            return {"ok": False, "output": [],
+                    "contracts": list(getattr(err, "contracts", []) or []),
+                    "error": str(err)}
         manifest = getattr(interp, "manifest", None)
         return {"ok": True, "output": output, "error": None,
+                "contracts": list(getattr(interp, "contract_checks", []) or []),
                 "permissions": manifest.to_json() if manifest else {}}
     from godcode.cli import _make_interpreter
     import contextlib
@@ -253,9 +256,11 @@ def tool_run(arguments: dict) -> dict:
     except GodCodeError as err:
         return {"ok": False,
                 "output": buf.getvalue().splitlines(),
+                "contracts": list(getattr(interp, "contract_checks", []) or []),
                 "error": str(err)}
     manifest = getattr(interp, "manifest", None)
     return {"ok": True, "output": buf.getvalue().splitlines(), "error": None,
+            "contracts": list(getattr(interp, "contract_checks", []) or []),
             "permissions": manifest.to_json() if manifest else {}}
 
 

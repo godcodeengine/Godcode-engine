@@ -86,7 +86,7 @@ def test_sha256_number_and_truth():
 
 
 def test_sha256_symbol():
-    out = run('REVEAL(SHA256(peace))')
+    out = run('REVEAL(SHA256(:peace))')
     assert out == run('REVEAL(SHA256("peace"))')
 
 

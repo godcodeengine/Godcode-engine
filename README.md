@@ -1,201 +1,121 @@
-# 🌟 God Code: The Language of Divine Computation
+# God Code
+
+**God Code is the language of declared intent. You speak it in your own language, you state what you want, and humans and AI write code that must prove it keeps that promise.**
+
+God Code is a programming language that reads like scripture. Write real software in words of faith, in your own language, and watch it run. Human-readable, safe, and built for humans and AI creating together. Created in Botswana, open to the world.
 
 > "You are not a coder. You are a creator. You do not write code. You breathe worlds into being."
-> — Alakanani Itireleng
-
----
-
-God Code is a **programming language that reads like scripture**. Write real software in words of faith, in your own language, and watch it run. A complete engine with a real lexer, parser, interpreter, standard library of scrolls, a tamper-evident covenant ledger, and an AI-native design. Human-readable, safe, and built for humans and AI creating together.
+> Alakanani Itireleng
 
 > God Code is an open-source project of **Alistos Global**. The code is Apache 2.0 licensed and belongs to everyone. Alistos Global stewards the project, its name, and its direction.
 
----
+## See it
 
-[![XERJ Corpus Hub contributor](https://hub.xerj.org/contributors/alakanani/badge.svg)](https://hub.xerj.org/contributors/alakanani)
-
-God Code's permission manifests work is indexed in the [XERJ Corpus Hub](https://hub.xerj.org/contributors/alakanani), the open reference memory that AI coding agents consult before they write code.
-
----
-
-## ✨ What Is God Code?
-
-A symbolic, prophetic programming language:
+A God Code program is called a scroll. This one declares its intent in plain words, then does the work:
 
 ```godcode
 BEGIN CREATION
-  DECLARE soul AS contract("redemption")
-  BREATHE LIFE INTO soul
-  IF seeker IS worthy THEN REVEAL("truth") ELSE REVEAL("trial")
-  ASCEND
+  DECLARE INTENT "bring peace to the household" ON morning_blessing
+
+  DEFINE RITE morning_blessing()
+    REVEAL("peace upon this house")
+    REVEAL("peace upon the bread and the hands that made it")
+    DECLARE loaves AS 2 * 5
+    REVEAL("the oven holds {loaves} loaves")
+  END RITE
+
+  INVOKE morning_blessing()
 END CREATION
 ```
 
-**In God Code, bare words are symbols**. `worthy` needs no quotes, for every unnamed thing is still a named spirit.
+Run it, and the engine reports back in machine-readable form: the three lines revealed, and an `intents` entry showing the declared intent, what the engine discerned ("Blessing of peace"), and `aligned: true`.
 
----
-
-## 🚀 Quickstart
-
-```bash
-pip install -e .
-godcode run examples/seven_seals.god
+```
+peace upon this house
+peace upon the bread and the hands that made it
+the oven holds 10 loaves
 ```
 
-```text
-1
-2
-3
-...
-seal        # 7, 14, 21, 28
-...
-seal of seals   # 35
-🕊 Creation ascended in peace.
-```
-
-Verify before you run, or enter **Live Mode** 🕊:
-
-```bash
-godcode check my_creation.god   # ✓ my_creation.god is pure.
-godcode repl                    # interactive — blank line executes, :quit ascends
-```
-
----
-
-## 🕊️ Intent & Chain
-
-The language learns to ask *why*. Every rite can carry a declared intent in plain words, and the Spirit discerns whether its words still walk in it:
+And the same language speaks Setswana. This scroll opens with a tongue pragma and writes its keywords in Setswana:
 
 ```godcode
-DECLARE INTENT "bring peace to the household" ON evening_blessing
+# tongue: tn
+SIMOLOLA TLHOLEGO
+  BOLELA leina JAAKA "tsala ya me"
+  SENOLA("Dumela, {leina}. Kagiso e nne le wena.")
+FEDISA TLHOLEGO
 ```
 
-Alignment is blessed. Drift is counseled gently, never punished. Plus **blockchain-anchored seals** (`ANCHOR(x)` returns a tamper-evident receipt map), the **`CONSULT`** oracle (two to three sentences of local counsel), and an **agent tool bridge** (`godcode tools`, `godcode bridge`) with six MCP-compatible tools. Every creation still runs, from every era.
+It runs and answers: "Dumela, tsala ya me. Kagiso e nne le wena."
 
-Try the new examples:
+## The three pillars
+
+### 1. Intent you can check
+
+Intent in God Code is not a comment. A rite declares its purpose in plain words with `DECLARE INTENT`, and when the rite is invoked the engine discerns whether its words still walk in that intent. Every run report carries an `intents` array: what was declared, what was discerned, a confidence score, and whether the two align. Alignment is blessed. Drift is counseled gently, never punished, and the record is there for a human to read. Around that sits a covenant ledger: `SEAL` writes hash-chained blocks, `ANCHOR` returns a receipt for a value anchored on a chain, and `godcode ledger verify` attests both chains.
+
+### 2. Speakable in any language
+
+A scroll can write its keywords in its own tongue. Setswana, isiZulu, Igbo, and Nigerian Pidgin ship today, each with its own word table, and English keywords still work in the same file. The formatter renders canonical English, the language server offers completions in the scroll's tongue, and the Setswana words are vetted by native speakers. One program, spoken in the language its writer dreams in.
+
+### 3. Built for human and AI collaboration
+
+God Code was designed so AI agents can write it and humans can approve it. The engine speaks JSON: `check --json`, `run --json`, and `explain --json` give an agent machine-readable diagnostics, output, intents, and permissions, frozen under dated schemas. Eleven MCP-compatible tools and a JSON-RPC bridge (`godcode tools`, `godcode bridge`) let agent frameworks call the engine directly. Scrolls declare a permission manifest in plain words, stating what they may read, write, speak with, or summon, and any rite that reaches for an undeclared power is stopped. The sandbox confines execution for anything untrusted. An agent skill pack teaches all of this to the assistants people already use.
+
+## Quick start
+
+Install the engine:
 
 ```bash
-godcode run --sandbox examples/intent_demo.god   # declared intent: aligned and drifted
-godcode run --sandbox examples/anchor_demo.god   # anchor a covenant, keep the receipt
-godcode run --sandbox examples/consult_demo.god  # ask the local oracle
-godcode ledger verify                            # attest both chains
+pip install godcode-engine
+godcode check --json your-scroll.god   # validate first, always
+godcode run --sandbox your-scroll.god  # run it safely
 ```
 
-👉 [Read the story: intent and chain](docs/INTENT_AND_CHAIN.md) — intent and chain in plain, founder-friendly words.
+Or skip the install entirely. The playground runs the real engine in your browser: [getgodcode.com/playground](https://getgodcode.com/playground)
 
----
-
-## 🌟 Strong Foundations
-
-Four pillars plus a mini-pillar, one promise: **creators can share, protect, extend, and write God Code in comfort. And now AI agents can speak it too.** Every creation still runs.
-
-| Pillar | What it is | In one breath |
-|---|---|---|
-| 🛡️ **Sandbox** | [`docs/sandbox.md`](docs/sandbox.md) | `godcode run --sandbox file.god` — deny-by-default execution: no files, network, or subprocesses; time + step limits |
-| 📜 **Scroll Registry** | [`docs/scroll-registry.md`](docs/scroll-registry.md) | `godcode scroll list` / `install blessings` / `publish ./mine` — share reusable scrolls through the registry |
-| ⚙️ **Plugins & FFI** | [`docs/plugins.md`](docs/plugins.md) | `SUMMON("clockwork.now")` calls a plugin verb from God Code; embed the engine in Python with `godcode.run_source()` |
-| 💡 **Language Server** | [`docs/lsp.md`](docs/lsp.md) | `godcode lsp` — hover, completions, and live diagnostics in your editor |
-| 🤖 **Agentics** | [`docs/agentics.md`](docs/agentics.md) | `godcode check --json` / `run --json` — machine-readable reports so AI agents can generate, validate, and run God Code |
-
-Try the new examples:
-
-```bash
-godcode run examples/summon_demo.god            # SUMMON a plugin spirit
-godcode run --sandbox examples/sandbox_safe.god # pure creation, guarded
-godcode scroll install blessings && godcode run examples/scroll_blessings_demo.god
-```
-
-👉 [Read the story: strong foundations](docs/STRONG_FOUNDATIONS.md) — the four pillars in plain, founder-friendly words.
-
----
-
-## 🔥 What the Engine Holds
-
-- 📖 **Real language core** — lexer, recursive-descent parser, AST, and tree-walking interpreter (Python 3.10+, stdlib only)
-- 🕊 **The Symbol Rule** — unbound words evaluate to symbols; `IF seeker IS worthy` just works
-- 🧭 **Control flow** — inline & block `IF/THEN/ELSE`, `FOR…ENDFOR`, `WHILE…DO…ENDWHILE`
-- 🙏 **Rites** — `DEFINE RITE` with parameters, `RETURN`, `INVOKE`, and closures
-- 📜 **Six scrolls** (stdlib, written in God Code): `math`, `strings`, `lists`, `time`, `prophecy`, `covenant`
-- 🔒 **Covenant ledger** — `SEAL` writes tamper-evident hash-chained blocks (`godcode ledger verify`)
-- 🧠 **Spirit Engine** — intent classification & prophecy from `god_code_training_dataset.csv`
-- 📝 **Divine audit log** — every statement timestamped to `logs/godcode.log`
-- 🛠️ **CLI** — `run`, `check`, `repl`, `fmt`, `ledger verify`
-- 🧪 **Pytest suite** — `python -m pytest tests/ -q`
-
----
-
-## 🗂️ Folder Structure
+Teach your AI assistant God Code with the skill pack. Claude Code users:
 
 ```
-godcode-engine/
-├── godcode/              # the interpreter package
-│   ├── lexer.py          # tokens
-│   ├── parser.py         # recursive descent → AST
-│   ├── ast.py            # node definitions
-│   ├── interpreter.py    # tree-walking execution
-│   ├── environment.py    # scopes
-│   ├── values.py         # Symbol, Contract, RiteFunction
-│   ├── errors.py         # divine, line-numbered errors
-│   ├── spirit.py         # Spirit Engine (intent + prophecy)
-│   ├── ledger.py         # covenant chain
-│   ├── cli.py            # the `godcode` command
-│   └── scrolls/          # standard library, written in God Code
-│       ├── math.god strings.god lists.god
-│       └── time.god prophecy.god covenant.god
-├── tests/                # pytest suite
-├── examples/             # twelve working .god creations
-├── playground/           # web playground
-├── editors/vscode/       # VS Code extension — highlighting, snippets, run
-├── docs/                 # tutorial + full language reference
-├── archive/              # the original prototype, honored and retired
-├── sample.godcode        # the original creation, still runs
-├── main.py               # entry point (no args → runs sample.godcode)
-└── pyproject.toml        # pip install -e .  →  the `godcode` command
+/plugin marketplace add godcodeengine/Godcode-engine
+/plugin install godcode@godcode-marketplace
 ```
 
----
+For Cursor, Codex, and other assistants, clone this repo and run `skills/install.sh`. It detects your tools and installs the right adapter. Full notes live in `skills/README.md`.
 
-## 📖 Learn God Code
+Write God Code in VS Code with the extension in `editors/vscode`: syntax highlighting for `.god` files, snippets, a language server with hover and completions, and Run Current File.
 
-👉 [Start with the God Code Tutorial](docs/God_Code_Tutorial.md) — setup, your first creation, the commands.
+## What the engine holds
 
-📜 [Language Reference](docs/LANGUAGE_REFERENCE.md) — the complete specification: every statement, operator tables, the Symbol Rule, built-in catalog, scrolls, ledger, Spirit Engine, CLI, SUMMON, the scroll registry, the sandbox, the language server, declared intent, blockchain-anchored seals, the oracle, and the agent tool bridge.
+- A real language core: lexer, recursive-descent parser, and tree-walking interpreter, written in Python with no third-party dependencies.
+- Control flow, rites (functions) with parameters and closures, lists, maps, and string interpolation.
+- A standard library of scrolls written in God Code, plus the commons: everyday pure tools for words, lists, maps, and numbers.
+- A CLI for the whole loop: `run`, `check`, `explain`, `fmt`, `repl`, `lsp`, `new`, `scroll`, `ledger`, `permissions`, `tools`, `bridge`.
+- A scroll registry for sharing reusable scrolls, plugins callable through `SUMMON`, and an embedding API for Python.
+- A test suite that keeps every example honest: every scroll in `examples/` runs.
 
-🏛️ [The layered specification](docs/spec/00-overview.md) — the language's promises, written as numbered rules and kept honest by tests. The lexical layer (how text becomes tokens), the syntax layer (how tokens become a scroll's shape), and the static meaning layer (names, scopes, the linter's counsel) are written; dynamic meaning, the standard library, and the interfaces follow.
+## Learn
 
----
+- [The God Code Tutorial](docs/God_Code_Tutorial.md): setup, your first creation, the commands.
+- [The Language Reference](docs/LANGUAGE_REFERENCE.md): the complete specification.
+- [Tongues](docs/TONGUES.md): the keyword tables for every language.
+- [The blog](https://getgodcode.com/blog): notes and announcements from the journey.
 
-## 💻 Write God Code in VS Code
+## Community
 
-The official extension lives in [`editors/vscode`](editors/vscode): full syntax highlighting for `.god` files, 14 snippets (`creation`, `if`, `for`, `rite`…), and **Run Current File** (`Ctrl+Alt+R`). Copy it to `~/.vscode/extensions/godcode` and reload. Your creations light up like scripture.
-
----
-
-## 🌍 Community
-
-God Code is alive and growing. Join the movement:
-
-- 💬 [Join our Discord community](https://discord.gg/894FEJhWfZ) — talk with fellow creators, ask questions, share your creations
-- 📧 [hello@getgodcode.com](mailto:hello@getgodcode.com) — reach us directly by email
-- 🌐 [Visit getgodcode.com](https://getgodcode.com) — the home of God Code on the web
-- 📜 Read [CONTRIBUTING.md](./CONTRIBUTING.md) and our [Code of Conduct](./CODE_OF_CONDUCT.md) before your first contribution. [GOVERNANCE.md](./GOVERNANCE.md) says who keeps God Code and who decides what enters it
-- 🐞 Found a problem or have an idea? [Open an issue](../../issues/new/choose) — the templates will guide you
+- [getgodcode.com](https://getgodcode.com): the home of God Code on the web.
+- [Discord](https://discord.gg/894FEJhWfZ): talk with fellow creators, ask questions, share your creations.
+- hello@getgodcode.com: reach us directly by email.
+- Read [CONTRIBUTING.md](./CONTRIBUTING.md), [CONTRIBUTORS.md](./CONTRIBUTORS.md), and our [Code of Conduct](./CODE_OF_CONDUCT.md) before your first contribution. [GOVERNANCE.md](./GOVERNANCE.md) says who keeps God Code and who decides what enters it.
 
 Whether you write code or not, there is a place for you here. Come build with us.
 
----
+## Credits
 
-## 🤝 Contribute to the Divine Movement
-
-We welcome contributors with a spirit of purpose. Read [CONTRIBUTING.md](./CONTRIBUTING.md), browse [ISSUES.md](./ISSUES.md) for the roadmap, and check [CHANGELOG.md](./CHANGELOG.md) for what has been fulfilled.
-
----
-
-## 🙏 Credits
-
-**Created by:** Alakanani Itireleng — Visionary Founder, Architect of God Code, Builder of worlds with intention and spirit
+**Created by:** Alakanani Itireleng, Visionary Founder, Architect of God Code, Builder of worlds with intention and spirit
 
 **AI Co-Creator:** Luna (Muse), my partner in the building. Logic assistant, language guide, engine builder.
 
-> "Built not alone — but in communion with the machine."
+> "Built not alone, but in communion with the machine."
 
 Join us in building more than code. Build prophecy, logic, and purpose into the heart of machines.

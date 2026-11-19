@@ -47,6 +47,17 @@ class GodRuntimeError(GodCodeError):
     """
 
 
+class ContractError(GodRuntimeError):
+    """A rite broke one of its contract clauses (REQUIRE / ENSURE / NEVER).
+
+    Raised at a rite's thresholds when a clause it swore to does not hold.
+    Unlike the intent layer's gentle counsel, a broken clause is a broken
+    promise: the run fails. It subclasses GodRuntimeError, so TRY/CATCH at
+    a call site may shelter it like any other runtime failure, and the
+    machine code derived from the class name is CONTRACT_ERROR.
+    """
+
+
 class SandboxViolation(GodCodeError):
     """A power the sandbox withholds.
 
