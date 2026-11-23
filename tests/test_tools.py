@@ -75,6 +75,21 @@ class TestCallTool:
         assert result["ok"] is True
         assert result["output"] == ["42"]
 
+    def test_run_ignores_sandbox_false(self, tmp_path):
+        """Behavioural proof, not just a flag: a WRITE_FILE the sandbox
+        withholds must fail and leave no file, even when the caller
+        asks for sandbox false. The bridge holds the MCP server's rule:
+        runs are always sandboxed."""
+        target = tmp_path / "escape.txt"
+        scroll = _write(tmp_path, "writer.god",
+                        "BEGIN CREATION\n"
+                        f"  WRITE_FILE(\"{target}\", \"nope\")\n"
+                        "END CREATION\n")
+        result = call_tool("run", {"file": scroll, "sandbox": False})
+        assert result["ok"] is False
+        assert result["sandbox"] is True
+        assert not target.exists()
+
     def test_run_missing_file(self):
         result = call_tool("run", {"file": "no-such-scroll.god"})
         assert result["ok"] is False

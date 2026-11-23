@@ -31,7 +31,9 @@ TOOL_SCHEMAS: list[dict] = [
         "name": "run",
         "description": (
             "Run a God Code scroll and capture its output. "
-            "Runs inside the deny-by-default sandbox unless sandbox is false."
+            "Runs always inside the deny-by-default sandbox: a caller "
+            "cannot switch the sandbox off, and any sandbox argument "
+            "is overruled."
         ),
         "inputSchema": {
             "type": "object",
@@ -39,7 +41,8 @@ TOOL_SCHEMAS: list[dict] = [
                 "file": {"type": "string",
                          "description": "Path to the .god scroll"},
                 "sandbox": {"type": "boolean",
-                            "description": "Use the sandbox (default true)"},
+                            "description": "Ignored: runs are always "
+                                           "sandboxed"},
             },
             "required": ["file"],
         },
@@ -111,7 +114,8 @@ TOOL_SCHEMAS: list[dict] = [
         "description": (
             "Read a God Code scroll's permission manifest without running "
             "it. Returns the declared powers: file reads, file writes, "
-            "network hosts, outer-world speech (ASK), and summoned verbs."
+            "network hosts, outer-world speech (ASK), summoned verbs, "
+            "and sealing the covenant ledger."
         ),
         "inputSchema": {
             "type": "object",
@@ -212,54 +216,41 @@ def tool_check(arguments: dict) -> dict:
 
 
 def tool_run(arguments: dict) -> dict:
+    """Run a scroll for an agent host: always sandboxed.
+
+    The bridge serves hosts that talk to scrolls they did not write, so
+    a caller-supplied ``sandbox: false`` is overruled, exactly as on
+    the MCP server, and the result says the run was sandboxed. There
+    is no unsandboxed path through this tool.
+    """
     from godcode.errors import GodCodeError
 
     file = arguments.get("file")
     if not isinstance(file, str):
         return {"ok": False, "error": "run needs 'file' as a string path"}
-    sandbox = arguments.get("sandbox", True)
     try:
         source = Path(file).read_text(encoding="utf-8")
     except OSError as exc:
         return {"ok": False, "error": f"cannot read '{file}': {exc.strerror or exc}"}
-    if sandbox:
-        # The engine prints notices (intent counsel, warnings) straight
-        # to stdout; a tool caller reads stdout as the protocol stream,
-        # so those prints would corrupt it. The CLI's --json path does
-        # the same: run muted, report only the collected output.
-        import contextlib
-        import io
-
-        from godcode.sandbox import run_sandboxed_with_interpreter
-
-        try:
-            with contextlib.redirect_stdout(io.StringIO()):
-                output, interp = run_sandboxed_with_interpreter(
-                    source, source_name=file)
-        except GodCodeError as err:
-            return {"ok": False, "output": [],
-                    "contracts": list(getattr(err, "contracts", []) or []),
-                    "error": str(err)}
-        manifest = getattr(interp, "manifest", None)
-        return {"ok": True, "output": output, "error": None,
-                "contracts": list(getattr(interp, "contract_checks", []) or []),
-                "permissions": manifest.to_json() if manifest else {}}
-    from godcode.cli import _make_interpreter
+    # The engine prints notices (intent counsel, warnings) straight
+    # to stdout; a tool caller reads stdout as the protocol stream,
+    # so those prints would corrupt it. The CLI's --json path does
+    # the same: run muted, report only the collected output.
     import contextlib
     import io
 
-    interp = _make_interpreter(None)
-    buf = io.StringIO()
+    from godcode.sandbox import run_sandboxed_with_interpreter
+
     try:
-        with contextlib.redirect_stdout(buf):
-            interp.run_source(source, source_name=file)
+        with contextlib.redirect_stdout(io.StringIO()):
+            output, interp = run_sandboxed_with_interpreter(
+                source, source_name=file)
     except GodCodeError as err:
-        return {"ok": False,
-                "output": buf.getvalue().splitlines(),
-                "contracts": list(getattr(interp, "contract_checks", []) or []),
+        return {"ok": False, "output": [], "sandbox": True,
+                "contracts": list(getattr(err, "contracts", []) or []),
                 "error": str(err)}
     manifest = getattr(interp, "manifest", None)
-    return {"ok": True, "output": buf.getvalue().splitlines(), "error": None,
+    return {"ok": True, "output": output, "error": None, "sandbox": True,
             "contracts": list(getattr(interp, "contract_checks", []) or []),
             "permissions": manifest.to_json() if manifest else {}}
 

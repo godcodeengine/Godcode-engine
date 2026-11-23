@@ -56,8 +56,9 @@ class DeclareIntent:
 class DeclarePermission:
     """DECLARE PERMISSION TO <power> -- the permission manifest.
 
-    ``power`` is one of "read", "write", "network", "stdin", "summon";
-    ``target`` is the granted path, host, or verb name (None for stdin).
+    ``power`` is one of "read", "write", "network", "stdin", "summon",
+    "seal"; ``target`` is the granted path, host, or verb name (None
+    for stdin and seal).
     """
     power: str
     target: str | None

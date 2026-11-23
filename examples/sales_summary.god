@@ -9,8 +9,15 @@
 #
 # Run from the repo root:
 #   godcode run examples/sales_summary.god
+#
+# The scroll declares its powers at the top: it may read and write the
+# data folder beside it, and nothing else. A plain run enforces the
+# promise.
 
 BEGIN CREATION
+  DECLARE PERMISSION TO READ "data"
+  DECLARE PERMISSION TO WRITE "data"
+
   DEFINE RITE TRUNC(x)
     DECLARE big AS 0
     WHILE (big + 1) * 10000 <= x DO

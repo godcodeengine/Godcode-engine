@@ -84,7 +84,12 @@ def cmd_run(args: argparse.Namespace) -> int:
         return 1
 
     try:
-        _make_interpreter(args.log).run_source(source, source_name=args.file)
+        interp = _make_interpreter(args.log)
+        # A plain run is manifest-enforced: the scroll's declared
+        # manifest binds, and a scroll that declared nothing is granted
+        # nothing. Silence means nothing granted.
+        interp.manifest_enforced = True
+        interp.run_source(source, source_name=args.file)
     except GodCodeError as err:
         _print_run_error(source, err)
         return 1
@@ -1266,7 +1271,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_bridge = sub.add_parser("bridge",
                               help="Serve the agent tool bridge "
-                                   "(JSON-RPC 2.0 over stdio)")
+                                   "(JSON-RPC 2.0 over stdio; runs are "
+                                   "always sandboxed)")
     p_bridge.set_defaults(func=cmd_bridge)
 
     p_mcp = sub.add_parser("mcp",

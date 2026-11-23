@@ -346,10 +346,17 @@ class Parser:
                 target=eat_string('a verb name in quotes, as in DECLARE PERMISSION TO SUMMON "reports.weekly"'),
                 line=line, col=col,
             )
+        if self._peek().type is TT.SEAL:
+            # SEAL is a hard keyword, not a soft word like the others.
+            self._advance()
+            eat_word("THE")
+            eat_word("COVENANT")
+            return A.DeclarePermission(power="seal", target=None, line=line, col=col)
         t = self._peek()
         raise ParseError(
             "DECLARE PERMISSION TO grants one power: READ a path, WRITE a "
-            "path, SPEAK WITH a host, ASK THE WORLD, or SUMMON a verb. "
+            "path, SPEAK WITH a host, ASK THE WORLD, SUMMON a verb, or "
+            "SEAL THE COVENANT. "
             f"I heard '{t.value}'.",
             line=t.line, col=t.col,
         )

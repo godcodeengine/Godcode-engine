@@ -13,6 +13,8 @@
 # path instead and the scroll would still exit 0.
 
 BEGIN CREATION
+  DECLARE PERMISSION TO SPEAK WITH "jsonplaceholder.typicode.com"
+
   TRY
     DECLARE body AS HTTP_GET("https://jsonplaceholder.typicode.com/users")
     DECLARE users AS JSON_PARSE(body)

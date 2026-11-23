@@ -6,12 +6,12 @@ Cursor, Codex, or any other agent host -- can check, run, explain,
 format, and list God Code scrolls, and verify ledgers, without learning
 a bespoke protocol.
 
-The tools are the same eleven the agent bridge offers, plus one rule
-that only holds here: **runs are always sandboxed**. An MCP client
+The tools are the same eleven the agent bridge offers, and both
+surfaces hold one rule: **runs are always sandboxed**. An MCP client
 talks to scrolls it did not write, so the server ignores any request
 to run outside the sandbox and says so in the result. The plain
-``godcode bridge`` keeps its own convention for hosts that already
-trust their scrolls; this server never trusts them.
+``godcode bridge`` overrules a caller's ``sandbox: false`` the same
+way; neither surface trusts a scroll it is handed.
 
 No third-party dependencies. Protocol versions are negotiated the way
 MCP asks: the client names the version it speaks, and the server

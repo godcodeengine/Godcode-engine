@@ -8,8 +8,13 @@
 #
 # Run from the repo root:
 #   godcode run examples/file_reporter.god
+#
+# The scroll declares its one power at the top: it may read the data
+# folder beside it, and nothing else. A plain run enforces the promise.
 
 BEGIN CREATION
+  DECLARE PERMISSION TO READ "data"
+
   DEFINE RITE LONGER_NAME(current_name, current_chars, new_name, new_chars)
     IF new_chars > current_chars THEN
       RETURN new_name

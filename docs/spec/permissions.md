@@ -13,6 +13,7 @@ DECLARE PERMISSION TO WRITE "out/"
 DECLARE PERMISSION TO SPEAK WITH "api.example.com"
 DECLARE PERMISSION TO ASK THE WORLD
 DECLARE PERMISSION TO SUMMON "reports.weekly"
+DECLARE PERMISSION TO SEAL THE COVENANT
 ```
 
 The declaration is a promise and a boundary. Any rite that reaches for
@@ -21,7 +22,7 @@ manifest never widens what the host allows: the effective grant is
 always **host policy intersect manifest**. Deny by default; the host
 may approve more, never less.
 
-## The five powers
+## The six powers
 
 | Declaration | Grants | Policed rites |
 |---|---|---|
@@ -30,6 +31,7 @@ may approve more, never less.
 | `SPEAK WITH "host"` | Reach the host over the web (the host and its subdomains) | `HTTP_GET` |
 | `ASK THE WORLD` | Speak with the outer world | `ASK` |
 | `SUMMON "verb"` | Call upon the named plugin verb (and its namespaced children) | `SUMMON` |
+| `SEAL THE COVENANT` | Write to the covenant ledger | `SEAL` |
 
 ## Static meaning
 
@@ -37,26 +39,35 @@ may approve more, never less.
   from inside top-level creation blocks. A decree anywhere else is
   ignored: manifests live at the top of the scroll.
 - `PERMISSION`, `TO`, `READ`, `WRITE`, `SPEAK`, `WITH`, `ASK`, `THE`,
-  `WORLD`, `SUMMON` are soft words: `DECLARE permission AS x` still
-  declares an ordinary name.
-- An unknown power is a parse-time counsel naming the five legal forms.
+  `WORLD`, `SUMMON`, `COVENANT` are soft words: `DECLARE permission AS
+  x` still declares an ordinary name. (`SEAL` is a keyword in its own
+  right, borrowed here from the rite it names.)
+- An unknown power is a parse-time counsel naming the six legal forms.
 
 ## Dynamic meaning
 
 1. Before the run begins, the engine gathers every permission decree
    into the scroll's manifest. Relative path patterns resolve against
    the scroll's own directory.
-2. If the scroll declared any permission, the guard is bound for the
-   run — even under a plain `godcode run`, which otherwise runs
-   unbound. The host policy for such a run is permissive; the manifest
-   does the narrowing.
+2. A plain `godcode run` is manifest-enforced. The guard is bound for
+   the run whether or not the scroll declared anything: a declared
+   manifest narrows the run to its grants, and a scroll that declared
+   nothing is granted nothing at all. Silence means nothing granted.
+   The host policy for such a run is permissive; the manifest does the
+   narrowing. (A library embedding that was not asked to enforce keeps
+   the older freedom: no manifest, no guard.)
 3. Every side-effecting rite is checked against the manifest before it
    runs. Path targets are resolved exactly the way the rite will open
    them (relative to the invocation directory), so the check can never
-   bless a different file than the rite will touch.
-4. Imported scrolls contribute their own manifests; grants compose by
-   union. A library scroll that reads its data declares that read, and
-   the run honors it.
+   bless a different file than the rite will touch. `SEAL` is a
+   statement rather than a call, so the interpreter puts the question
+   to the guard directly before the seal is weighed.
+4. Imported scrolls may narrow the lead scroll's manifest, never
+   widen it. Before an imported scroll runs, its declarations are
+   measured against the lead scroll's manifest; any declaration beyond
+   it refuses the import with a `SandboxViolation` naming the widening
+   power. A library scroll that reads its data declares that read, and
+   the lead scroll declares it too, at its own top.
 5. A violation raises `SandboxViolation` with counsel naming the
    withheld power and the decree that would grant it.
 
@@ -66,7 +77,9 @@ may approve more, never less.
   running any code. Safe to call on untrusted scrolls.
 - `godcode run --json` reports the run's manifest under `permissions`.
 - The agent bridge offers a `permissions` tool with the same reading,
-  and every `run` result carries the manifest.
+  and every `run` result carries the manifest. Bridge runs are always
+  sandboxed, on the MCP server's rule: a caller's `sandbox: false` is
+  overruled, and the result says so.
 
 ## Honest limits
 
