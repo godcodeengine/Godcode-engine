@@ -134,7 +134,7 @@ class SandboxPolicy:
         A plain `godcode run` installs the guard with this policy: the
         host withholds nothing, and the scroll's own permission manifest
         does all the narrowing, an empty manifest included. No step
-        budget, no time grant, every power allowed by the host — the
+        budget, no time grant, every power allowed by the host. The
         manifest alone withholds.
         """
         return cls(
