@@ -6,6 +6,9 @@ All notable changes to the God Code engine are recorded here, that the generatio
 
 ## Unreleased
 
+### Fixed
+- **🕊️ The sandbox keeps its promises: the November self-attack findings, mended.** Before the Break the Sandbox challenge opens, we attacked our own rig and published every attempt, the breaks included. Three breaks and one ungated power came home, and all four are mended here. A plain `godcode run` is now manifest-enforced end to end: a scroll that declares no permission manifest is granted no powers at all, where before, silence left the run unbound. An imported scroll may narrow the lead scroll's manifest but never widen it: a breathed-in scroll that declares beyond the lead scroll is refused before it runs, with the widening power named in the refusal. The agent tool bridge now holds the MCP server's rule: runs through `godcode bridge` are always sandboxed, a caller's `sandbox: false` is overruled, and the result says the run was sandboxed. And `SEAL` is a declared power: a scroll writes to the covenant ledger only when its manifest carries the new sixth declaration, `DECLARE PERMISSION TO SEAL THE COVENANT`, beside READ, WRITE, SPEAK WITH, ASK THE WORLD, and SUMMON. The manifest's machine shape gains the additive `seal` field; the dated schemas keep every required field untouched. Fifteen new tests in `tests/test_permissions.py` and `tests/test_tools.py` keep the mendings honest, and the permissions spec (`docs/spec/permissions.md`) and the language reference now tell the same story.
+
 ## 2026-11-17: Four tongues, and a voice for the machines
 
 > "Let all things be done decently and in order."

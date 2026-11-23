@@ -198,12 +198,15 @@ DECLARE PERMISSION TO WRITE "out/"
 DECLARE PERMISSION TO SPEAK WITH "api.example.com"
 DECLARE PERMISSION TO ASK THE WORLD
 DECLARE PERMISSION TO SUMMON "reports.weekly"
+DECLARE PERMISSION TO SEAL THE COVENANT
 ```
 
 Any rite that reaches for an undeclared power is stopped. The manifest
 never widens the host policy: `--sandbox` still narrows everything.
-Read a scroll's manifest safely with `godcode permissions --json`
-before running it.
+A plain `godcode run` is manifest-enforced: a scroll that declares
+nothing is granted nothing, and an imported scroll may narrow the
+lead scroll's manifest but never widen it. Read a scroll's manifest
+safely with `godcode permissions --json` before running it.
 
 ## House rules for agents working on God Code
 

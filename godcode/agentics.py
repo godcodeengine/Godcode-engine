@@ -238,6 +238,9 @@ def cmd_run_json(args) -> int:
         return 1
 
     interp = _make_interpreter(args.log)
+    # A plain run is manifest-enforced, exactly as on the human path:
+    # the declared manifest binds, and silence grants nothing.
+    interp.manifest_enforced = True
     seals_before = _ledger_block_count(interp)
 
     buf = io.StringIO()

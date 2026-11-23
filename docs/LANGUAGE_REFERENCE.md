@@ -978,6 +978,7 @@ DECLARE PERMISSION TO WRITE "out/"
 DECLARE PERMISSION TO SPEAK WITH "api.example.com"
 DECLARE PERMISSION TO ASK THE WORLD
 DECLARE PERMISSION TO SUMMON "reports.weekly"
+DECLARE PERMISSION TO SEAL THE COVENANT
 ```
 
 Any rite that reaches for a power the scroll did not declare is
@@ -986,8 +987,12 @@ allows: the effective grant is always host policy intersect manifest.
 `READ` polices `READ_FILE`, `LIST_DIR`, `FILE_EXISTS`; `WRITE`
 polices `WRITE_FILE`; `SPEAK WITH` names a host (and its subdomains)
 for `HTTP_GET`; `ASK THE WORLD` grants the `ASK` rite; `SUMMON`
-names the plugin verbs that may be called upon. Imported scrolls
-contribute their own manifests; grants compose by union.
+names the plugin verbs that may be called upon; `SEAL THE COVENANT`
+grants the `SEAL` rite its write to the covenant ledger. A plain
+`godcode run` is manifest-enforced: a scroll that declares nothing is
+granted nothing. Imported scrolls may narrow the lead scroll's
+manifest, never widen it; an import that declares beyond the lead
+scroll is refused, naming the widening power.
 
 `godcode permissions scroll.god [--json]` reads the manifest without
 running any code. `godcode run --json` reports the run's manifest

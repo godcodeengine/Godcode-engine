@@ -58,6 +58,7 @@ from godcode.errors import (
     GodCodeError,
     GodRuntimeError,
     ReturnSignal,
+    SandboxViolation,
     with_suggestion,
 )
 from godcode.tongues import parse_source
@@ -99,11 +100,16 @@ class Interpreter:
         # separate from the debugger's own frame list (which only exists
         # while a DebugSession is attached).
         # --- permission manifests ---
-        # The scroll's declared powers, collected in run() before execution
-        # and widened by union as imported scrolls declare their own. The
-        # sandbox guard (when installed) enforces it against every rite.
+        # The scroll's declared powers, collected in run() before
+        # execution. Imported scrolls may narrow them, never widen them.
+        # The sandbox guard (when installed) enforces the manifest
+        # against every rite. ``manifest_enforced`` is set by the plain
+        # `godcode run` entry points: there the manifest binds even when
+        # the scroll declared nothing, and an empty manifest grants no
+        # powers at all.
         from godcode.permissions import PermissionManifest
         self.manifest: PermissionManifest = PermissionManifest()
+        self.manifest_enforced: bool = False
         # --- end permission manifests ---
         self.call_stack: list[dict] = []
         # --- end v5.2 ---
@@ -248,13 +254,19 @@ class Interpreter:
     # --- permission manifests ---
 
     def _bind_manifest_guard(self) -> None:
-        """Install the guard under the open host policy when a manifest
-        is declared and no guard is installed yet (the --sandbox path
-        installs its own strict guard, which then also sees the manifest).
+        """Install the guard under the open host policy when the run's
+        manifest binds and no guard is installed yet (the --sandbox path
+        installs its own strict guard, which then also sees the
+        manifest).
+
+        The manifest binds when the scroll declared one, and also when
+        the run is manifest-enforced (a plain `godcode run`): there a
+        scroll that declared nothing is guarded by an empty manifest
+        and granted nothing. Silence means nothing granted.
         """
-        if not self.manifest:
-            return
         if getattr(self, "_sandbox_guard", None) is not None:
+            return
+        if not self.manifest and not self.manifest_enforced:
             return
         from godcode.sandbox import SandboxPolicy, apply_policy
         apply_policy(self, SandboxPolicy.open())
@@ -409,6 +421,14 @@ class Interpreter:
         print(f"[{kind.upper()}] {name} is {verb}ed {mark}")
 
     def _exec_seal(self, stmt: SealStmt, env: Environment) -> None:
+        # --- permission manifests: sealing is a declared power ---
+        # SEAL is a statement, not a call, so the guard's rite checks
+        # never see it; where a guard stands, it is asked directly,
+        # before the seal's own words are weighed.
+        guard = getattr(self, "_sandbox_guard", None)
+        if guard is not None:
+            guard.check_seal(getattr(stmt, "line", None))
+        # --- end permission manifests ---
         value = self._eval_expr(stmt.expr, env)
         record: dict[str, Any] = {
             "sealed": self.stringify(value),
@@ -572,12 +592,28 @@ class Interpreter:
             self._last_source = source
             program = parse_source(source)
             self._log(f"IMPORT :: {path}")
-            # Permission manifests compose by union: an imported scroll may
-            # grant powers the importing scroll did not declare.
+            # Permission manifests: what is breathed in may narrow the
+            # lead scroll's manifest, never widen it. The imported
+            # scroll's declarations are measured against the run's
+            # manifest before the scroll runs; any excess refuses the
+            # import outright, naming the widening power.
             from godcode.permissions import collect_manifest
-            self.manifest = self.manifest.merge(
-                collect_manifest(self._statements_of(program), self.source_dir)
-            )
+            imported = collect_manifest(
+                self._statements_of(program), self.source_dir)
+            excess = imported.excess_over(self.manifest)
+            if excess:
+                raise SandboxViolation(
+                    f"The scroll '{stmt.path}' reaches beyond the lead "
+                    "scroll's declared permissions: it declares "
+                    + ", ".join(excess)
+                    + ", which the lead scroll did not declare. What is "
+                    "breathed in may narrow the lead scroll's manifest; "
+                    "it may never widen it. Declare the power at the top "
+                    "of the lead scroll, or loose the breathed-in scroll "
+                    "of it.",
+                    line,
+                )
+            self.manifest = self.manifest.merge(imported)
             self._bind_manifest_guard()
             self._exec_block(self._statements_of(program), env)
         finally:

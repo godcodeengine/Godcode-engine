@@ -131,11 +131,11 @@ class SandboxPolicy:
     def open(cls) -> "SandboxPolicy":
         """The permissive host policy used under a permission manifest.
 
-        A plain `godcode run` of a scroll without --sandbox has always run
-        unbound; installing the guard with the open policy preserves that
-        while letting the scroll's own permission manifest do the
-        narrowing. No step budget, no time grant, every power allowed —
-        the manifest alone withholds.
+        A plain `godcode run` installs the guard with this policy: the
+        host withholds nothing, and the scroll's own permission manifest
+        does all the narrowing, an empty manifest included. No step
+        budget, no time grant, every power allowed by the host. The
+        manifest alone withholds.
         """
         return cls(
             allow_read_paths=(os.sep,),
@@ -305,12 +305,22 @@ class Sandbox:
     def _check_manifest(self, name: str, line: int | None, args: tuple) -> None:
         """Enforce the scroll's declared permission manifest, if any.
 
-        The guard reads the manifest live from the interpreter so that
-        imported scrolls may widen the run's grants by declaring their
-        own (grants compose by union; the host policy still narrows).
+        The guard reads the manifest live from the interpreter. Imported
+        scrolls may only narrow the lead scroll's grants, never widen
+        them (the interpreter refuses a widening import before it runs),
+        so the manifest seen here never exceeds the lead scroll's
+        declaration; the host policy still narrows further.
+
+        A manifest binds in two situations: the scroll declared one, or
+        the run is manifest-enforced (a plain `godcode run`), in which
+        case an empty manifest binds too and grants nothing at all.
+        Silence means nothing granted.
         """
         manifest = getattr(self.interpreter, "manifest", None)
-        if not manifest:
+        if manifest is None:
+            return
+        if not manifest and not getattr(
+                self.interpreter, "manifest_enforced", False):
             return
         rite = str(name).upper()
         target = args[0] if args else None
@@ -341,6 +351,32 @@ class Sandbox:
         if rite == "SUMMON":
             if not (isinstance(target, str) and manifest.allows_summon(target)):
                 raise withheld(f"SUMMON would call upon '{target}'")
+
+    def check_seal(self, line: int | None) -> None:
+        """Enforce the manifest's seal power for the SEAL rite.
+
+        SEAL is a statement, not a call, so it never passes through
+        :meth:`check_rite`; the interpreter asks the guard directly.
+        The same binding rule as :meth:`_check_manifest` applies: where
+        no manifest binds, sealing keeps its legacy freedom; where one
+        binds, the covenant may be sealed only by a scroll that
+        declared SEAL THE COVENANT.
+        """
+        manifest = getattr(self.interpreter, "manifest", None)
+        if manifest is None:
+            return
+        if not manifest and not getattr(
+                self.interpreter, "manifest_enforced", False):
+            return
+        if manifest.seal:
+            return
+        raise SandboxViolation(
+            "The scroll reaches for a power it did not declare: SEAL "
+            "would write to the covenant ledger. Declare it at the top "
+            "of the scroll with DECLARE PERMISSION TO SEAL THE "
+            "COVENANT, or leave the ledger untouched.",
+            line,
+        )
 
     def check_import_path(
         self, path: Path, requested: str, line: int | None
