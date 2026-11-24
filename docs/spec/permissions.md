@@ -62,13 +62,20 @@ may approve more, never less.
    bless a different file than the rite will touch. `SEAL` is a
    statement rather than a call, so the interpreter puts the question
    to the guard directly before the seal is weighed.
-4. Imported scrolls may narrow the lead scroll's manifest, never
+4. `ANCHOR` persists a block to a local chain file, which is a write,
+   but it is never refused: where a manifest binds and grants no
+   `WRITE` over the chain's own file, the anchor is kept in an
+   ephemeral in-memory chain instead, the same answer the strict
+   sandbox gives, so the rite keeps its meaning and persists nothing it
+   did not declare. It adds no seventh power: a scroll persists its
+   chain by declaring `WRITE` over the chain file, like any other write.
+5. Imported scrolls may narrow the lead scroll's manifest, never
    widen it. Before an imported scroll runs, its declarations are
    measured against the lead scroll's manifest; any declaration beyond
    it refuses the import with a `SandboxViolation` naming the widening
    power. A library scroll that reads its data declares that read, and
    the lead scroll declares it too, at its own top.
-5. A violation raises `SandboxViolation` with counsel naming the
+6. A violation raises `SandboxViolation` with counsel naming the
    withheld power and the decree that would grant it.
 
 ## Machine interfaces

@@ -1338,6 +1338,15 @@ class Interpreter:
                 f"The known chains are: {known}.",
                 line,
             )
+        # --- permission manifests: ANCHOR persists a chain file, which is
+        # a write. Where a manifest binds and does not grant WRITE over
+        # the chain's file, the guard answers with an ephemeral in-memory
+        # chain instead, the same way the strict sandbox does, so the
+        # rite keeps its meaning and writes nothing it did not declare.
+        guard = getattr(self, "_sandbox_guard", None)
+        if guard is not None:
+            adapter = guard.anchor_adapter(self, chain_name, adapter, line)
+        # --- end permission manifests ---
         payload_hash = hashlib.sha256(
             self.stringify(value).encode("utf-8")
         ).hexdigest()

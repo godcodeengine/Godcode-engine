@@ -153,10 +153,12 @@ class SandboxPolicy:
 # The guard
 # ---------------------------------------------------------------------------
 # Builtin rite name -> SandboxPolicy attribute that must be truthy for the
-# rite to run. ANCHOR is deliberately absent: under a policy that denies
-# writes it is answered with an ephemeral in-memory chain (see
-# run_sandboxed_with_interpreter), so the rite itself never reaches the
-# filesystem and needs no grant. The vault builtins (godcode.stdlib_vault)
+# rite to run. ANCHOR is absent from this call-gated table because it
+# never refuses: under a policy that denies writes, and under a manifest
+# that grants no write over its chain file, it is answered with an
+# ephemeral in-memory chain instead (see run_sandboxed_with_interpreter
+# and Sandbox.anchor_adapter), so the rite persists nothing it did not
+# declare while keeping its meaning. The vault builtins (godcode.stdlib_vault)
 # reach the host filesystem directly, so they are policed here too;
 # READ_FILE/LIST_DIR/FILE_EXISTS additionally enforce the granted
 # directories per path inside the builtins themselves.
@@ -377,6 +379,44 @@ class Sandbox:
             "COVENANT, or leave the ledger untouched.",
             line,
         )
+
+    def anchor_adapter(self, interpreter: Any, chain_name: str,
+                       adapter: Any, line: int | None) -> Any:
+        """The adapter ANCHOR should persist through under the manifest.
+
+        ANCHOR writes a block to a local chain file, so persisting it is
+        a write like any other. ANCHOR never refuses, though: under the
+        strict sandbox it is answered with an ephemeral in-memory chain
+        rather than an error (see ``run_sandboxed_with_interpreter``), so
+        creations keep their meaning without touching the disk. This
+        extends that same answer to the manifest wall.
+
+        The binding rule matches :meth:`check_seal`: where no manifest
+        binds, ANCHOR keeps its legacy reach and persists to disk. Where
+        one binds, a file-backed chain is persisted only when the
+        manifest grants WRITE over the chain's own file; without that
+        grant the anchor is kept in an ephemeral in-memory chain, bound
+        once on the interpreter so repeated anchors in the run share it.
+        A chain that is already in memory, or a future custom adapter
+        with no file path, is returned untouched.
+        """
+        manifest = getattr(interpreter, "manifest", None)
+        if manifest is None:
+            return adapter
+        if not manifest and not getattr(
+                interpreter, "manifest_enforced", False):
+            return adapter
+        path = getattr(adapter, "path", None)
+        if path is None:
+            return adapter  # in-memory or pathless: nothing is written
+        if manifest.allows_write(os.fspath(path)):
+            return adapter
+        from godcode.chain import MemoryChainAdapter
+        ephemeral = interpreter.chain_adapters.get(chain_name)
+        if not isinstance(ephemeral, MemoryChainAdapter):
+            ephemeral = MemoryChainAdapter()
+            interpreter.chain_adapters[chain_name] = ephemeral
+        return ephemeral
 
     def check_import_path(
         self, path: Path, requested: str, line: int | None
