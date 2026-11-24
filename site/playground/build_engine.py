@@ -49,6 +49,9 @@ SAMPLES = [
     ("lots.god", "Casting Lots"),
     ("first_blessing_ig.god", "Ndewo (Igbo)"),
     ("first_blessing_pg.god", "How far (Nigerian Pidgin)"),
+    ("market_day_story.god", "Market Day (an interactive story)"),
+    ("market_day_story_pg.god", "Market Day (the story in Pidgin)"),
+    ("market_day_story_ig.god", "Ụbọchị Ahịa (the story in Igbo)"),
 ]
 
 

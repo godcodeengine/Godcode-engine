@@ -18,6 +18,12 @@ runs as-is. Just pick one.
 - `examples/daily_report.god`. A dated daily report generator. Prints a headline like "Daily summary for September 24, 2026", formats a task list with a rite, and closes with done-vs-pending counts. Shows off rites, WHILE loops, interpolation, and the date builtins.
   `godcode run examples/daily_report.god`
 
+
+## A story to play
+
+- `examples/market_day_story.god`. Market Day, an interactive story. Edit the three choices at the top (the river or the road, help or hurry, yams or cloth), run it, and Ada's walk to market changes with you, ending on one of three endings. Leave a choice as `"fate"` and the lots decide. The same story is told in Nigerian Pidgin in `examples/market_day_story_pg.god` and in Igbo in `examples/market_day_story_ig.god`. Pure and sandbox-safe, and offered as playground samples.
+  `godcode run --sandbox examples/market_day_story.god`
+
 All commands above run from the repo root.
 
 ## Notes
